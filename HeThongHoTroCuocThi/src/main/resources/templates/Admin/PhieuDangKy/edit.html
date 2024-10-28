@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>SỬA THÔNG TIN PHIẾU ĐĂNG KÝ</title>
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<th:block th:replace="~{layout::headerAdmin}"></th:block>
+<form th:action="@{/Admin/PhieuDangKys/edit}" method="post" th:object="${phieuDangKy}">
+    <input type="hidden" th:field="*{id}">
+    <input type="hidden" id="cuocThi" th:field="*{cuocThi}" required>
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0">THÔNG TIN CUỘC THI</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>Tên cuộc thi: <span th:text="${phieuDangKy.cuocThi.tenCuocThi}"></span></p>
+                        <p>Môn thi: <span th:text="${phieuDangKy.cuocThi.monThi.getTenMonThi()}"></span></p>
+                        <p>Cấp thi: <span th:text="${loaiTruongService.getLoaiTruongById(phieuDangKy.cuocThi.loaiTruongId).getTenLoaiTruong()}"></span></p>
+                        <p>Thời gian: <span th:text="${phieuDangKy.cuocThi.ngayThi}"></span></p>
+                        <p>Địa điểm: <span th:text="${phieuDangKy.cuocThi.diaDiemThi}"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0">PHIẾU ĐĂNG KÝ</h4>
+                    </div>
+                    <div class="card-body">
+                        <input type="hidden" id="userId" th:field="*{user}">
+                        <div class="form-group">
+                            <label for="userCCCD" class="form-label">CCCD</label>
+                            <input type="text" class="form-control" id="userCCCD" th:field="*{user.cccd}" required readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="hoten" class="form-label">Họ và tên</label>
+                            <input type="text" class="form-control" id="hoten" th:field="*{user.hoten}" required readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="sdt" class="form-label">Số điện thoại</label>
+                            <input type="text" class="form-control" id="sdt" th:field="*{sdt}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="text" class="form-control" id="email" th:field="*{email}" required>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label for="truong">Tên trường</label>
+                            <select class="form-control" id="truong" th:field="*{truongId}">
+                                <option value="">-- Chọn trường --</option>
+                                <option th:each="truong : ${listTruong}" th:value="${truong.id}" th:text="${truong.tenTruong}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="ngayDangKy">Thời gian đăng ký</label>
+                            <input type="text" class="form-control" id="ngayDangKy" th:field="*{ngayDangKy}" required readonly>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Lưu</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<th:block th:replace="~{layout::footer}"></th:block>
+</body>
+</html>

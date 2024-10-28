@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <title>Nội dung cuộc thi</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<th:block th:replace="~{layout::header}"></th:block>
+<div class="container my-5">
+  <h1>Danh sách Nội dung và Bài tập dành cho cuộc thi</h1>
+  <table class="table table-striped table-hover">
+    <thead>
+    <tr>
+      <th>Mã</th>
+      <th>Bài tập</th>
+      <th>Thao tác</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="nd : ${chiTietNoiDungs}">
+      <td th:text="${nd.noiDung.id}"></td>
+      <td>
+        <a th:href="@{${nd.noiDung.fileBaiTapUrl}}" target="_blank" th:if="${nd.noiDung.fileBaiTapUrl != null}">Tải tại đây</a>
+      </td>
+      <td>
+        <!-- Kiểm tra xem người dùng đã nộp bài hay chưa -->
+        <div th:if="${phieuNopBaiService.findPhieuNopBaiByCuocThiIdAndNoiDungAndUser(cuocThiId, nd.noiDung, user) != null}">
+
+          <a th:if="${phieuNopBaiService.findPhieuNopBaiByCuocThiIdAndNoiDungAndUser(cuocThiId, nd.noiDung, user).trangThai == 1}"
+             class="btn btn-primary mt-3" th:href="@{/User/CuocThis/details/{id}(id=${cuocThiId})}">Xem kết quả</a>
+
+          <label th:if="${phieuNopBaiService.findPhieuNopBaiByCuocThiIdAndNoiDungAndUser(cuocThiId, nd.noiDung, user).trangThai == 0}">Đang chấm</label>
+
+        </div>
+        <div th:if="${phieuNopBaiService.findPhieuNopBaiByCuocThiIdAndNoiDungAndUser(cuocThiId, nd.noiDung, user) == null}">
+          <!-- Form nộp bài tập -->
+          <form th:action="@{/User/PhieuNopBais/add}" method="post" enctype="multipart/form-data" class="mt-2">
+            <input type="hidden" name="cuocThiId" th:value="${cuocThiId}" />
+            <input type="hidden" name="noiDungId" th:value="*{nd.noiDung.id}" />
+            <div class="form-group">
+              <label for="fileNop">Nộp bài tập</label>
+              <input type="file" class="form-control form-control-lg" id="fileNop" name="UrlFile" required>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Nộp bài</button>
+          </form>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <a class="btn btn-primary mt-3" th:href="@{/User/CuocThis/details/{id}(id=${cuocThiId})}">Trở về</a>
+</div>
+</body>
+</html>

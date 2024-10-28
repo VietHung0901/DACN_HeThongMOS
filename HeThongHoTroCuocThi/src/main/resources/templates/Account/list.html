@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+<head>
+    <title>DANH SÁCH CUỘC THI</title>
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<th:block th:replace="~{layout::header}"></th:block>
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="my-4">DANH SÁCH THÍ SINH</h1>
+    </div>
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>CCCD</th>
+            <th>UserName</th>
+            <th>Họ và tên</th>
+            <th>Số điện thoại</th>
+            <th>Email</th>
+            <th>Trường</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.cccd}"></td>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.hoten}"></td>
+            <td th:text="${user.phone}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.truong.tenTruong}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<th:block th:replace="~{layout::footer}"></th:block>
+</body>
+</html>

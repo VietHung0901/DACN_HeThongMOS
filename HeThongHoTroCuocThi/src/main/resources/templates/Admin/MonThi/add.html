@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>THÊM MÔN THI</title>
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<th:block th:replace="~{layout::headerAdmin}"></th:block>
+<div class="container">
+    <h1 class="my-4">THÊM MÔN THI</h1>
+
+    <form th:action="@{/Admin/MonThis/add}" th:object="${monThis}" method="post">
+        <div class="form-group">
+            <label for="tenMonThi">Tên môn thi</label>
+            <input type="text" class="form-control" id="tenMonThi" th:field="*{tenMonThi}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Tạo</button>
+        <a th:href="@{/Admin/MonThis}" class="btn btn-secondary">Trở về</a>
+    </form>
+</div>
+<th:block th:replace="~{layout::footer}"></th:block>
+</body>
+</html>

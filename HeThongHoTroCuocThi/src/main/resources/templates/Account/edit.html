@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CHỈNH SỬA THÔNG TIN CÁ NHÂN</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .card .card-body {
+            padding: 0.5rem;
+        }
+
+        .card-img {
+            border-radius: 10px;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .form-group {
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            padding: 0.5rem 2rem;
+            font-size: 1rem;
+            border-radius: 5px;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+    </style>
+</head>
+<body>
+<th:block th:replace="~{layout::header}"></th:block>
+<form th:action="@{/edit}" th:object="${user}" method="post" enctype="multipart/form-data">
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">CHỈNH SỬA THÔNG TIN CÁ NHÂN</h2>
+
+        <!-- Kiểm tra và hiển thị thông báo thành công -->
+        <div th:if="${successMessage}" class="alert alert-success">
+            <span th:text="${successMessage}"></span>
+        </div>
+
+        <!-- Kiểm tra và hiển thị thông báo lỗi -->
+        <div th:if="${error}" class="alert alert-danger">
+            <span th:text="${error}"></span>
+        </div>
+
+        <div class="card">
+            <div class="row no-gutters">
+                <div class="col-md-4 text-center p-4 border rounded shadow-sm">
+                    <h4 class="mb-3">Ảnh Đại Diện</h4>
+                    <div class="mb-3">
+                        <img th:src="@{${user.imageUrl}}" class="img-fluid rounded-circle" id="profileImage" alt="Profile Image" style="width: 300px; height: 300px; object-fit: cover;">
+                    </div>
+                    <div class="form-group">
+                        <label for="imageUrl" class="form-label" style="cursor: pointer; color: #0a53be">Thay đổi ảnh</label>
+                        <input type="file" class="form-control" id="imageUrl" th:field="*{imageUrl}" onchange="previewImage(event)" style="display: none;" accept="image/*">
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <input type="hidden" th:field="*{id}">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" th:value="${user.username}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="hoten">Họ tên</label>
+                            <input type="text" class="form-control" id="hoten" th:field="*{hoten}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="cccd">CCCD</label>
+                            <input type="text" class="form-control" id="cccd" th:field="*{cccd}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="ngaySinh">Ngày sinh</label>
+                            <input type="date" class="form-control" id="ngaySinh" th:field="*{ngaySinh}" max="" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" th:field="*{email}"
+                                   placeholder="Nhập địa chỉ email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                   title="Vui lòng nhập địa chỉ email hợp lệ">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Điện thoại</label>
+                            <input type="tel" class="form-control" id="phone" th:field="*{phone}"
+                                   pattern="\d{10}" title="Số điện thoại phải có đúng 10 chữ số"
+                                   placeholder="Nhập số điện thoại" maxlength="10" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="truong">Trường</label>
+                            <select class="form-control" id="truong" th:field="*{truong}">
+                                <option th:each="truong : ${listTruong}" th:value="${truong.id}"
+                                        th:text="${truong.tenTruong}"></option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+<!--    Đoạn script để đổi ảnh-->
+    function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function () {
+            const output = document.getElementById('profileImage');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+<script>
+    // Thiết lập giá trị max cho input date là ngày hiện tại
+    document.addEventListener('DOMContentLoaded', function () {
+        const today = new Date();
+        const dd = String(today.getDate()).padStart(2, '0'); // Ngày
+        const mm = String(today.getMonth() + 1).padStart(2, '0'); // Tháng (Tháng bắt đầu từ 0)
+        const yyyy = today.getFullYear(); // Năm
+
+        // Định dạng ngày ở định dạng YYYY-MM-DD
+        const maxDate = yyyy + '-' + mm + '-' + dd;
+        document.getElementById('ngaySinh').setAttribute('max', maxDate);
+    });
+</script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/jquery-3.7.0.min.js}"></script>
+<th:block th:replace="~{layout::footer}"></th:block>
+</body>
+</html>

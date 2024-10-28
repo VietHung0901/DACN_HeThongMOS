@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>CHI TIẾT QUY ĐỊNH</title>
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<th:block th:replace="~{layout::headerAdmin}"></th:block>
+<div class="container">
+    <h1 class="my-4">CHI TIẾT QUY ĐỊNH</h1>
+    <div class="card mb-3">
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <img th:src="@{${quyDinh.imageUrl}}" class="card-img" alt="Nội dung Image">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${quyDinh.tenQuyDinh}"></h5>
+                    <p class="card-text" th:text="${quyDinh.moTaQuyDinh}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a th:href="@{/Admin/QuyDinhs}" class="btn btn-secondary">Trở về</a>
+</div>
+<th:block th:replace="~{layout::footer}"></th:block>
+</body>
+</html>

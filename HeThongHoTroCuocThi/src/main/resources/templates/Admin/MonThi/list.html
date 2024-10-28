@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Danh Sách Môn Thi</title>
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<th:block th:replace="~{layout::headerAdmin}"></th:block>
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="my-4">DANH SÁCH MÔN THI</h1>
+        <a class="btn btn-success mb-4" th:href="@{/Admin/MonThis/add}">Tạo mới</a>
+    </div>
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Mã</th>
+            <th>Tên Môn Thi</th>
+            <th>Thao tác</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="monThi : ${monThis}">
+            <td th:text="${monThi.id}"></td>
+            <td th:text="${monThi.tenMonThi}"></td>
+            <td>
+                <a class="btn btn-primary btn-sm" th:href="@{/Admin/MonThis/edit/{id}(id=${monThi.id})}">Sửa</a>
+                <a class="btn btn-danger btn-sm" th:href="@{/Admin/MonThis/AnHien/{id}(id=${monThi.id})}"
+                   th:text="${monThi.trangThai == 1 ? 'Hiện' : 'Ẩn'}"></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<th:block th:replace="~{layout::footer}"></th:block>
+</body>
+</html>

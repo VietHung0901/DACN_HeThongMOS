@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+<head>
+  <title>DANH SÁCH CUỘC THI</title>
+  <th:block th:replace="~{layout::link-css}"></th:block>
+  <th:block th:replace="~{layout::custom-css}"></th:block>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .search-form {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #fff;
+    }
+
+    .search-form h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .search-form .form-control {
+      margin-bottom: 10px;
+    }
+
+    .search-form .btn-primary {
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+<th:block th:replace="~{layout::header}"></th:block>
+
+<div class="container my-5">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="my-4">DANH SÁCH CUỘC THI</h1>
+  </div>
+  <div class="search-form">
+    <h2>Tìm kiếm cuộc thi</h2>
+    <form action="/User/CuocThis/search" method="GET">
+      <div class="form-row">
+        <div class="form-group col-md-3">
+          <label for="startDate">Từ ngày:</label>
+          <input type="date" class="form-control" id="startDate" name="startDate" placeholder="yyyy-MM-dd" onchange="setEndDate()">
+        </div>
+        <div class="form-group col-md-3">
+          <label for="endDate">Đến ngày:</label>
+          <input type="date" class="form-control" id="endDate" name="endDate" placeholder="yyyy-MM-dd">
+        </div>
+        <div class="form-group col-md-2">
+          <label for="location">Địa điểm:</label>
+          <input type="text" class="form-control" id="location" name="location" placeholder="Nhập địa điểm thi">
+        </div>
+        <div class="form-group col-md-2">
+          <label for="monThi">Môn thi:</label>
+          <select id="monThi" class="form-control" name="monThi">
+            <option value="-1">Chọn môn</option>
+            <option th:each="monThi : ${monThis}" th:value="${monThi.id}"
+                    th:text="${monThi.tenMonThi}"></option>
+          </select>
+        </div>
+        <div class="form-group col-md-2">
+          <label for="capThi">Cấp thi:</label>
+          <select id="capThi" class="form-control" name="capThi">
+            <option value="-1">Chọn cấp</option>
+            <option th:each="loaiTruong : ${loaiTruongs}" th:value="${loaiTruong.id}"
+                    th:text="${loaiTruong.tenLoaiTruong}"></option>
+          </select>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+    </form>
+  </div>
+  <table class="table table-striped table-hover">
+    <thead>
+    <tr>
+      <th>Mã</th>
+      <th>Tên cuộc thi</th>
+      <th>Ngày thi</th>
+      <th>Số lượng</th>
+      <th>Địa điểm</th>
+      <th>Môn thi</th>
+      <th>Cấp thi</th>
+      <th>Thao tác</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="cuocThi : ${cuocThis}">
+      <td th:text="${cuocThi.id}"></td>
+      <td th:text="${cuocThi.tenCuocThi}"></td>
+      <td th:text="${cuocThi.ngayThi}"></td>
+      <td th:text="${phieuDangKyService.countPhieuDangKyByCuocThiId(cuocThi.id)} + '/' + ${cuocThi.soLuongThiSinh}"></td>
+      <td th:text="${cuocThi.diaDiemThi}"></td>
+      <td th:text="${cuocThi.monThi.tenMonThi}"></td>
+      <td th:text="${loaiTruongService.getNameById(cuocThi.loaiTruongId)}"></td>
+      <td>
+        <a class="btn btn-info btn-sm" th:href="@{/User/CuocThis/details/{id}(id=${cuocThi.id})}">Xem</a>
+        <a class="btn btn-primary btn-sm" th:href="@{/User/PhieuDangKys/add/id/{id}(id=${cuocThi.id})}">Đăng ký</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<th:block th:replace="~{layout::footer}"></th:block>
+<script th:src="@{/js/setEndday.js}"></script>
+</body>
+</html>

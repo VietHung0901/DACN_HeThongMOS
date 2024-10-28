@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>THÊM TRƯỜNG</title>
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<th:block th:replace="~{layout::headerAdmin}"></th:block>
+<div class="container">
+    <h1 class="my-4">THÊM TRƯỜNG</h1>
+
+    <form th:action="@{/Admin/Truongs/add}" th:object="${truong}" method="post">
+        <div class="form-group">
+            <label for="tenTruong">Tên Trường</label>
+            <input type="text" class="form-control" id="tenTruong" th:field="*{tenTruong}" required>
+        </div>
+        <div class="form-group mb-4">
+            <label for="truong">Loại trường</label>
+            <select class="form-control" id="truong" th:field="*{loaiTruong}">
+                <option value="">-- chọn loại trường --</option>
+                <option th:each="loaiTruong : ${listLoaiTruong}" th:value="${loaiTruong.id}"
+                        th:text="${loaiTruong.tenLoaiTruong}"></option>
+            </select>
+        </div>
+        <div th:if="${errorMessage != null}" class="alert alert-danger" th:text="${errorMessage}" style="margin-top: 20px; margin-bottom: 20px;"></div>
+        <button type="submit" class="btn btn-primary">Tạo</button>
+        <a th:href="@{/Admin/Truongs}" class="btn btn-secondary">Trở về</a>
+    </form>
+</div>
+</body>
+</html>

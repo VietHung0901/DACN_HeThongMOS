@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>SỬA NỘI DUNG</title>
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<th:block th:replace="~{layout::headerAdmin}"></th:block>
+<div class="container">
+    <h1 class="my-4">SỬA NỘI DUNG</h1>
+    <form th:action="@{/Admin/NoiDungs/edit}" th:object="${noiDung}" method="post" enctype="multipart/form-data">
+        <div th:if="${errorMessage != null}" class="alert alert-danger" th:text="${errorMessage}" style="margin-top: 20px; margin-bottom: 20px;"></div>
+        <input type="hidden" th:field="*{id}">
+        <div class="form-group">
+            <label for="tenNoiDung">Tên nội dung</label>
+            <input type="text" class="form-control" id="tenNoiDung" th:field="*{tenNoiDung}" required>
+        </div>
+        <div class="form-group">
+            <label for="moTaNoiDung">Mô tả nội dung</label>
+            <input type="text" class="form-control" id="moTaNoiDung" th:field="*{moTaNoiDung}" required>
+        </div>
+        <div class="form-group">
+            <div class="form-group mb-4">
+                <label for="imageUrltext" class="text-start">Ảnh</label>
+                <input type="hidden" class="form-control form-control-lg" required id="imageUrltext" th:field="*{imageUrl}">
+                <input type="file" class="form-control form-control-lg" id="imageUrl" onchange="previewImage()" name="imageUrlFile">
+                <img id="preview-image" th:src="@{${noiDung.imageUrl}}" alt="Preview Image" class="img-fluid mb-3" style="display: block;">
+            </div>
+        </div>
+
+        <!-- Trường file bài tập (cho phép người dùng xem file đã tải lên và thay đổi nếu cần) -->
+        <div class="form-group">
+            <label for="fileBaiTapUrl">File bài tập</label>
+            <div class="mb-2">
+                <a th:href="@{${noiDung.fileBaiTapUrl}}" target="_blank" th:if="${noiDung.fileBaiTapUrl != null}">Xem file bài tập hiện tại</a>
+            </div>
+            <input type="file" class="form-control" id="fileBaiTapUrl" name="fileBaiTap">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Lưu</button>
+        <a th:href="@{/Admin/NoiDungs}" class="btn btn-secondary">Trở về</a>
+    </form>
+</div>
+<th:block th:replace="~{layout::footer}"></th:block>
+<script th:src="@{/js/Register.js}"></script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initialscale=1.0">
+    <title>HỆ THỐNG HỖ TRỢ CUỘC THI</title>
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .advertisement-qc {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            left: 0;
+            z-index: -1;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .page-selector-qc {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+
+        .page-selector-qc button {
+            background-color: #7c8b9b;
+            border: none;
+            color: white;
+            width: 24px;
+            height: 8px;
+            cursor: pointer;
+        }
+
+        .page-selector-qc button:hover {
+            background-color: #537191;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        body {
+            background-size: cover;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 15px;
+        }
+
+        section {
+            background-size: cover; /* Cover the entire section */
+            background-attachment: fixed; /* Fix the background position */
+            height: 100vh; /* Set height to 100% of viewport height */
+            position: relative;
+        }
+
+        .search-form {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        .search-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .search-form .form-control {
+            margin-bottom: 10px;
+        }
+
+        .search-form .btn-primary {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<th:block th:replace="~{layout::header}"></th:block>
+<div class="wrapper">
+    <section class="section1">
+        <div class="container-qc">
+            <img class="advertisement-qc" src="../images/anh1.jpg" alt="Advertisement 1" style="display: block;">
+            <img class="advertisement-qc" src="../images/anh2.png" alt="Advertisement 2" style="display: none;">
+            <img class="advertisement-qc" src="../images/imagett.jpg" alt="Advertisement 3" style="display: none;">
+            <img class="advertisement-qc" src="../images/anh2.png" alt="Advertisement 4" style="display: none;">
+            <img class="advertisement-qc" src="../images/imagett2.png" alt="Advertisement 5" style="display: none;">
+            <div class="page-selector-qc">
+                <button onclick="showAdvertisement(0)" class="active"></button>
+                <button onclick="showAdvertisement(1)"></button>
+                <button onclick="showAdvertisement(2)"></button>
+                <button onclick="showAdvertisement(3)"></button>
+                <button onclick="showAdvertisement(4)"></button>
+            </div>
+        </div>
+    </section>
+    <div class="search-form">
+        <h2>Tìm kiếm cuộc thi</h2>
+        <form action="/User/CuocThis/search" method="GET">
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="startDate">Từ ngày:</label>
+                    <input type="date" class="form-control" id="startDate" name="startDate" placeholder="yyyy-MM-dd" onchange="setEndDate()">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="endDate">Đến ngày:</label>
+                    <input type="date" class="form-control" id="endDate" name="endDate" placeholder="yyyy-MM-dd">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="location">Địa điểm:</label>
+                    <input type="text" class="form-control" id="location" name="location"
+                           placeholder="Nhập địa điểm thi">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="monThi">Môn thi:</label>
+                    <select id="monThi" class="form-control" name="monThi">
+                        <option value="-1">Chọn môn</option>
+                        <option th:each="monThi : ${monThis}" th:value="${monThi.id}"
+                                th:text="${monThi.tenMonThi}"></option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="capThi">Cấp thi:</label>
+                    <select id="capThi" class="form-control" name="capThi">
+                        <option value="-1">Chọn cấp</option>
+                        <option th:each="loaiTruong : ${loaiTruongs}" th:value="${loaiTruong.id}"
+                                th:text="${loaiTruong.tenLoaiTruong}"></option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+        </form>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2>Danh sách quy Định thi</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4" th:each="quyDinh : ${quyDinhs}">
+                <a th:href="@{/QuyDinhs/id/{id}(id=${quyDinh.id})}" class="card mb-4 text-decoration-none text-dark">
+                    <div class="card-img-top" style="height: 200px; overflow: hidden;">
+                        <img th:src="@{${quyDinh.imageUrl}}" alt="Quy định" class="img-fluid h-100 w-100 object-fit-cover">
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${quyDinh.tenQuyDinh}">Quy định phòng cháy chữa cháy</h5>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentIndex = 0;
+    const advertisements = document.querySelectorAll('.advertisement-qc');
+    const buttons = document.querySelectorAll('.page-selector-qc button');
+
+    function showAdvertisement(index) {
+        advertisements[currentIndex].style.display = 'none';
+        buttons[currentIndex].classList.remove('active');
+
+        currentIndex = index;
+        advertisements[currentIndex].style.display = 'block';
+        buttons[currentIndex].classList.add('active');
+    }
+
+    function rotateAdvertisements() {
+        showAdvertisement((currentIndex + 1) % advertisements.length);
+        setTimeout(rotateAdvertisements, 5000); // Chuyển sang quảng cáo tiếp theo sau 5 giây
+    }
+
+    rotateAdvertisements();
+</script>
+<th:block th:replace="~{layout::footer}"></th:block>
+<script th:src="@{/js/setEndday.js}"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>SỬA LOẠI TRƯỜNG</title>
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<th:block th:replace="~{layout::headerAdmin}"></th:block>
+<div class="container mt-5">
+    <h1>SỬA THÔNG TIN LOẠI TRƯỜNG</h1>
+    <form th:action="@{/Admin/LoaiTruongs/edit}" method="post" th:object="${loaiTruong}">
+        <input type="hidden" th:field="*{id}">
+        <div class="form-group">
+            <label for="ten">Tên Loại Trường</label>
+            <input type="text" class="form-control" id="ten" th:field="*{tenLoaiTruong}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Lưu</button>
+        <a th:href="@{/Admin/LoaiTruongs}" class="btn btn-secondary">Trở về</a>
+    </form>
+</div>
+<th:block th:replace="~{layout::footer}"></th:block>
+</body>
+</html>

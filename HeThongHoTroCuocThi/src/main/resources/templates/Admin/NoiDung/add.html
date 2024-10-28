@@ -1,0 +1,41 @@
+    <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>THÊM NỘI DUNG</title>
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<th:block th:replace="~{layout::headerAdmin}"></th:block>
+<div class="container">
+    <h1 class="my-4">THÊM NỘI DUNG</h1>
+    <form th:action="@{/Admin/NoiDungs/add}" th:object="${noiDung}" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="tenNoiDung">Tên nội dung</label>
+            <input type="text" class="form-control" id="tenNoiDung" th:field="*{tenNoiDung}" required>
+        </div>
+        <div class="form-group">
+            <label for="moTaNoiDung">Mô tả nội dung</label>
+            <input type="text" class="form-control" id="moTaNoiDung" th:field="*{moTaNoiDung}" required>
+        </div>
+        <div class="form-group">
+            <div class="form-group mb-4">
+                <label for="imageUrl" class="text-start">Ảnh</label>
+                <input type="file" class="form-control form-control-lg" required id="imageUrl" onchange="previewImage()"
+                       th:field="*{imageUrl}">
+            </div>
+            <img id="preview-image" src="#" alt="Preview Image" class="img-fluid mb-3" style="display: none;">
+        </div>
+        <div class="form-group">
+            <label for="fileBaiTap">File bài tập</label>
+            <input type="file" class="form-control" id="fileBaiTap" th:field="*{fileBaiTapUrl}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Tạo</button>
+        <a th:href="@{/Admin/NoiDungs}" class="btn btn-secondary">Trở về</a>
+    </form>
+</div>
+<th:block th:replace="~{layout::footer}"></th:block>
+<script th:src="@{/js/Register.js}"></script>
+</body>
+</html>

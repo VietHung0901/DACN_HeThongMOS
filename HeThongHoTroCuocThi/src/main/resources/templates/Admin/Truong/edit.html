@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>SỬA TRƯỜNG</title>
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<th:block th:replace="~{layout::headerAdmin}"></th:block>
+<div class="container mt-5">
+    <h1>SỬA THÔNG TIN LOẠI TRƯỜNG</h1>
+    <div th:if="${success}" class="alert alert-success" role="alert" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
+
+    <form th:action="@{/Admin/Truongs/edit}" method="post" th:object="${truong}">
+        <input type="hidden" th:field="*{id}">
+        <div class="form-group">
+            <label for="tenTruong">TênTrường</label>
+            <input type="text" class="form-control" id="tenTruong" th:field="*{tenTruong}" required>
+        </div>
+        <div class="form-group mb-4">
+            <label for="loaiTruong">Loại trường</label>
+            <select class="form-control" id="loaiTruong" th:field="*{loaiTruong}" required>
+                <option value="">-- Chọn loại trường --</option>
+                <option th:each="loaiTruong : ${listLoaiTruong}" th:value="${loaiTruong.id}"
+                        th:text="${loaiTruong.tenLoaiTruong}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Lưu</button>
+        <a th:href="@{/Admin/Truongs}" class="btn btn-secondary">Trở về</a>
+    </form>
+</div>
+</body>
+</html>

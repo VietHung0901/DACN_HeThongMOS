@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Danh sách phiếu đăng ký</title>
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<th:block th:replace="~{layout::header}"></th:block>
+
+<div class="container my-5">
+    <h2 class="mb-4">Danh sách phiếu đăng ký</h2>
+
+    <div th:if="${phieuDangKys != null}">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Mã phiếu</th>
+                <th>CCCD</th>
+                <th>Họ và tên</th>
+                <th>Tên cuộc thi</th>
+                <th>Môn thi</th>
+                <th>Ngày thi</th>
+                <th>Địa điểm thi</th>
+                <th>Thao tác</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="pdk : ${phieuDangKys}">
+                <td th:text="${pdk.id}"></td>
+                <td th:text="${pdk.user.cccd}"></td>
+                <td th:text="${pdk.user.hoten}"></td>
+                <td th:text="${pdk.cuocThi.tenCuocThi}"></td>
+                <td th:text="${pdk.cuocThi.monThi.tenMonThi}"></td>
+                <td th:text="${#temporals.format(pdk.cuocThi.ngayThi, 'dd/MM/yyyy HH:mm')}"></td>
+                <td th:text="${pdk.cuocThi.diaDiemThi}">
+                <td>
+                <a class="btn btn-primary btn-sm"
+                   th:href="@{/User/PhieuDangKys/details/{id}(id=${pdk.id})}">Xem thông tin</a>
+            </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:if="${errorMessage != null}" class="alert alert-danger" th:text="${errorMessage}"
+         style="margin-top: 20px; margin-bottom: 20px;"></div>
+</div>
+<th:block th:replace="~{layout::footer}"></th:block>
+</body>
+</html>

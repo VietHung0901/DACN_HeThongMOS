@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>XEM PHIẾU SỬA ĐIỂM</title>
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<th:block th:replace="~{layout::headerAdmin}"></th:block>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mt-4">
+                <div class="card-body form-XacNhan">
+                    <div class="card-header">
+                        <h4 class="mb-0">Thông tin thí sinh</h4>
+                        <p>Xem thông tin thí sinh và phiếu sửa điểm.</p>
+                    </div>
+
+                    <!-- Thông tin thí sinh - Hàng ngang -->
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="cccd" class="form-label">CCCD</label>
+                            <input type="text" class="form-control" id="cccd" th:value="${thongTinThiSinh.cccd}"
+                                   readonly>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="hoten" class="form-label">Họ và tên</label>
+                            <input type="text" class="form-control" id="hoten" th:value="${thongTinThiSinh.hoten}"
+                                   readonly>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="sdt" class="form-label">Số điện thoại</label>
+                            <input type="text" class="form-control" id="sdt" th:value="${thongTinThiSinh.phone}" readonly>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="text" class="form-control" id="email" th:value="${thongTinThiSinh.email}"
+                                   readonly>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <label for="truongName" class="form-label">Tên trường</label>
+                            <input type="text" class="form-control" id="truongName"
+                                   th:value="${thongTinThiSinh.truong.tenTruong}" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 mt-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0">Thông tin điểm</h4>
+                </div>
+                <div class="card-body">
+
+                    <!-- Bảng thông tin cũ -->
+                    <h5>Điểm cũ</h5>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Thời gian hoàn thành</th>
+                            <th scope="col">Điểm</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td th:text="${diemCu.phut} + ' phút ' + ${diemCu.giay} + ' giây'"></td>
+                            <td th:text="${diemCu.diem}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Bảng thông tin mới -->
+                    <h5>Điểm mới</h5>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Thời gian hoàn thành</th>
+                            <th scope="col">Điểm</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td th:text="${diemMoi.phut} + ' phút ' + ${diemMoi.giay} + ' giây'"></td>
+                            <td th:text="${diemMoi.diem}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <h5>Lý do sửa điểm</h5>
+                    <div class="form-group">
+                        <input type="text" class="form-control" th:value="${lyDoSua}" readonly />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 mt-4 text-center">
+            <a th:href="@{/Manager/PhieuSuaDiems/psd/trangthai/{trangthai}/{id}(trangthai=1, id=${psdId})}" class="btn btn-success mx-2">
+                Chấp nhận
+            </a>
+            <a th:href="@{/Manager/PhieuSuaDiems/psd/trangthai/{trangthai}/{id}(trangthai=0, id=${psdId})}"class="btn btn-danger mx-2">
+                Từ chối
+            </a>
+        </div>
+    </div>
+</div>
+<!--<th:block th:replace="~{layout::footer}"></th:block>-->
+</body>
+</html>
