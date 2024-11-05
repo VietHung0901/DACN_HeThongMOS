@@ -46,14 +46,24 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(@NotNull HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/css/**", "/js/**", "/",
-                                "/oauth/**", "/register", "/error")
+
+                        //Cho phép truy cập những đường dẫn này mà không cần xác thực
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/","/oauth/**", "/register", "/error", "/confirm")
                         .permitAll()
+
+                        //Chỉ những người có vai trò "ADMIN" mới được phép truy cập
                         .requestMatchers("/LoaiTruongs", "/Truongs", "/MonThis", "/NoiDungs", "/PhieuKetQuas/add")
                         .hasAnyAuthority("ADMIN")
+
+                        //Chỉ những người có vai trò "ADMIN", "USER", "OIDC_USER" mới được phép truy cập
                         .requestMatchers("/PhieuDangKys")
                         .hasAnyAuthority("ADMIN", "USER", "OIDC_USER")
-                        .requestMatchers("/api/**").hasAnyAuthority("ADMIN", "USER", "OIDC_USER")
+
+                        //Chỉ những người có vai trò "ADMIN", "USER", "OIDC_USER" mới được phép truy cập
+                        .requestMatchers("/api/**")
+                        .hasAnyAuthority("ADMIN", "USER", "OIDC_USER")
+
+                        //Tất cả các yêu cầu khác sẽ yêu cầu người dùng xác thực
                         .anyRequest().authenticated()
                 ).logout(logout -> logout
                         .logoutUrl("/logout")
@@ -70,7 +80,8 @@ public class SecurityConfig {
                         .successHandler((request, response, authentication) -> {
                             // Kiểm tra vai trò của người dùng
                             if (authentication.getAuthorities().stream()
-                                    .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ADMIN"))) {
+                                    .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ADMIN") ||
+                                                                    grantedAuthority.getAuthority().equals("MANAGER"))) {
                                 response.sendRedirect("/Admin");
                             } else {
                                 response.sendRedirect("/");

@@ -18,6 +18,9 @@
         <div class="card-body p-5 text-center">
           <h4><strong>HỆ THỐNG HỖ TRỢ CUỘC THI</strong></h4>
           <p class="mb-4 text-secondary">Nhập tài khoản và mật khẩu.</p>
+          <div th:if="${successMessage}" class="alert alert-info">
+            <span th:text="${successMessage}"></span>
+          </div>
 <!--          <a href="/oauth2/authorization/google"-->
 <!--             class="btn btn-outline-danger btn-floating m-1"-->
 <!--             role="button">-->

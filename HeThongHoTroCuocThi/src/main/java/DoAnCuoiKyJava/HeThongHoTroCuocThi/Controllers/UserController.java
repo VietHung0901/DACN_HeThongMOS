@@ -41,7 +41,8 @@ public class UserController {
     @PostMapping("/register")
     public String register(UserCreateRequest userRequest,
                            @NotNull BindingResult bindingResult,
-                           Model model) {
+                           Model model,
+                           RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             var errors = bindingResult.getAllErrors()
                     .stream()
@@ -52,20 +53,16 @@ public class UserController {
             return "/Account/register";
         }
 
-        String image = userService.saveImage(userRequest.getImageUrl());
-        User user = new User();
-        user.setUsername(userRequest.getUsername());
-        user.setHoten(userRequest.getHoten());
-        user.setCccd(userRequest.getCccd());
-        user.setPassword(userRequest.getPassword());
-        user.setPhone(userRequest.getPhone());
-        user.setEmail(userRequest.getEmail());
-        user.setNgaySinh(userRequest.getNgaySinh());
-        user.setImageUrl(image);
-        user.setTruong(userRequest.getTruong());
-        user.setTrangThai(0);
-        userService.Save(user);
-        userService.setDefaultRole(user.getUsername());
+        String ketQua = userService.checkUser(userRequest);
+        if (!"success".equals(ketQua)) {
+            model.addAttribute("error", ketQua);
+            model.addAttribute("user", userRequest);
+            model.addAttribute("listTruong", truongService.getAllTruongsHien());
+            return "/Account/register";
+        }
+        userService.createNewUser(userRequest);
+
+        redirectAttributes.addFlashAttribute("successMessage", "Tài khoản của bạn sẽ được duyệt sau 48h. Vui lòng đợi!");
         return "redirect:/login";
     }
 
@@ -100,9 +97,44 @@ public class UserController {
         return "redirect:/User/edit";
     }
 
-    @GetMapping("/list")
+    @GetMapping("/list/ThanhCong")
     public String showAllUser(@NotNull Model model) {
-        model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("users", userService.getAllUsersByTrangThai(1));
         return "/Account/list";
+    }
+
+    @GetMapping("/list/ChuaDuyet")
+    public String showAllUserChuaDuyet(@NotNull Model model) {
+        model.addAttribute("users", userService.getAllUsersByTrangThai(0));
+        return "/Account/list";
+    }
+
+    @GetMapping("/list/ThatBai")
+    public String showAllUserThatBai(@NotNull Model model) {
+        model.addAttribute("users", userService.getAllUsersByTrangThai(2));
+        return "/Account/list";
+    }
+
+    @GetMapping("/id/{id}")
+    public String showUser(@PathVariable Long id, @NotNull Model model) {
+        User user = userService.findById(id);
+        model.addAttribute("user", user);
+        return "/Account/detail";
+    }
+
+    @GetMapping("/KhongDuyet/{id}")
+    public String KhongDuyet(@PathVariable Long id,
+                             RedirectAttributes redirectAttributes) {
+        userService.KhongDuyet(id);
+        redirectAttributes.addFlashAttribute("failMessage", "Tài khoản không được duyệt.");
+        return "redirect:/id/{id}";
+    }
+
+    @GetMapping("/Duyet/{id}")
+    public String Duyet(@PathVariable Long id,
+                        RedirectAttributes redirectAttributes) {
+        userService.Duyet(id);
+        redirectAttributes.addFlashAttribute("successMessage", "Tài khoản đã được duyệt.");
+        return "redirect:/id/{id}";
     }
 }

@@ -27,8 +27,8 @@ import java.util.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "user")
-public class User implements UserDetails {
+@Table(name = "usertempt")
+public class UserTempt implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

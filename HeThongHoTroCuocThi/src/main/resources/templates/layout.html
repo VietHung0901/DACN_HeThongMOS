@@ -153,6 +153,11 @@
                             Phiếu sửa điểm
                         </a>
                     </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <a class="nav-link" href="/list/ThanhCong">
+                            Quản lý người dùng
+                        </a>
+                    </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <li sec:authorize="isAuthenticated()">

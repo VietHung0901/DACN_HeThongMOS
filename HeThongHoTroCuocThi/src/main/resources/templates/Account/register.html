@@ -19,10 +19,9 @@
                     <h4><strong>HỆ THỐNG HỖ TRỢ CUỘC THI MOS</strong></h4>
                     <p class="mb-4 text-secondary">Xin chào, vui lòng đăng ký để tiếp tục.</p>
                     <form th:action="@{/register}" th:object="${user}" method="post" enctype="multipart/form-data">
-                        <div th:if="${errors}" class="alert alert-danger justify-content-center mb-4" role="alert">
-                            <ul>
-                                <li th:each="error : ${errors}" th:text="${error}" class="text-danger text-start"></li>
-                            </ul>
+                        <!-- Hiển thị thông báo lỗi -->
+                        <div th:if="${error}" class="alert alert-danger">
+                            <span th:text="${error}"></span>
                         </div>
                         <div class="row mt-2 mb-2">
                             <div class="col-md-4 text-center p-4 border rounded shadow-sm">
@@ -104,6 +103,15 @@
             output.src = reader.result;
         };
         reader.readAsDataURL(event.target.files[0]);
+    }
+
+    function validateForm() {
+        const fileInput = document.getElementById('imageUrl');
+        if (fileInput.files.length === 0) {
+            alert('Bạn phải chọn một hình ảnh.'); // Thông báo lỗi
+            return false; // Ngăn chặn việc gửi form
+        }
+        return true; // Cho phép gửi form
     }
 </script>
 <script>

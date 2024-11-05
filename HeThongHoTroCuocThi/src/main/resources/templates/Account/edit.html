@@ -48,6 +48,11 @@
     <div class="container mt-5">
         <h2 class="text-center mb-4">CHỈNH SỬA THÔNG TIN CÁ NHÂN</h2>
 
+        <!-- Yêu cầi người dùng cập nhật lại thông tin cá nhân  -->
+        <div th:if="${user.trangThai == 2}" class="alert alert-danger">
+            <span>Thông tin bạn cung cấp không chính xác. Vui lòng cập nhật lại.</span>
+        </div>
+
         <!-- Kiểm tra và hiển thị thông báo thành công -->
         <div th:if="${successMessage}" class="alert alert-success">
             <span th:text="${successMessage}"></span>
@@ -79,11 +84,13 @@
                         </div>
                         <div class="form-group">
                             <label for="hoten">Họ tên</label>
-                            <input type="text" class="form-control" id="hoten" th:field="*{hoten}" readonly>
+                            <input type="text" class="form-control" id="hoten" th:field="*{hoten}"
+                                   th:attr="readonly=${user.trangThai == 2 ? null : 'readonly'}">
                         </div>
                         <div class="form-group">
                             <label for="cccd">CCCD</label>
-                            <input type="text" class="form-control" id="cccd" th:field="*{cccd}" readonly>
+                            <input type="text" class="form-control" id="cccd" th:field="*{cccd}"
+                                   th:attr="readonly=${user.trangThai == 2 ? null : 'readonly'}">
                         </div>
                         <div class="form-group">
                             <label for="ngaySinh">Ngày sinh</label>

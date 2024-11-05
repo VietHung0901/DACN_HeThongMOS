@@ -11,7 +11,14 @@ import java.util.List;
 public interface IUserRepository extends JpaRepository<User, String> {
     User findByUsername(String username);
     User findById(Long id);
+    void deleteById(Long id);
     Optional<User> findByCccd(String cccd);
+    boolean existsByUsername(String username);
+    boolean existsByCccd(String cccd);
+    boolean existsByEmail(String email);
+    boolean existsByPhone(String phone);
+
+    List<User> findUserByTrangThai(int trangThai);
 
     @Query("SELECT lt.tenLoaiTruong, COUNT(u.id) " +
             "FROM User u " +

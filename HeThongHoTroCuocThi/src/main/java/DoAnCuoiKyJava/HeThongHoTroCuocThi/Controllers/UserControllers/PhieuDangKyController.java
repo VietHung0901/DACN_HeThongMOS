@@ -43,7 +43,8 @@ public class PhieuDangKyController {
     public String addPhieuDangKy(
             @Valid @ModelAttribute("PhieuDangKy") PhieuDangKyCreate phieuDangKyCreate,
             @NotNull BindingResult bindingResult,
-            Model model) {
+            Model model,
+            Principal principal) {
         if (bindingResult.hasErrors()) {
             var errors = bindingResult.getAllErrors()
                     .stream()
@@ -75,6 +76,19 @@ public class PhieuDangKyController {
             return "/User/PhieuDangKy/add";
         }
 
+        // Kiểm tra trạng thái của thí sinh đã được duyệt chưa
+        User user = userService.findById(phieuDangKyCreate.getUserId());
+        if (!principal.getName().equals(user.getUsername()) ||  user.getTrangThai() != 1) {
+            model.addAttribute("errorMessage", "Thông tin người đăng ký không phải của bạn hoặc thông tin của bạn chưa được xác thực.");
+            CuocThi cuocThi = cuocThiService.getCuocThiById(phieuDangKyCreate.getCuocThi().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("CuocThi not found with id: "));
+            phieuDangKyCreate.setCuocThi(cuocThi);
+            model.addAttribute("phieuDangKy", phieuDangKyCreate);
+            model.addAttribute("cuocThi", cuocThi);
+            model.addAttribute("loaiTruongService", loaiTruongService);
+            return "/User/PhieuDangKy/add";
+        }
+
         // Kiểm tra xem số lượng thí sinh đã đạt mức tối đa chưa
         int soLuongThiSinhHienTai = phieuDangKyService.countPhieuDangKyByCuocThiId(phieuDangKyCreate.getCuocThi().getId());
         if (soLuongThiSinhHienTai >= phieuDangKyCreate.getCuocThi().getSoLuongThiSinh()) {
@@ -89,7 +103,7 @@ public class PhieuDangKyController {
         }
 
         //Kiểm tra cấp học của người dùng có phù hợp với cuộc thi
-        User user = userService.findById(phieuDangKyCreate.getUserId());
+//        User user = userService.findById(phieuDangKyCreate.getUserId());
         Truong truongUser = truongService.getTruongById(user.getTruong().getId())
                 .orElseThrow(() -> new EntityNotFoundException(""));
         if (truongUser.getLoaiTruong().getId() != phieuDangKyCreate.getCuocThi().getLoaiTruongId()) {
