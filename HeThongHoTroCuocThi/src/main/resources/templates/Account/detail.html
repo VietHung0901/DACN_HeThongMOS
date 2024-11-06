@@ -5,6 +5,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <th:block th:replace="~{layout::link-css}"></th:block>
   <th:block th:replace="~{layout::custom-css}"></th:block>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     body {
       background-color: #ffffff; /* Nền trắng cho sự sạch sẽ và chuyên nghiệp */
@@ -24,14 +25,12 @@
     }
     h1 {
       text-align: center; /* Căn giữa tiêu đề */
-      margin-top: 20px; /* Khoảng cách phía trên */
     }
   </style>
 </head>
 <body>
-<th:block th:replace="~{layout::header}"></th:block>
-
-<div class="container mt-5 mb-5">
+<th:block th:replace="~{layout::headerAdmin}"></th:block>
+<div style="margin-left: 200px; padding: 95px;">
   <h1>Chi Tiết Người Dùng</h1>
   <div class="row justify-content-center">
     <div class="col-lg-6 col-md-8">
@@ -72,7 +71,6 @@
     </div>
   </div>
 </div>
-
-<th:block th:replace="~{layout::footer}"></th:block>
+<th:block th:replace="~{layout::footerAdmin}"></th:block>
 </body>
 </html>

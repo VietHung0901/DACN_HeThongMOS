@@ -1,7 +1,6 @@
 package DoAnCuoiKyJava.HeThongHoTroCuocThi.TaoTokenDangKy;
 
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.User;
-import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.UserTempt;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Repositories.IUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -7,10 +7,11 @@
     <th:block th:replace="~{layout::link-css}"></th:block>
     <th:block th:replace="~{layout::custom-css}"></th:block>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 <th:block th:replace="~{layout::headerAdmin}"></th:block>
-<div class="container my-5">
+<div class="container" style="margin-left: 200px; padding: 95px;">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h1 class="my-4">DANH SÁCH PHIẾU KẾT QUẢ</h1>
     </div>
@@ -35,6 +36,6 @@
         </tbody>
     </table>
 </div>
-<th:block th:replace="~{layout::footer}"></th:block>
+<th:block th:replace="~{layout::footerAdmin}"></th:block>
 </body>
 </html>

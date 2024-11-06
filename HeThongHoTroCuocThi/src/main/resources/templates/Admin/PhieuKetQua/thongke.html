@@ -3,11 +3,13 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       lang="en">
 <head>
-    <title>Thống kê điểm</title>
+    <title>THỐNG KÊ ĐIỂM</title>
     <th:block th:replace="~{layout::link-css}"></th:block>
     <th:block th:replace="~{layout::custom-css}"></th:block>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <style>
     body {
@@ -25,13 +27,12 @@
 
     .chart-container {
         text-align: center; /* Canh giữa nội dung */
-        margin-top: 80px; /* Khoảng cách với phần header */
     }
 </style>
 
 <body>
 <th:block th:replace="~{layout::headerAdmin}"></th:block>
-<div class="chart-container">
+<div class="chart-container" style="margin-left: 200px; padding: 95px;">
     <canvas id="scoreChart"></canvas>
 
     <script th:inline="javascript">
@@ -96,6 +97,6 @@
         });
     </script>
 </div>
-<th:block th:replace="~{layout::footer}"></th:block>
+<th:block th:replace="~{layout::footerAdmin}"></th:block>
 </body>
 </html>

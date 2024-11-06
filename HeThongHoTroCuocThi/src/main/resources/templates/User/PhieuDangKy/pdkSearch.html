@@ -5,12 +5,16 @@
     <th:block th:replace="~{layout::link-css}"></th:block>
     <th:block th:replace="~{layout::custom-css}"></th:block>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 <th:block th:replace="~{layout::header}"></th:block>
 
-<div class="container my-5">
-    <h2 class="mb-4">Danh sách phiếu đăng ký</h2>
+<div class="container" style="padding-top: 95px; padding-bottom: 15px;">
+    <h2 class="mb-4">
+        <i class="fas fa-file-alt" style="padding-right: 5px;"></i>
+        Phiếu đăng ký
+    </h2>
 
     <div th:if="${phieuDangKys != null}">
         <table class="table table-striped">
@@ -47,6 +51,6 @@
     <div th:if="${errorMessage != null}" class="alert alert-danger" th:text="${errorMessage}"
          style="margin-top: 20px; margin-bottom: 20px;"></div>
 </div>
-<th:block th:replace="~{layout::footer}"></th:block>
+<th:block th:replace="~{layout::footerAdmin}"></th:block>
 </body>
 </html>

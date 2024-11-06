@@ -5,10 +5,11 @@
     <th:block th:replace="~{layout::link-css}"></th:block>
     <th:block th:replace="~{layout::custom-css}"></th:block>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 <th:block th:replace="~{layout::headerAdmin}"></th:block>
-<div class="container">
+<div class="container" style="margin-left: 200px; padding: 95px;">
     <div class="row">
         <div class="col-md-6">
             <div class="card mt-4">
@@ -62,7 +63,7 @@
                     <div class="card-header">
                         <h4 class="mb-0">Nhập điểm</h4>
                     </div>
-                    <form th:action="@{/Admin/PhieuKetQuas/add}" th:object="${phieuKetQua}" method="post">
+                    <form th:action="@{/Admin/PhieuKetQuas/add}" th:object="${phieuKetQua}" method="post" onsubmit="return validateForm()">
                         <div class="form-group">
                             <label for="phieuDangKy">Phiếu đăng ký</label>
                             <input type="text" class="form-control" id="phieuDangKy" th:field="*{phieuDangKy}" required readonly>
@@ -70,16 +71,17 @@
                         </div>
                         <div class="form-group">
                             <label for="phut">Phút</label>
-                            <input type="text" class="form-control" id="phut" th:field="*{phut}" required>
+                            <input type="number" class="form-control" id="phut" th:field="*{phut}" required>
                         </div>
                         <div class="form-group">
                             <label for="giay">Giây</label>
-                            <input type="text" class="form-control" id="giay" th:field="*{giay}" required>
+                            <input type="number" class="form-control" id="giay" th:field="*{giay}" required>
                         </div>
                         <div class="form-group">
                             <label for="phut">Điểm</label>
-                            <input type="text" class="form-control" id="diem" th:field="*{diem}" required>
+                            <input type="number" class="form-control" id="diem" th:field="*{diem}" required>
                         </div>
+                        <div id="error-message" style="color: red; display: none; padding: 5px;">Tổng thời gian không được vượt quá 90 phút.</div>
                         <button type="submit" class="btn btn-primary">Nhập điểm</button>
                     </form>
                 </div>
@@ -87,7 +89,33 @@
         </div>
     </div>
 </div>
-<th:block th:replace="~{layout::footer}"></th:block>
+<th:block th:replace="~{layout::footerAdmin}"></th:block>
+<script>
+    function validateForm() {
+        const phut = parseInt(document.getElementById("phut").value) || 0;
+        const giay = parseInt(document.getElementById("giay").value) || 0;
+        const diem = parseFloat(document.getElementById("diem").value) || 0;
+
+        // Kiểm tra tổng thời gian không quá 90 phút (5400 giây)
+        const totalSeconds = phut * 60 + giay;
+        const maxSeconds = 90 * 60;
+
+        if (totalSeconds > maxSeconds) {
+            document.getElementById("error-message").style.display = "block";
+            return false; // Ngăn form gửi đi
+        } else {
+            document.getElementById("error-message").style.display = "none";
+        }
+
+        // Kiểm tra điểm phải trong khoảng từ 0 đến 1000
+        if (diem < 0 || diem > 1000) {
+            alert("Điểm phải nằm trong khoảng từ 0 đến 1000.");
+            return false;
+        }
+
+        return true;
+    }
+</script>
 <script th:src="@{/js/NhapSuaDiem.js}"></script>
 </body>
 </html>

@@ -3,7 +3,6 @@ package DoAnCuoiKyJava.HeThongHoTroCuocThi.Services;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Constant.Provider;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Constant.Role;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.User;
-import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.UserTempt;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Repositories.IRoleRepository;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Repositories.IUserRepository;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Request.UserCreateRequest;

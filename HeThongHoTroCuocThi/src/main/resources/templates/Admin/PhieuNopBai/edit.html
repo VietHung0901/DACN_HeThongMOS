@@ -5,10 +5,11 @@
   <th:block th:replace="~{layout::link-css}"></th:block>
   <th:block th:replace="~{layout::custom-css}"></th:block>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
 <th:block th:replace="~{layout::headerAdmin}"></th:block>
-<div class="container">
+<div class="container" style="margin-left: 200px; padding: 95px;">
   <h1 class="my-4">CHẤM BÀI</h1>
   <form th:action="@{/Admin/PhieuNopBais/edit}" th:object="${phieuNopBai}" method="post">
     <div th:if="${errorMessage != null}" class="alert alert-danger" th:text="${errorMessage}" style="margin-top: 20px; margin-bottom: 20px;"></div>
@@ -31,6 +32,6 @@
     <a th:href="@{/Admin/PhieuNopBais/ChuaCham}" class="btn btn-secondary">Trở về</a>
   </form>
 </div>
-<th:block th:replace="~{layout::footer}"></th:block>
+<th:block th:replace="~{layout::footerAdmin}"></th:block>
 </body>
 </html>
