@@ -62,4 +62,11 @@ public class PhieuSuaDiemService {
         phieuSuaDiemRepository.save(psd);
     }
 
+    public void duyetAllPSD(){
+        for(PhieuSuaDiem psd : phieuSuaDiemRepository.findPhieuSuaDiemsByTrangThai(2)){
+            psd.setTrangThai(1);
+            phieuSuaDiemRepository.save(psd);
+        }
+    }
+
 }

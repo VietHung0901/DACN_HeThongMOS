@@ -11,6 +11,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -136,5 +137,45 @@ public class UserController {
         userService.Duyet(id);
         redirectAttributes.addFlashAttribute("successMessage", "Tài khoản đã được duyệt.");
         return "redirect:/id/{id}";
+    }
+
+//    **************************************************************
+    @GetMapping("/User/ChangePassword")
+    public String ChangePassword(Principal principal, Model model) {
+        String username = principal.getName();
+        User user = userService.findByUsername(username);
+        model.addAttribute("user", user);
+        return "/Account/changePassword";
+    }
+
+    @PostMapping("/ChangePassword")
+    public String ChangePassworded(@ModelAttribute("user") User userpassword,
+                                   @RequestParam("oldPassword") String oldPassword,
+                                   @RequestParam("newPassword") String newPassword,
+                                   @RequestParam("confirmPassword") String confirmPassword,
+                                   RedirectAttributes redirectAttributes) {
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        // Lấy người dùng hiện tại
+        User user = userService.findById(userpassword.getId());  // Phương thức để lấy người dùng hiện tại (có thể sử dụng principal)
+
+        // Kiểm tra mật khẩu cũ có đúng không
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            redirectAttributes.addFlashAttribute("error", "Mật khẩu cũ không chính xác.");
+            return "redirect:/User/ChangePassword";
+        }
+
+        // Kiểm tra mật khẩu xác nhận có khớp với mật khẩu mới không
+        if (!newPassword.equals(confirmPassword)) {
+            redirectAttributes.addFlashAttribute("error", "Mật khẩu mới và mật khẩu xác nhận không khớp.");
+            return "redirect:/User/ChangePassword";
+        }
+
+        // Cập nhật mật khẩu mới
+        user.setPassword(newPassword);
+        userService.Save(user);  // Lưu người dùng với mật khẩu mới
+
+        redirectAttributes.addFlashAttribute("successMessage", "Mật khẩu đã được thay đổi thành công..");
+        return "redirect:/User/ChangePassword";  // Quay lại trang hoặc có thể điều hướng đến trang khác
     }
 }

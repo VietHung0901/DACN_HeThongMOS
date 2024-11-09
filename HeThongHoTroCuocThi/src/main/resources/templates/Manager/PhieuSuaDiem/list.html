@@ -8,6 +8,43 @@
     <th:block th:replace="~{layout::custom-css}"></th:block>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Style the main dropdown container */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Style the submenu */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%; /* Position below the main link */
+            left: 0;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        /* Style for each submenu link */
+        .dropdown-item {
+            color: black;
+            padding: 8px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Show submenu on hover */
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+    </style>
 </head>
 <body>
 <th:block th:replace="~{layout::headerAdmin}"></th:block>
@@ -20,7 +57,12 @@
         </h1>
     </div>
     <div class="btn-group mb-3" role="group" aria-label="Basic example">
-        <a th:href="@{/Manager/PhieuSuaDiems}" class="btn btn-warning mx-2">Chưa Duyệt</a>
+        <div class="dropdown">
+            <a th:href="@{/Manager/PhieuSuaDiems}" class="btn btn-warning mx-2 main-link">Chưa Duyệt</a>
+            <div class="dropdown-menu">
+                <a href="/Manager/PhieuSuaDiems/psd/duyetAll" class="dropdown-item">Duyệt tất cả</a>
+            </div>
+        </div>
         <a th:href="@{/Manager/PhieuSuaDiems/ThanhCong}" class="btn btn-success mx-2">Thành Công</a>
         <a th:href="@{/Manager/PhieuSuaDiems/ThatBai}" class="btn btn-danger mx-2">Thất Bại</a>
     </div>

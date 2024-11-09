@@ -7,18 +7,15 @@ import DoAnCuoiKyJava.HeThongHoTroCuocThi.Services.PhieuKetQuaService;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Services.UserService;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Viewmodels.PhieuKetQuaGetVm;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.ui.Model;
 
+import java.security.Principal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/User/PhieuKetQuas")
@@ -43,11 +40,21 @@ public class PhieuKetQuaController {
     }
 
     //API lấy thông tin phiếu kết quả
-    @GetMapping("/search/{pdkId}")
-    public ResponseEntity<PhieuKetQuaGetVm> getPhieuKetQuaByPdkIdAndUserId(@PathVariable Long pdkId) {
-        PhieuDangKy phieuDangKy = phieuDangKyService.getPhieuDangKyById(pdkId).orElseThrow(() -> new EntityNotFoundException(""));
-        return ResponseEntity.ok(phieuKetQuaService.findByPhieuDangKyAndTrangThai(phieuDangKy)
+//    @GetMapping("/search/{pdkId}")
+//    public ResponseEntity<PhieuKetQuaGetVm> getPhieuKetQuaByPdkIdAndUserId(@PathVariable Long pdkId) {
+//        PhieuDangKy phieuDangKy = phieuDangKyService.getPhieuDangKyById(pdkId).orElseThrow(() -> new EntityNotFoundException(""));
+//        return ResponseEntity.ok(phieuKetQuaService.findByPhieuDangKyAndTrangThai(phieuDangKy)
+//                .map(PhieuKetQuaGetVm::from)
+//                .orElse(null));
+//    }
+
+    @GetMapping("/search/pkq")
+    public ResponseEntity<List<PhieuKetQuaGetVm>> searchPKQ(Principal principal)
+    {
+        User user = userService.findByUsername(principal.getName());
+        return ResponseEntity.ok(phieuKetQuaService.GetAllPKQByUserAndTrangThai(user)
+                .stream()
                 .map(PhieuKetQuaGetVm::from)
-                .orElse(null));
+                .toList());
     }
 }

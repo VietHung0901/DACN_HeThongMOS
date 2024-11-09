@@ -3,11 +3,13 @@ package DoAnCuoiKyJava.HeThongHoTroCuocThi.Services;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.*;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Repositories.IPhieuKetQuaRepository;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Request.PhieuKetQuaRequest;
+import DoAnCuoiKyJava.HeThongHoTroCuocThi.Viewmodels.PhieuKetQuaGetVm;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -15,7 +17,7 @@ public class PhieuKetQuaService {
     private final IPhieuKetQuaRepository phieuKetQuaRepository;
 
     //lấy các phiếu kết quả có trạng thái là 1 (Hiện)
-    public List<PhieuKetQua> getAllPhieuKetQua() {
+        public List<PhieuKetQua> getAllPhieuKetQua() {
         return phieuKetQuaRepository.findByTrangThai(1);
     }
 
@@ -42,7 +44,6 @@ public class PhieuKetQuaService {
                 return Integer.compare(pkq1.getGiay(), pkq2.getGiay());
             }
         });
-
         return listPKQ;
     }
 
@@ -112,9 +113,17 @@ public class PhieuKetQuaService {
         return listPKQ;
     }
 
-    public Optional<PhieuKetQua>  findByPhieuDangKyAndTrangThai (PhieuDangKy phieuDangKy)
-    {
-        return phieuKetQuaRepository.findByPhieuDangKyAndTrangThai(phieuDangKy, 1);
+//    public Optional<PhieuKetQua> findByPhieuDangKyAndTrangThai (PhieuDangKy phieuDangKy)
+//    {
+//        return phieuKetQuaRepository.findByPhieuDangKyAndTrangThai(phieuDangKy, 1);
+//    }
+
+    public List<PhieuKetQua> GetAllPKQByUserAndTrangThai(User user){
+        List<PhieuKetQua> listPKQ = new ArrayList<>();
+        for(PhieuKetQua pqk : getAllPhieuKetQua())
+            if(pqk.getPhieuDangKy().getUser() == user)
+                listPKQ.add(pqk);
+        return listPKQ;
     }
 
 }

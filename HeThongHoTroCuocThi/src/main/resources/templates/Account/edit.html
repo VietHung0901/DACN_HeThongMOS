@@ -59,8 +59,12 @@
 <th:block sec:authorize="!isAuthenticated() or hasAuthority('USER')" th:replace="~{layout::header}"></th:block>
 <form th:action="@{/edit}" th:object="${user}" method="post" enctype="multipart/form-data">
     <div th:classappend="${#authorization.expression('hasAnyAuthority(''ADMIN'',''MANAGER'')') ? 'admin-manager-container' : ''}" class="container" >
-
-    <h2 class="text-center mb-4">CHỈNH SỬA THÔNG TIN CÁ NHÂN</h2>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1 class="my-4">
+                CHỈNH SỬA THÔNG TIN CÁ NHÂN
+            </h1>
+            <a class="btn btn-success mb-4" th:href="@{/User/ChangePassword}">Đổi mật khẩu</a>
+        </div>
 
         <!-- Yêu cầi người dùng cập nhật lại thông tin cá nhân  -->
         <div th:if="${user.trangThai == 2}" class="alert alert-danger">

@@ -65,4 +65,10 @@ public class ManagerPhieuSuaDiemController {
         else
             return "redirect:/Manager/PhieuSuaDiems/ThatBai";
     }
+
+    @GetMapping("/psd/duyetAll")
+    public String DuyetAllPhieuSuaDiem() {
+        phieuSuaDiemService.duyetAllPSD();
+        return "redirect:/Manager/PhieuSuaDiems/ThanhCong";
+    }
 }
