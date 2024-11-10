@@ -48,7 +48,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         //Cho phép truy cập những đường dẫn này mà không cần xác thực
-                        .requestMatchers("/css/**", "/js/**", "/images/**", "/","/oauth/**", "/register", "/error", "/confirm")
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/","/oauth/**", "/register", "/error", "/confirm", "/gmailForgotPassword", "/User/forgotPassword", "/confirmForgotPassword", "/forgotPassword")
                         .permitAll()
 
                         //Chỉ những người có vai trò "ADMIN" mới được phép truy cập

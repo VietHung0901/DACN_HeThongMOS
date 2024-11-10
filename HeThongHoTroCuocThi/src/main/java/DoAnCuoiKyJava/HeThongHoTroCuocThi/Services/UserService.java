@@ -17,7 +17,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,6 +60,10 @@ public class UserService implements UserDetailsService {
 
     public User findById(Long id) throws UsernameNotFoundException {
         return userRepository.findById(id);
+    }
+
+    public User findByEmail(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email);
     }
 
     public Optional<User> getUserByCCCD(String id) {
@@ -220,5 +223,19 @@ public class UserService implements UserDetailsService {
         emailService.sendEmailSuccess(user.getEmail(), "Xác nhận tài khoản MOS thành công", user);
         user.setTrangThai(1);
         userRepository.save(user);
+    }
+
+    public void sendEmailForgotPassword(User user) {
+        //Tạo token khi đăng ký
+        VerificationToken verificationToken = verificationTokenRepository.findByUser(user)
+                .orElseThrow(() -> new IllegalArgumentException("User không hợp lê."));
+        verificationToken.setToken(UUID.randomUUID().toString());
+        verificationToken.setExpiryDate(LocalDateTime.now().plusDays(1)); // Token hết hạn sau 1 ngày
+        verificationTokenRepository.save(verificationToken);
+
+        // Gửi email xác nhận
+        String confirmationUrl = "http://localhost:8080/confirmForgotPassword?token=" + verificationToken.getToken()
+                                                                            + "&username=" + user.getUsername();
+        emailService.sendEmailFogetPassword(user.getEmail(), "Đổi mật khẩu", user, confirmationUrl);
     }
 }

@@ -56,6 +56,13 @@
               </p>
             </div>
           </form>
+          <div>
+            <a href="/gmailForgotPassword">Quên mật khẩu</a>
+          </div>
+          <div th:if="${waitingMessage}" class="alert alert-info">
+            <span th:text="${waitingMessage}"></span>
+          </div>
+
         </div>
       </div>
     </div>

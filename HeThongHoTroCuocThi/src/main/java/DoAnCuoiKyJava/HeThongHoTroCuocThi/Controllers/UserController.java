@@ -5,12 +5,14 @@ import DoAnCuoiKyJava.HeThongHoTroCuocThi.Request.UserCreateRequest;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Request.UserUpdateRequest;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Services.TruongService;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Services.UserService;
+import DoAnCuoiKyJava.HeThongHoTroCuocThi.TaoTokenDangKy.EmailService;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Viewmodels.UserGetVM;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +28,7 @@ import java.security.Principal;
 public class UserController {
     private final UserService userService;
     private final TruongService truongService;
+    private final EmailService emailService;
 
     @GetMapping("/login")
     public String login() {
@@ -139,7 +142,6 @@ public class UserController {
         return "redirect:/id/{id}";
     }
 
-//    **************************************************************
     @GetMapping("/User/ChangePassword")
     public String ChangePassword(Principal principal, Model model) {
         String username = principal.getName();
@@ -177,5 +179,55 @@ public class UserController {
 
         redirectAttributes.addFlashAttribute("successMessage", "Mật khẩu đã được thay đổi thành công..");
         return "redirect:/User/ChangePassword";  // Quay lại trang hoặc có thể điều hướng đến trang khác
+    }
+
+    //    **************************************************************
+    @GetMapping("/gmailForgotPassword")
+    public String ForgotPassword() {
+        return "/Account/gmailForgotPassWord";
+    }
+
+    @PostMapping("/User/forgotPassword")
+    public String ForgotPassword(RedirectAttributes redirectAttributes,
+                                 @RequestParam("Email") String email) {
+        User user = userService.findByEmail(email);
+        if(user == null) {
+            redirectAttributes.addFlashAttribute("error", "Email không tồn tại trong hệ thống.");
+            return "redirect:/gmailForgotPassword";
+        }
+        userService.sendEmailForgotPassword(user);
+        redirectAttributes.addFlashAttribute("waitingMessage", "Kiểm tra gmail để cập nhật mật khẩu mới.");
+        return "redirect:/gmailForgotPassword";
+    }
+
+    @PostMapping("/forgotPassword")
+    public String ForgotPassword(
+            @ModelAttribute("user") User userpassword,
+                                 @RequestParam("newPassword") String newPassword,
+                                 @RequestParam("confirmPassword") String confirmPassword,
+                                 RedirectAttributes redirectAttributes,
+                                 Model model,
+                                 Authentication authentication) {
+
+        // Lấy người dùng hiện tại
+        User user = userService.findById(userpassword.getId());  // Phương thức để lấy người dùng hiện tại (có thể sử dụng principal)
+
+        // Kiểm tra mật khẩu xác nhận có khớp với mật khẩu mới không
+        if (!newPassword.equals(confirmPassword)) {
+            model.addAttribute("user", user);
+            model.addAttribute("error", "Mật khẩu mới và mật khẩu xác nhận không khớp.");
+            return "/Account/forgotPassword";
+        }
+
+        // Cập nhật mật khẩu mới
+        user.setPassword(newPassword);
+        userService.Save(user);  // Lưu người dùng với mật khẩu mới
+
+        redirectAttributes.addFlashAttribute("successMessage", "Mật khẩu đã được thay đổi thành công.");
+        // Kiểm tra trạng thái đăng nhập
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return "redirect:/login";  // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
+        }
+        return "redirect:/User/ChangePassword";  // Nếu đăng nhập, chuyển hướng đến trang đổi mật khẩu
     }
 }

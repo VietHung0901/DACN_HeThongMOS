@@ -66,5 +66,22 @@ public class EmailService {
         message.setText(messageContent);
         mailSender.send(message);
     }
+
+    public void sendEmailFogetPassword(String to, String subject, User user, String confirmationUrl) {
+        SimpleMailMessage message = new SimpleMailMessage();
+
+        // Nội dung email tùy chỉnh
+        String messageContent = "Xin chào " + user.getHoten() + ",\n\n"
+                + "Bạn đã yêu cầu đổi mật khẩu cho tài khoản Hệ thống hỗ trợ cuộc thi MOS.\n"
+                + "Nhấp vào liên kết dưới đây để đổi mật khẩu:\n\n"
+                + confirmationUrl + "\n\n"
+                + "Nếu bạn không đưa ra yêu cầu thì có thể bỏ qua đoạn tin nhắn này.\n"
+                + "Trân trọng,\nĐội ngũ hỗ trợ";
+
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(messageContent);
+        mailSender.send(message);
+    }
 }
 
