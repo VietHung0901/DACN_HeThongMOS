@@ -11,4 +11,8 @@ import java.util.List;
 public interface ICuocThiRepository extends JpaRepository<CuocThi, Long> {
     //Xuất các loại trường đang không bị ẩn
     List<CuocThi> findByTrangThai(int trangThai);
+
+    /*List<CuocThi> findByLoaitruongID(Long loaitruongID);*/
+
+
 }

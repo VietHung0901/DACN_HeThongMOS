@@ -2,14 +2,19 @@ package DoAnCuoiKyJava.HeThongHoTroCuocThi.Services;
 
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Constant.Provider;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Constant.Role;
+import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.Truong;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.User;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Repositories.IRoleRepository;
+import DoAnCuoiKyJava.HeThongHoTroCuocThi.Repositories.ITruongRepository;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Repositories.IUserRepository;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Request.UserCreateRequest;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Request.UserUpdateRequest;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.TaoTokenDangKy.EmailService;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.TaoTokenDangKy.VerificationToken;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.TaoTokenDangKy.VerificationTokenRepository;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,10 +33,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.text.Normalizer;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 
 @Service
@@ -45,6 +56,8 @@ public class UserService implements UserDetailsService {
     private VerificationTokenRepository verificationTokenRepository;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private ITruongRepository truongRepository;
 
     @Transactional(isolation = Isolation.SERIALIZABLE,
             rollbackFor = {Exception.class, Throwable.class})
@@ -113,6 +126,19 @@ public class UserService implements UserDetailsService {
         userRepository.findByUsername(username)
                 .getRoles()
                 .add(roleRepository.findRoleById(Role.USER.value));
+    }
+
+    //Lưu quyền đăng kí thông qua nhà trường
+    @Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = {Exception.class, Throwable.class})
+    public void setDefaultRoleForSchoolRegistration(String cccd) {
+        Optional<User> optionalUser = userRepository.findByCccd(cccd);
+
+        optionalUser.ifPresentOrElse(user -> {
+            user.getRoles().add(roleRepository.findRoleById(Role.USER.value));
+            userRepository.save(user);
+        }, () -> {
+            System.out.println("Không tìm thấy người dùng với CCCD: " + cccd);
+        });
     }
 
     @Override
@@ -207,7 +233,6 @@ public class UserService implements UserDetailsService {
 
     public void KhongDuyet(Long id) {
         User user = userRepository.findById(id);
-        // Gửi email xác nhận tạo tài khoản thất bại
         emailService.sendEmailFail(user.getEmail(), "Xác nhận tài khoản MOS thất bại", user);
         user.setTrangThai(2);
         userRepository.save(user);
@@ -215,9 +240,193 @@ public class UserService implements UserDetailsService {
 
     public void Duyet(Long id) {
         User user = userRepository.findById(id);
-        // Gửi email xác nhận tạo tài khoản thành công
         emailService.sendEmailSuccess(user.getEmail(), "Xác nhận tài khoản MOS thành công", user);
         user.setTrangThai(1);
         userRepository.save(user);
     }
+
+    /*--------------------------------------- Admin-Truong -----------------------------------------------*/
+    public void importStudentsFromExcel(MultipartFile file) throws IOException {
+        /* Gom list gmail user đăng kí thành công hoặc thất bại*/
+        List<User> successfulUsers = new ArrayList<>();
+        List<User> failedUsers = new ArrayList<>();
+
+        try (XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream())) {
+            var sheet = workbook.getSheetAt(0);
+            DataFormatter dataFormatter = new DataFormatter();
+
+            for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
+                Row row = sheet.getRow(i);
+                if (row != null) {
+                    User user = parseUserFromRow(row, dataFormatter);
+                    if (user != null && !isDuplicate(user)) {
+                        userRepository.save(user);
+                        setDefaultRoleForSchoolRegistration(user.getCccd());
+
+                        VerificationToken verificationToken = createVerificationToken(user);
+                    } else {
+                        failedUsers.add(user);
+                    }
+                }
+            }
+        }
+    }
+
+    private VerificationToken createVerificationToken(User user) {
+        VerificationToken verificationToken = new VerificationToken();
+        verificationToken.setToken(UUID.randomUUID().toString());
+        verificationToken.setUser(user);
+        verificationToken.setExpiryDate(LocalDateTime.now().plusDays(1)); // Token hết hạn sau 1 ngày
+        verificationTokenRepository.save(verificationToken);
+        return verificationToken;
+    }
+
+    private User parseUserFromRow(Row row, DataFormatter dataFormatter) {
+        String cccd = dataFormatter.formatCellValue(row.getCell(0));
+        String email = dataFormatter.formatCellValue(row.getCell(1));
+        String hoten = dataFormatter.formatCellValue(row.getCell(2));
+        String phone = dataFormatter.formatCellValue(row.getCell(3));
+        String tenTruongFromExcel = dataFormatter.formatCellValue(row.getCell(4));
+        LocalDate birthDate = parseBirthDate(row.getCell(5));
+
+        String username = extractUsernameFromEmail(email);
+
+        String password = new BCryptPasswordEncoder().encode(generateCustomPassword(hoten, cccd));
+
+        if (username == null) {
+            return null;
+        }
+
+        return createUser(cccd, email, hoten, password, phone, username, birthDate, tenTruongFromExcel);
+    }
+
+    private boolean isDuplicate(User user) {
+        List<String> duplicateInfoList = new ArrayList<>();
+
+        if (userRepository.existsByCccd(user.getCccd())) {
+            duplicateInfoList.add("CCCD");
+        }
+        if (userRepository.existsByEmail(user.getEmail())) {
+            duplicateInfoList.add("Email");
+        }
+        if (userRepository.existsByPhone(user.getPhone())) {
+            duplicateInfoList.add("Số điện thoại");
+        }
+
+        if (!duplicateInfoList.isEmpty()) {
+            // Gửi email thông báo thông tin bị trùng
+            emailService.sendEmailFailSchool(user.getEmail(), duplicateInfoList, user);
+            return true;
+        }
+        return false;
+    }
+
+    private LocalDate parseBirthDate(Cell cell) {
+        if (cell != null) {
+            if (cell.getCellType() == CellType.NUMERIC && DateUtil.isCellDateFormatted(cell)) {
+                return cell.getLocalDateTimeCellValue().toLocalDate();
+            } else if (cell.getCellType() == CellType.STRING) {
+                String birthDateString = cell.getStringCellValue().trim();
+                try {
+                    return LocalDate.parse(birthDateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                } catch (DateTimeParseException e) {
+                    System.out.println("Định dạng ngày không hợp lệ: " + birthDateString);
+                }
+            }
+        }
+        return null;
+    }
+
+    private String extractUsernameFromEmail(String email) {
+        if (email != null && email.contains("@")) {
+            return email.split("@")[0];
+        }
+        System.out.println("Email không hợp lệ: " + email);
+        return null;
+    }
+
+    private User createUser(String cccd, String email, String hoten, String password, String phone,
+                            String username, LocalDate birthDate, String tenTruongFromExcel) {
+        User user = new User();
+        user.setCccd(cccd);
+        user.setEmail(email);
+        user.setHoten(hoten);
+        user.setPassword(password);
+        user.setPhone(phone);
+        user.setUsername(username);
+        user.setNgaySinh(birthDate);
+
+        Truong truong = truongRepository.findByTenTruong(tenTruongFromExcel);
+        if (truong != null) {
+            user.setTruong(truong);
+        } else {
+            System.out.println("Không tìm thấy trường với tên: " + tenTruongFromExcel);
+        }
+        return user;
+    }
+
+    public String generateCustomPassword(String hoten, String cccd) {
+        String[] nameParts = hoten.trim().split("\\s+");
+        String lastName = nameParts[nameParts.length - 1];
+        String lastNameNoAccent = removeVietnameseAccent(lastName);
+        String cccdSuffix = cccd.substring(Math.max(0, cccd.length() - 6));
+        return lastName + cccdSuffix + "@";
+    }
+
+    private String removeVietnameseAccent(String text) {
+        String normalized = Normalizer.normalize(text, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(normalized).replaceAll("").replaceAll("đ", "d").replaceAll("Đ", "D");
+    }
+
+    /*Cập nhật thông tin thi sinh khi thay đồi thông tin nhưng còn CCCD*/
+    public boolean registerOrUpdateUser(User user) {
+        if (isDuplicate(user)) {
+            return false;
+        }
+
+        // Kiểm tra nếu CCCD đã tồn tại
+        Optional<User> existingUserOpt = userRepository.findByCccd(user.getCccd());
+        if (existingUserOpt.isPresent()) {
+            User existingUser = existingUserOpt.get();
+
+            // Kiểm tra xem có thay đổi thông tin hay không
+            boolean hasChanges = false;
+
+            if (!existingUser.getEmail().equals(user.getEmail())) {
+                existingUser.setEmail(user.getEmail());
+                hasChanges = true;
+            }
+            if (!existingUser.getPhone().equals(user.getPhone())) {
+                existingUser.setPhone(user.getPhone());
+                hasChanges = true;
+            }
+            if (!existingUser.getTruong().equals(user.getTruong())) {
+                existingUser.setTruong(user.getTruong());
+                hasChanges = true;
+            }
+
+            // Nếu có thay đổi, lưu lại và gửi email thông báo
+            if (hasChanges) {
+                userRepository.save(existingUser);
+                emailService.sendUpdateNotificationEmail(existingUser);
+                return true;
+            } else {
+                // Không có thay đổi, không lưu và không gửi email
+                return false;
+            }
+        } else {
+            // Nếu là đăng ký mới, lưu người dùng vào cơ sở dữ liệu
+            userRepository.save(user);
+            return true; // Đăng ký mới thành công
+        }
+    }
+
+    /*public String getSchoolByAdmin(String username) {
+        User admin = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Không tìm thấy Admin với tên đăng nhập: " + username));
+
+        return admin.getUsername(); // Giả sử thuộc tính `schoolName` có sẵn trong thực thể User.
+    }*/
+    /*--------------------------------------------------------------------------------------*/
 }

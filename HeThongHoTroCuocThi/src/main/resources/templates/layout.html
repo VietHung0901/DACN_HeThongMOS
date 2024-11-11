@@ -8,7 +8,7 @@
     <title>MOS - Your Gateway to Academic Excellence</title>
     <link th:fragment="link-css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link th:fragment="custom-css" rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" >
 </head>
 <body class="d-flex flex-column h-100">
 
@@ -95,6 +95,20 @@
     <a sec:authorize="!isAuthenticated()" href="/login"
        style="color: #fff; text-decoration: none; position: absolute; right: 20px; top: 20px;">Đăng xuất</a>
 </div>
+
+<div th:fragment="headerAdminTruong" sec:authorize="hasAnyAuthority('ADMIN_SCHOOL')"
+     style="background-color: #333; color: #fff; padding: 6px; text-align: center; position: fixed; width: 100%; z-index: 1000;">
+    <h1>Hệ thống hỗ trợ cuộc thi MOS</h1>
+    <a sec:authorize="isAuthenticated()"
+       style="color: #fff; text-decoration: none; position: absolute; right: 20px; top: 20px;">
+        <form th:action="@{/logout}" method="post">
+            <button class="btn btn-outline-danger btn-sm" type="submit">Logout</button>
+        </form>
+    </a>
+    <a sec:authorize="!isAuthenticated()" href="/login"
+       style="color: #fff; text-decoration: none; position: absolute; right: 20px; top: 20px;">Đăng xuất</a>
+</div>
+
 <aside th:fragment="headerAdmin" sec:authorize="hasAnyAuthority('ADMIN','MANAGER')"
        style="width: 200px; background-color: #2c3e50; height: 100vh; color: #fff; position: fixed; margin-top: 68px; z-index: 1000;">
     <ul style="list-style-type: none; padding: 0;">
@@ -158,6 +172,35 @@
                 Thông tin cá nhân
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="/Admin/FileSample/file">
+                Cập nhật file
+            </a>
+        </li>
+    </ul>
+</aside>
+
+<aside th:fragment="headerAdminTruong" sec:authorize="hasAnyAuthority('ADMIN_SCHOOL')"
+       style="width: 200px; background-color: #2c3e50; height: 100vh; color: #fff; position: fixed; margin-top: 68px; z-index: 1000;">
+    <ul style="list-style-type: none; padding: 0;">
+        <li>
+            <a class="nav-link" href="/ADMIN_SCHOOL" style="color: #fff; padding: 15px; display: block; text-decoration: none;">
+                <i class="fas fa-home" style="padding-right: 5px;"></i>
+                Trang chủ
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" href="/ADMIN_SCHOOL/import-students" style="color: #fff; padding: 15px; display: block; text-decoration: none;">
+                <i class="fas fa-upload" style="padding-right: 5px;"></i>
+                Tải thí sinh
+            </a>
+        </li>
+        <li>
+            <a class="nav-link" href="/ADMIN_SCHOOL/export-students" style="color: #fff; padding: 15px; display: block; text-decoration: none;">
+                <i class="fas fa-upload" style="padding-right: 5px;"></i>
+                Xuất danh sách
+            </a>
+        </li>
     </ul>
 </aside>
 
@@ -167,6 +210,10 @@
 </div>
 
 <div th:fragment="footerAdmin"
+     style="background-color: #333; color: #fff; text-align: center; padding: 10px; position: fixed; bottom: 0; width: 100%;">
+    <p>© 2024 Trang Quản Trị. Đã đăng ký bản quyền.</p>
+</div>
+<div th:fragment="footerAdminTruong"
      style="background-color: #333; color: #fff; text-align: center; padding: 10px; position: fixed; bottom: 0; width: 100%;">
     <p>© 2024 Trang Quản Trị. Đã đăng ký bản quyền.</p>
 </div>

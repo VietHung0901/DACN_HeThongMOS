@@ -83,6 +83,9 @@ public class SecurityConfig {
                                     .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ADMIN") ||
                                                                     grantedAuthority.getAuthority().equals("MANAGER"))) {
                                 response.sendRedirect("/Admin");
+                            } else if (authentication.getAuthorities().stream()
+                                    .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ADMIN_SCHOOL"))) {
+                                response.sendRedirect("/ADMIN_SCHOOL");
                             } else {
                                 response.sendRedirect("/");
                             }

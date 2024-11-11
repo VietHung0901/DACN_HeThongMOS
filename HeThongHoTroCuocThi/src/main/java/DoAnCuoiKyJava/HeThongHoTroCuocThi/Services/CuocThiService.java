@@ -115,4 +115,8 @@ public class CuocThiService {
         return cuocThiRepository.findAll().size();
     }
 
+   /* public List<CuocThi> getCuocThiCuaTruong(Long loaitruongID) {
+        return cuocThiRepository.findByLoaitruongID(loaitruongID);
+    }*/
+
 }

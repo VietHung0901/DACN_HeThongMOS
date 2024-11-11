@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File mẫu ecxel danh cho thí sinh</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<th:block th:replace="~{layout::headerAdmin}"></th:block>
+
+<div class="container">
+    <h1 class="text-center">Admin - File Upload</h1>
+
+    <!-- Upload File Section -->
+    <div class="upload-section">
+        <h2>Upload File</h2>
+
+        <div th:if="${message != null}" class="alert alert-info" th:text="${message}"></div>
+
+        <form th:action="@{/Admin/FileSample/upload}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="files">Chọn các file để tải lên</label>
+                <input type="file" name="files" id="files" multiple class="form-control-file" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Tải Lên File</button>
+        </form>
+    </div>
+
+    <!-- File List Section -->
+    <div class="file-list-section">
+        <h2>Danh Sách File Đã Tải Lên</h2>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Tên File</th>
+                <th>Thời Gian Tải Lên</th>
+                <th>Thao Tác</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="file : ${files}">
+                <td th:text="${file.fileName}"></td>
+                <td th:text="${file.formattedUploadTime}"></td>
+                <td>
+                    <!-- Xem trước file nếu là file hình ảnh hoặc tài liệu văn bản -->
+                    <a th:href="@{/uploads/FileSample/preview/{fileName}(fileName=${file.fileName})}" target="_blank">Xem trước</a> |
+                    <!-- Tải file xuống -->
+                    <a th:href="@{/uploads/FileSample/{fileName}(fileName=${file.fileName})}" download>Tải xuống</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

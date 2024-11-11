@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>DANH SÁCH THÍ SINH</title>
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+</head>
+<body>
+<th:block th:replace="~{layout::headerAdminTruong}"></th:block>
+<div style="margin-left: 200px; padding: 95px;">
+    <div class="d-flex justify-content-center mb-3">
+        <h1 class="my-4">
+            Xuất Danh Sách Thí Sinh Theo Trường
+        </h1>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-6 mb-3 text-center">
+            <form th:action="@{/ADMIN_SCHOOL/export-students/export/{cuocThiId}(cuocThiId=${cuocThiId})}" method="get">
+            <div class="form-group">
+                    <label for="cuocThiId">Nhập ID Cuộc Thi:</label>
+                    <input type="number" id="cuocThiId" name="cuocThiId" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Xuất danh sách thí sinh</button>
+            </form>
+        </div>
+    </div>
+</div>
+<th:block th:replace="~{layout::footerAdminTruong}"></th:block>
+</body>
+</html>

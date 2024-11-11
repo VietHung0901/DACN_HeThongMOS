@@ -2,6 +2,7 @@ package DoAnCuoiKyJava.HeThongHoTroCuocThi.Services;
 
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.*;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Repositories.IPhieuKetQuaRepository;
+import DoAnCuoiKyJava.HeThongHoTroCuocThi.Repositories.ITruongRepository;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Request.PhieuKetQuaRequest;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +14,21 @@ import java.util.*;
 @RequiredArgsConstructor
 public class PhieuKetQuaService {
     private final IPhieuKetQuaRepository phieuKetQuaRepository;
+    private final ITruongRepository truongRepository;
 
     //lấy các phiếu kết quả có trạng thái là 1 (Hiện)
     public List<PhieuKetQua> getAllPhieuKetQua() {
         return phieuKetQuaRepository.findByTrangThai(1);
+    }
+
+    public List<PhieuKetQua> getAllPhieuKetQuaByCuocThiAndTruong(CuocThi cuocThi, Truong truong) {
+        List<PhieuKetQua> list = new ArrayList<>();
+        for (PhieuKetQua pkq : getAllPhieuKetQua()) {
+            if (pkq.getPhieuDangKy().getCuocThi().equals(cuocThi) && pkq.getPhieuDangKy().getTruongId() == truong.getId()) {
+                list.add(pkq);
+            }
+        }
+        return list;
     }
 
     public List<PhieuKetQua> getAllPhieuKetQuastheoCuocThi(CuocThi cuocThi) {
@@ -116,5 +128,4 @@ public class PhieuKetQuaService {
     {
         return phieuKetQuaRepository.findByPhieuDangKyAndTrangThai(phieuDangKy, 1);
     }
-
 }
