@@ -22,6 +22,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 
+import org.springframework.http.HttpStatus;
+
 @Controller
 @RequestMapping("/")
 @RequiredArgsConstructor
@@ -229,5 +231,22 @@ public class UserController {
             return "redirect:/login";  // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
         }
         return "redirect:/User/ChangePassword";  // Nếu đăng nhập, chuyển hướng đến trang đổi mật khẩu
+    }
+
+//    ******************************************************************
+    @PostMapping("/api/register")
+    public ResponseEntity<String> register(@Valid @RequestBody UserCreateRequest userCreateRequest, BindingResult result) {
+        if (result.hasErrors()) {
+            // Nếu có lỗi trong việc xác thực dữ liệu (ví dụ: thiếu thông tin, sai định dạng)
+            return new ResponseEntity<>("Invalid input data", HttpStatus.BAD_REQUEST);
+        }
+        try {
+            // Gọi Service để xử lý đăng ký
+            userService.createNewUser(userCreateRequest);
+            return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);
+        } catch (Exception e) {
+            // Xử lý lỗi nếu có (ví dụ: tài khoản đã tồn tại)
+            return new ResponseEntity<>("Error registering user: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

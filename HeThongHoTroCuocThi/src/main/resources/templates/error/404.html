@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,7 +10,8 @@
     <th:block th:replace="~{layout::custom-css}"></th:block>
 </head>
 <body>
-<th:block th:replace="~{layout::header}"></th:block>
+<th:block sec:authorize="hasAnyAuthority('ADMIN','MANAGER')" th:replace="~{layout::headerAdmin}"></th:block>
+<th:block sec:authorize="!isAuthenticated() or hasAuthority('USER')" th:replace="~{layout::header}"></th:block>
 <div class="d-flex align-items-center justify-content-center vh-25" style="margin-left: 200px; padding: 95px;">
     <div class="text-center">
         <h1 class="display-1 fw-bold">404</h1>

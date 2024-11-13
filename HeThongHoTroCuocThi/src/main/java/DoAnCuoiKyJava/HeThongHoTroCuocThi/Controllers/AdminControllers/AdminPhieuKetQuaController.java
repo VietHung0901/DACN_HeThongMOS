@@ -25,6 +25,7 @@ public class AdminPhieuKetQuaController {
     private final CuocThiService cuocThiService;
     private final UserService userService;
     private final PhieuSuaDiemService phieuSuaDiemService;
+    private final TruongService truongService;
 
     @GetMapping("/cuocThiId/{id}")
     public String showAllPhieuKetQuaByCuocThi(@PathVariable Long id, @NotNull Model model) {
@@ -104,4 +105,5 @@ public class AdminPhieuKetQuaController {
         model.addAttribute("diems", diems);
         return "/Admin/PhieuKetQua/thongke";
     }
+
 }

@@ -10,6 +10,9 @@ import DoAnCuoiKyJava.HeThongHoTroCuocThi.Request.UserUpdateRequest;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.TaoTokenDangKy.EmailService;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.TaoTokenDangKy.VerificationToken;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.TaoTokenDangKy.VerificationTokenRepository;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,6 +32,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -70,8 +74,9 @@ public class UserService implements UserDetailsService {
         return userRepository.findByCccd(id);
     }
 
+//    ****************************
     public void createNewUser(UserCreateRequest userRequest) {
-        String image = saveImage(userRequest.getImageUrl());
+//        String image = saveImage(userRequest.getImageUrl());
         User user = new User();
         user.setUsername(userRequest.getUsername());
         user.setHoten(userRequest.getHoten());
@@ -80,8 +85,8 @@ public class UserService implements UserDetailsService {
         user.setPhone(userRequest.getPhone());
         user.setEmail(userRequest.getEmail());
         user.setNgaySinh(userRequest.getNgaySinh());
-        user.setImageUrl(image);
-        user.setTruong(userRequest.getTruong());
+//        user.setImageUrl(image);
+//        user.setTruong(userRequest.getTruong());
         user.setTrangThai(0);
         Save(user);
         setDefaultRole(user.getUsername());
@@ -190,10 +195,10 @@ public class UserService implements UserDetailsService {
     }
 
     public String checkUser(UserCreateRequest userRequest) {
-        String fileName = userRequest.getImageUrl().getOriginalFilename();
-        if(fileName.isEmpty()) {
-            return "Vui lòng chọn ảnh cho tài khoản!";
-        }
+//        String fileName = userRequest.getImageUrl().getOriginalFilename();
+//        if(fileName.isEmpty()) {
+//            return "Vui lòng chọn ảnh cho tài khoản!";
+//        }
         if(userRepository.existsByCccd(userRequest.getCccd())){
             return "CCCD này đã được dùng cho tài khoản khác.";
         }
@@ -238,4 +243,29 @@ public class UserService implements UserDetailsService {
                                                                             + "&username=" + user.getUsername();
         emailService.sendEmailFogetPassword(user.getEmail(), "Đổi mật khẩu", user, confirmationUrl);
     }
+
+//    ***********************************************
+public void importPhieuDangKyFromExcel(MultipartFile file) throws IOException {
+
+    try (XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream())) {
+        var sheet = workbook.getSheetAt(0);
+        DataFormatter dataFormatter = new DataFormatter();
+
+        for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
+            Row row = sheet.getRow(i);
+            if (row != null) {
+//                User user = parseUserFromRow(row, dataFormatter);
+//                if (user != null && !isDuplicate(user)) {
+//                    userRepository.save(user);
+//                    setDefaultRoleForSchoolRegistration(user.getCccd());
+//
+//                    VerificationToken verificationToken = createVerificationToken(user);
+//                } else {
+//                    failedUsers.add(user);
+//                }
+            }
+        }
+    }
+}
+
 }

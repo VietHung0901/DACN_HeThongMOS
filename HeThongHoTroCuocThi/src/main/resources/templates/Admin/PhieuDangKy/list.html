@@ -7,6 +7,52 @@
     <th:block th:replace="~{layout::custom-css}"></th:block>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* CSS cho menu */
+        .menu-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* CSS cho phần menu khi hover */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            z-index: 1;
+            min-width: 160px;
+        }
+
+        /* Hiện dropdown khi hover */
+        .menu-dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* CSS cho nút */
+        .dropdown-content a {
+            display: block;
+            padding: 8px;
+            margin-bottom: 4px;
+            text-decoration: none;
+            color: white;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .dropdown-content .btn-success {
+            background-color: #28a745;
+        }
+
+        .dropdown-content .btn-info {
+            background-color: #17a2b8;
+        }
+
+        .dropdown-content a:hover {
+            opacity: 0.8;
+        }
+    </style>
 </head>
 <body>
 <th:block th:replace="~{layout::headerAdmin}"></th:block>
@@ -14,11 +60,26 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h1 class="my-4">DANH SÁCH PHIẾU ĐĂNG KÝ</h1>
         <div>
-            <a class="btn btn-success mb-4" th:href="@{/Admin/PhieuKetQuas/cuocThiId/{id}(id=${cuocThiId})}">Kết quả chi tiết</a>
-            <a class="btn btn-info mb-4" th:href="@{/Admin/PhieuKetQuas/thongke/cuocThiId/{id}(id=${cuocThiId})}">Thống kê chi tiết</a>
-<!--            <a class="btn btn-info mb-4" th:href="@{/api/excel/export/diem/cuocThi/{id}(id=${cuocThiId})}">Export điểm</a>-->
-<!--            <a class="btn btn-info mb-4" th:href="@{/api/excel/export/pdk/cuocThi/{id}(id=${cuocThiId})}">Export pdk</a>-->
-<!--            <a class="btn btn-info mb-4" th:href="@{/api/excel/import/form}">Import</a>-->
+            <div class="menu-dropdown">
+                <button class="btn btn-primary">Kết quả</button>
+                <div class="dropdown-content">
+                    <a class="btn btn-success mb-2" th:href="@{/Admin/PhieuKetQuas/cuocThiId/{id}(id=${cuocThiId})}">Kết quả chi tiết</a>
+                    <a class="btn btn-success mb-2" th:href="@{/Admin/PhieuKetQuas/thongke/cuocThiId/{id}(id=${cuocThiId})}">Thống kê chi tiết</a>
+                </div>
+            </div>
+            <div class="menu-dropdown">
+                <button class="btn btn-primary">Tải file</button>
+                <div class="dropdown-content">
+                    <a class="btn btn-info mb-4" th:href="@{/api/excel/export/pdk/cuocThi/{id}(id=${cuocThiId})}">DS phiếu đăng ký</a>
+                    <a class="btn btn-info mb-4" th:href="@{/api/excel/export/diem/cuocThi/{id}(id=${cuocThiId})}">DS phiếu kết quả</a>
+                </div>
+            </div>
+            <div class="menu-dropdown">
+                <button class="btn btn-primary">Nhập file</button>
+                <div class="dropdown-content">
+                    <a class="btn btn-info mb-4" th:href="@{/api/excel/import/form/pdk}">Import</a>
+                </div>
+            </div>
 
         </div>
     </div>
@@ -30,6 +91,7 @@
                 <th>Cuộc thi</th>
                 <th>CCCD</th>
                 <th>Họ và tên</th>
+                <th>Ngày sinh</th>
                 <th>Email</th>
                 <th>SDT</th>
                 <th>Trường</th>
@@ -43,6 +105,7 @@
                 <td th:text="${phieuDangKy.cuocThi.getTenCuocThi()}"></td>
                 <td th:text="${phieuDangKy.user.getCccd()}"></td>
                 <td th:text="${phieuDangKy.user.getHoten()}"></td>
+                <td th:text="${phieuDangKy.user.getNgaySinh()}"></td>
                 <td th:text="${phieuDangKy.getEmail()}"></td>
                 <td th:text="${phieuDangKy.getSdt()}"></td>
                 <td th:text="${truongService.findTruongById(phieuDangKy.getTruongId()).getTenTruong()}"></td>

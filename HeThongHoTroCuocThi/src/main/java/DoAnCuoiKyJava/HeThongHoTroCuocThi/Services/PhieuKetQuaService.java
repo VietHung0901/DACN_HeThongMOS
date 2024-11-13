@@ -2,6 +2,7 @@ package DoAnCuoiKyJava.HeThongHoTroCuocThi.Services;
 
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.*;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Repositories.IPhieuKetQuaRepository;
+import DoAnCuoiKyJava.HeThongHoTroCuocThi.Repositories.ITruongRepository;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Request.PhieuKetQuaRequest;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Viewmodels.PhieuKetQuaGetVm;
 import jakarta.persistence.EntityNotFoundException;
@@ -15,12 +16,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PhieuKetQuaService {
     private final IPhieuKetQuaRepository phieuKetQuaRepository;
+    private final UserService userService;
 
     //lấy các phiếu kết quả có trạng thái là 1 (Hiện)
         public List<PhieuKetQua> getAllPhieuKetQua() {
         return phieuKetQuaRepository.findByTrangThai(1);
     }
-
+    
     public List<PhieuKetQua> getAllPhieuKetQuastheoCuocThi(CuocThi cuocThi) {
         List<PhieuKetQua> listPKQ = new ArrayList<>();
         for (PhieuKetQua pkq : getAllPhieuKetQua()) {

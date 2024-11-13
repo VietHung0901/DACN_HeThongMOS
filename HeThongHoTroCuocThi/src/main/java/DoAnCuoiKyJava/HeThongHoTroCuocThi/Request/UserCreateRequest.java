@@ -21,7 +21,7 @@ public class UserCreateRequest {
     private String password;
     private String email;
     private String phone;
-    private MultipartFile imageUrl;
-    private Truong truong;
+//    private MultipartFile imageUrl;
+//    private Truong truong;
     private LocalDate ngaySinh;
 }
