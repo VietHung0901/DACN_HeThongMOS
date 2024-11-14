@@ -74,9 +74,8 @@ public class UserService implements UserDetailsService {
         return userRepository.findByCccd(id);
     }
 
-//    ****************************
     public void createNewUser(UserCreateRequest userRequest) {
-//        String image = saveImage(userRequest.getImageUrl());
+        String image = saveImage(userRequest.getImageUrl());
         User user = new User();
         user.setUsername(userRequest.getUsername());
         user.setHoten(userRequest.getHoten());
@@ -85,8 +84,8 @@ public class UserService implements UserDetailsService {
         user.setPhone(userRequest.getPhone());
         user.setEmail(userRequest.getEmail());
         user.setNgaySinh(userRequest.getNgaySinh());
-//        user.setImageUrl(image);
-//        user.setTruong(userRequest.getTruong());
+        user.setImageUrl(image);
+        user.setTruong(userRequest.getTruong());
         user.setTrangThai(0);
         Save(user);
         setDefaultRole(user.getUsername());
@@ -195,10 +194,10 @@ public class UserService implements UserDetailsService {
     }
 
     public String checkUser(UserCreateRequest userRequest) {
-//        String fileName = userRequest.getImageUrl().getOriginalFilename();
-//        if(fileName.isEmpty()) {
-//            return "Vui lòng chọn ảnh cho tài khoản!";
-//        }
+        String fileName = userRequest.getImageUrl().getOriginalFilename();
+        if(fileName.isEmpty()) {
+            return "Vui lòng chọn ảnh cho tài khoản!";
+        }
         if(userRepository.existsByCccd(userRequest.getCccd())){
             return "CCCD này đã được dùng cho tài khoản khác.";
         }
@@ -243,29 +242,5 @@ public class UserService implements UserDetailsService {
                                                                             + "&username=" + user.getUsername();
         emailService.sendEmailFogetPassword(user.getEmail(), "Đổi mật khẩu", user, confirmationUrl);
     }
-
-//    ***********************************************
-public void importPhieuDangKyFromExcel(MultipartFile file) throws IOException {
-
-    try (XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream())) {
-        var sheet = workbook.getSheetAt(0);
-        DataFormatter dataFormatter = new DataFormatter();
-
-        for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
-            Row row = sheet.getRow(i);
-            if (row != null) {
-//                User user = parseUserFromRow(row, dataFormatter);
-//                if (user != null && !isDuplicate(user)) {
-//                    userRepository.save(user);
-//                    setDefaultRoleForSchoolRegistration(user.getCccd());
-//
-//                    VerificationToken verificationToken = createVerificationToken(user);
-//                } else {
-//                    failedUsers.add(user);
-//                }
-            }
-        }
-    }
-}
 
 }

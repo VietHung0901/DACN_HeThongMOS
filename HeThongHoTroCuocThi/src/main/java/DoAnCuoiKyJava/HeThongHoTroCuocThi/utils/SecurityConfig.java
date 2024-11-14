@@ -45,7 +45,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(@NotNull HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         //Cho phép truy cập những đường dẫn này mà không cần xác thực
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/","/oauth/**", "/register", "/error", "/confirm", "/gmailForgotPassword", "/User/forgotPassword", "/confirmForgotPassword", "/forgotPassword")

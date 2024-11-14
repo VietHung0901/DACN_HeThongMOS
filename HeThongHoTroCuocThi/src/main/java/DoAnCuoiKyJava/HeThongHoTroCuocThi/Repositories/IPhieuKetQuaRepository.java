@@ -15,5 +15,5 @@ import java.util.Optional;
 public interface IPhieuKetQuaRepository extends JpaRepository<PhieuKetQua, Long> {
 //    Optional<PhieuKetQua> findByPhieuDangKyAndTrangThai(PhieuDangKy phieuDangKy, int trangThai);
     List<PhieuKetQua> findByTrangThai(int trangThai);
-
+    PhieuKetQua findByPhieuDangKy(PhieuDangKy phieuDangKy);
 }

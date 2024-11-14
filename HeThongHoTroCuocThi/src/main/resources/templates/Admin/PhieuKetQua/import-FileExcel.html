@@ -14,8 +14,8 @@
 <div style="margin-left: 200px; padding: 95px;">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h1 class="my-4">
-            <i class="fas fa-school" style="padding-right: 5px;"></i>
-            DANH SÁCH THÍ SINH UPLOAD TỪ FILE
+            <i class="fas fa-file-signature" style="padding-right: 5px;"></i>
+            Nhập kết quả bằng file excel cho cuộc thi
         </h1>
     </div>
     <div class="row">
@@ -24,20 +24,21 @@
             <div class="card h-100">
                 <div class="card-body">
                     <h5 class="card-title">Tải File Mẫu</h5>
-                    <p class="card-text">Admin có thể tải file Excel mẫu để nhập danh sách thí sinh.</p>
-                    <button class="btn btn-sm btn-primary">Tải Mẫu</button>
+                    <p class="card-text">Admin có thể tải file Excel mẫu để nhập kết quả.</p>
+                    <a th:href="@{/api/excel/export/mau/pdk/cuocThi/{id}(id=${cuocThiId})}" class="btn btn-sm btn-primary">Tải Mẫu</a>
                 </div>
             </div>
         </div>
 
-        <!-- Upload file Excel cho Admin trường -->
+        <!-- Import file tại đây -->
         <div class="col-md-6 mb-3">
             <div class="card h-100">
                 <div class="card-body">
                     <h5 class="card-title">Upload File Excel</h5>
                     <form th:action="@{/api/excel/import/form/pdk}" method="post" enctype="multipart/form-data" id="uploadForm">
-                        <input type="file" name="file" accept=".xlsx" required class="form-control-file mb-2" id="excelFileInput" />
-                        <button type="submit" class="btn btn-primary btn-upload">Đăng Kí</button>
+                        <input type="file" name="file" accept=".xlsx" required class="form-control-file mb-2" id="excelFileInput"/>
+                        <input type="hidden" name="cuocThiId" th:value="${cuocThiId}"/>
+                        <button type="submit" class="btn btn-primary btn-upload">Nhập</button>
                         <button type="button" id="cancelButton" class="btn btn-secondary btn-upload">Hủy Tệp</button>
                     </form>
                     <div th:if="${message}" th:text="${message}"></div>
@@ -47,19 +48,21 @@
         </div>
     </div>
 
-    <!-- Bảng xem trước danh sách thí sinh -->
+    <!-- Bảng xem trước -->
     <div class="mt-4">
         <h6>Danh Sách Thí Sinh</h6>
         <div class="table-responsive table-container">
             <table class="table table-bordered table-striped" id="previewTable">
                 <thead class="thead-light">
                 <tr>
+                    <th>Mã pdk</th>
+                    <th>Cuộc thi</th>
                     <th>CCCD</th>
-                    <th>Email</th>
                     <th>Họ Tên</th>
-                    <th>SĐT</th>
                     <th>Trường</th>
-                    <th>Ngày Sinh</th>
+                    <th>Phút</th>
+                    <th>Giây</th>
+                    <th>Điểm</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -68,7 +71,33 @@
             </table>
         </div>
     </div>
+
+    <div class="mt-4" th:if="${listFail != null && !listFail.isEmpty()}">
+        <h6>Danh Sách Thí Sinh Thất Bại</h6>
+        <div class="table-responsive table-container">
+            <table class="table table-bordered table-striped" id="failTable">
+                <thead class="thead-light">
+                <tr>
+                    <th>Mã pdk</th>
+                    <th>Cuộc thi</th>
+                    <th>CCCD</th>
+                    <th>Họ Tên</th>
+                    <th>Trường</th>
+                    <th>Phút</th>
+                    <th>Giây</th>
+                    <th>Điểm</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="failRow : ${listFail}">
+                    <td th:each="cell : ${failRow}" th:text="${cell}">Cell</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+
 <th:block th:replace="~{layout::footerAdmin}"></th:block>
 <script th:src="@{/js/docFileDiemExcel.js}"></script>
 </body>
