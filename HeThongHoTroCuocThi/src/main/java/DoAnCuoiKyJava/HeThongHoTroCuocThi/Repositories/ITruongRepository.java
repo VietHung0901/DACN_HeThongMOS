@@ -12,4 +12,5 @@ public interface ITruongRepository extends JpaRepository<Truong, Long> {
     List<Truong> findByTrangThai(int trangThai);
 
     Truong findTruongById(Long id);
+    Truong findByTenTruong(String tenTruong);
 }

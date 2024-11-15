@@ -145,28 +145,31 @@ public class PhieuKetQuaService {
 
                     // Kiểu dữ liệu khi lấy từ file vào là string cần chuyển thành kiểu dữ liệu phù hợp
                     String pdkIdString = dataFormatter.formatCellValue(row.getCell(0)); // Chuỗi kết quả
-                    Long pdkId = Long.parseLong(pdkIdString); // Chuyển chuỗi sang kiểu Long
-                    PhieuDangKy pdk = phieuDangKyRepository.findById(pdkId).orElseThrow(() -> new EntityNotFoundException("PhieuDangKy not found with id: " + pdkId));
+                    if(!pdkIdString.isEmpty()) {
+                        Long pdkId = Long.parseLong(pdkIdString); // Chuyển chuỗi sang kiểu Long
+                        PhieuDangKy pdk = phieuDangKyRepository.findById(pdkId).orElseThrow(() -> new EntityNotFoundException("PhieuDangKy not found with id: " + pdkId));
 
-                    PhieuKetQua pkqCheck = getPhieuKetQuaByPhieuDangKy(pdk);
-                    // **Kiểm tra danh sách pkq Nếu tồn tại pdkID != pkq.getPdkId thì thực hiện lưu
-                    if(pkqCheck == null) {
+                        PhieuKetQua pkqCheck = getPhieuKetQuaByPhieuDangKy(pdk);
+                        // **Kiểm tra danh sách pkq Nếu tồn tại pdkID != pkq.getPdkId thì thực hiện lưu
+                        if (pkqCheck == null) {
 
-                        PhieuKetQua pkq = new PhieuKetQua();
-                        // Nối pdk với pkq
-                        pkq.setPhieuDangKy(pdk);
-                        pkq.setPhut(Integer.parseInt(dataFormatter.formatCellValue(row.getCell(5))));
-                        pkq.setGiay(Integer.parseInt(dataFormatter.formatCellValue(row.getCell(6))));
-                        pkq.setDiem(Integer.parseInt(dataFormatter.formatCellValue(row.getCell(7))));
-                        pkq.setTrangThai(1);
-                        phieuKetQuaRepository.save(pkq);
-                    } else { // **Ngược lại nếu tồn tại pdkID != pkq.getPdkId thì thông báo
-                        String[] failRow = new String[row.getPhysicalNumberOfCells()];
-                        for (int j = 0; j < row.getPhysicalNumberOfCells(); j++) {
-                            failRow[j] = dataFormatter.formatCellValue(row.getCell(j));
+                            PhieuKetQua pkq = new PhieuKetQua();
+                            // Nối pdk với pkq
+                            pkq.setPhieuDangKy(pdk);
+                            pkq.setPhut(Integer.parseInt(dataFormatter.formatCellValue(row.getCell(5))));
+                            pkq.setGiay(Integer.parseInt(dataFormatter.formatCellValue(row.getCell(6))));
+                            pkq.setDiem(Integer.parseInt(dataFormatter.formatCellValue(row.getCell(7))));
+                            pkq.setTrangThai(1);
+                            phieuKetQuaRepository.save(pkq);
+                        } else { // **Ngược lại nếu tồn tại pdkID != pkq.getPdkId thì thông báo
+                            String[] failRow = new String[row.getPhysicalNumberOfCells()];
+                            for (int j = 0; j < row.getPhysicalNumberOfCells(); j++) {
+                                failRow[j] = dataFormatter.formatCellValue(row.getCell(j));
+                            }
+                            listFail.add(failRow);
                         }
-                        listFail.add(failRow);
-                    }
+                    }else
+                        return listFail;
                 }
             }
         }

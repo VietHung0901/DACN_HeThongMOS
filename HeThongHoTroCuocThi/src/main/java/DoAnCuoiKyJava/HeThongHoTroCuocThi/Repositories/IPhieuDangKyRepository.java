@@ -1,6 +1,8 @@
 package DoAnCuoiKyJava.HeThongHoTroCuocThi.Repositories;
 
+import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.CuocThi;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.PhieuDangKy;
+import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,4 +20,5 @@ public interface IPhieuDangKyRepository extends JpaRepository<PhieuDangKy, Long>
     //Đếm phiếu đăng ký theo cuộc thi
     int countByCuocThiId(Long cuocThiId);
 
+    PhieuDangKy findByCuocThiAndUser(CuocThi cuocThi, User user);
 }

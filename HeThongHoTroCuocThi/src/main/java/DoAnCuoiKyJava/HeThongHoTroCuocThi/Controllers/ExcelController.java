@@ -34,6 +34,7 @@ public class ExcelController {
     private final PhieuDangKyService phieuDangKyService;
     private final UserService userService;
     private final TruongService truongService;
+    private final PhieuDangKyService phieuKyService;
 
     // Xuất danh sách kết quả theo cuộc thi
     @GetMapping("/export/diem/cuocThi/{id}")
@@ -147,8 +148,8 @@ public class ExcelController {
     }
 
     // Xuất mẫu nhập kết quả theo cuộc thi
-    @GetMapping("/export/mau/pdk/cuocThi/{id}")
-    public ResponseEntity<byte[]> exportMauToExcelPDK(@PathVariable Long id) {
+    @GetMapping("/export/mau/pkq/cuocThi/{id}")
+    public ResponseEntity<byte[]> exportMauToExcelPKQ(@PathVariable Long id) {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Data");
 
@@ -197,16 +198,46 @@ public class ExcelController {
         }
     }
 
+    // Xuất mẫu nhập danh sách thí sinh đăng ký theo cuộc thi
+    @GetMapping("/export/mau/pdk/cuocThi/{id}")
+    public ResponseEntity<byte[]> exportMauToExcelPDK(@PathVariable Long id) {
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Data");
+
+        // Tạo tiêu đề
+        Row headerRow = sheet.createRow(0);
+        headerRow.createCell(0).setCellValue("Cuộc thi");
+        headerRow.createCell(1).setCellValue("CCCD");
+        headerRow.createCell(2).setCellValue("Họ và tên");
+        headerRow.createCell(3).setCellValue("Ngày sinh");
+        headerRow.createCell(4).setCellValue("Email");
+        headerRow.createCell(5).setCellValue("SĐT");
+        headerRow.createCell(6).setCellValue("Trường");
+
+        CuocThi cuocThi = cuocThiService.getCuocThiById(id).orElseThrow(() -> new EntityNotFoundException("CuocThi not found with id: " + id));
+
+        // Xuất file Excel
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            workbook.write(outputStream);
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename= DanSachPhieuDangKy" + "_" + cuocThi.getTenCuocThi() + "_" + cuocThi.getId() +".xlsx");
+            return new ResponseEntity<>(outputStream.toByteArray(), headers, HttpStatus.OK);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    // ************************ Thực hiện chức năng nhập Phiếu kết quả bằng fiel excel *****************************
     // Chuyển sang form import file
     @GetMapping("/import/form/pkq/cuocThiId/{id}")
-    public String importFileExcelDPDK(@PathVariable Long id, Model model) {
+    public String importFileExcelDPKQ(@PathVariable Long id, Model model) {
         model.addAttribute("cuocThiId", id);
         return "Admin/PhieuKetQua/import-FileExcel";
     }
 
     // Lưu dữ liệu từ file excel vào database
-    @PostMapping("/import/form/pdk")
-    public String importStudents(@RequestParam("file") MultipartFile file,
+    @PostMapping("/import/form/pkq")
+    public String importDSPKQ(@RequestParam("file") MultipartFile file,
                                  @RequestParam("cuocThiId") Long cuocThiId,
                                  RedirectAttributes redirectAttributes) {
         List<String[]> listFail = new ArrayList<>();
@@ -215,9 +246,34 @@ public class ExcelController {
             redirectAttributes.addFlashAttribute("message", "Kết quả đã được thêm vào.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi khi nhập: " + e.getMessage());
-            return "redirect:/api/excel/import/form/pkk/cuocThiId/" + cuocThiId;
+            return "redirect:/api/excel/import/form/pkq/cuocThiId/" + cuocThiId;
         }
         redirectAttributes.addFlashAttribute("listFail", listFail);
         return "redirect:/api/excel/import/form/pkq/cuocThiId/" + cuocThiId;
+    }
+
+    // ************************ Thực hiện chức năng nhập phiếu đăng ký bằng fiel excel *****************************
+    @GetMapping("/import/form/pdk/cuocThiId/{id}")
+    public String importFileExcelDPDK(@PathVariable Long id, Model model) {
+        model.addAttribute("cuocThiId", id);
+        return "Admin/PhieuDangKy/import-FileExcel";
+    }
+
+    // Lưu dữ liệu từ file excel vào database
+    @PostMapping("/import/form/pdk")
+    public String importDSPDK(@RequestParam("file") MultipartFile file,
+                                 @RequestParam("cuocThiId") Long cuocThiId,
+                                 RedirectAttributes redirectAttributes) {
+        List<String[]> listFail = new ArrayList<>();
+        try {
+            CuocThi cuocThi = cuocThiService.getCuocThiById(cuocThiId).orElseThrow(() -> new EntityNotFoundException("CuocThi not found with id: " + cuocThiId));
+            listFail = phieuKyService.importPhieuDangKyFromExcel(file, cuocThi);
+            redirectAttributes.addFlashAttribute("message", "Danh sách phiếu đăng ký đã được thêm vào.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi khi nhập: " + e.getMessage());
+            return "redirect:/api/excel/import/form/pdk/cuocThiId/" + cuocThiId;
+        }
+        redirectAttributes.addFlashAttribute("listFail", listFail);
+        return "redirect:/api/excel/import/form/pdk/cuocThiId/" + cuocThiId;
     }
 }

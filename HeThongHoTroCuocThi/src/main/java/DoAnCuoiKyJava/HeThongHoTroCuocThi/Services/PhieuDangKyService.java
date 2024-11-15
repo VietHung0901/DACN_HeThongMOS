@@ -1,13 +1,19 @@
 package DoAnCuoiKyJava.HeThongHoTroCuocThi.Services;
 
-import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.PhieuDangKy;
-import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.User;
+import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.*;
+import DoAnCuoiKyJava.HeThongHoTroCuocThi.Repositories.ICuocThiRepository;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Repositories.IPhieuDangKyRepository;
+import DoAnCuoiKyJava.HeThongHoTroCuocThi.Repositories.ITruongRepository;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Request.PhieuDangKyCreate;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -22,6 +28,7 @@ import java.util.Optional;
 public class PhieuDangKyService {
     private final IPhieuDangKyRepository phieuDangKyRepository;
     private final UserService userService;
+    private final ITruongRepository truongRepository;
 
     public List<PhieuDangKy> getAllPhieuDangKys() {
         return phieuDangKyRepository.findAll();
@@ -96,5 +103,47 @@ public class PhieuDangKyService {
         return allPhieuDangKys.size();
     }
 
+    // Hàm import điểm từ file excel
+    public List<String[]> importPhieuDangKyFromExcel(MultipartFile file, CuocThi cuocThi) throws IOException {
+        List<String[]> listFail = new ArrayList<>();
+        try (XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream())) {
+            var sheet = workbook.getSheetAt(0);
+            DataFormatter dataFormatter = new DataFormatter();
 
+            for (int i = 1; i < sheet.getPhysicalNumberOfRows(); i++) {
+                User user = new User();
+                Row row = sheet.getRow(i);
+                if (row != null) {
+                    String cccd = dataFormatter.formatCellValue(row.getCell(1));
+                    if(!cccd.isEmpty()) {
+                        user = userService.getUserByCCCD(cccd).orElseThrow(() -> new EntityNotFoundException("User not found with CCCD: " + cccd));
+
+                        PhieuDangKy pdkCheck = phieuDangKyRepository.findByCuocThiAndUser(cuocThi, user);
+                        if (pdkCheck == null) {
+                            PhieuDangKy pdk = new PhieuDangKy();
+                            pdk.setUser(user);
+                            pdk.setCuocThi(cuocThi);
+                            pdk.setSdt(dataFormatter.formatCellValue(row.getCell(5)));
+                            pdk.setEmail(dataFormatter.formatCellValue(row.getCell(4)));
+
+                            Truong truong = truongRepository.findByTenTruong(dataFormatter.formatCellValue(row.getCell(6)));
+                            pdk.setTruongId(truong.getId());
+
+                            pdk.setNgayDangKy(LocalDateTime.now());
+                            pdk.setTrangThai(1);
+                            phieuDangKyRepository.save(pdk);
+                        } else {
+                            String[] failRow = new String[row.getPhysicalNumberOfCells()];
+                            for (int j = 0; j < row.getPhysicalNumberOfCells(); j++) {
+                                failRow[j] = dataFormatter.formatCellValue(row.getCell(j));
+                            }
+                            listFail.add(failRow);
+                        }
+                    }else
+                        return listFail;
+                }
+            }
+        }
+        return listFail;
+    }
 }
