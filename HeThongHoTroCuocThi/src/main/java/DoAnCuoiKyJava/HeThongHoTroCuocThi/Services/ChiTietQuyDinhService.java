@@ -3,6 +3,8 @@ package DoAnCuoiKyJava.HeThongHoTroCuocThi.Services;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.*;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Repositories.IChiTietQuyDinhRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -47,4 +49,10 @@ public class ChiTietQuyDinhService {
     public List<ChiTietQuyDinh> getChiTietQuyDinhsByCuocThiId(Long cuocThiId) {
         return CTQDRepository.findByCuocThiId(cuocThiId);
     }
+
+    public Page<ChiTietQuyDinh> getChiTietQuyDinhsByCuocThiId(Long cuocThiId, Pageable pageable) {
+        return CTQDRepository.findByCuocThiId(cuocThiId, pageable);
+    }
+
+
 }

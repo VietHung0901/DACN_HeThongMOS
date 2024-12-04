@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
@@ -112,7 +113,8 @@
             <div class="form-row">
                 <div class="form-group col-md-3">
                     <label for="startDate">Từ ngày:</label>
-                    <input type="date" class="form-control" id="startDate" name="startDate" placeholder="yyyy-MM-dd" onchange="setEndDate()">
+                    <input type="date" class="form-control" id="startDate" name="startDate" placeholder="yyyy-MM-dd"
+                           onchange="setEndDate()">
                 </div>
                 <div class="form-group col-md-3">
                     <label for="endDate">Đến ngày:</label>
@@ -153,12 +155,14 @@
         </div>
         <div class="row">
             <div class="col-md-4" th:each="quyDinh : ${quyDinhs}">
-                <a th:href="@{/QuyDinhs/id/{id}(id=${quyDinh.id})}" class="card mb-4 text-decoration-none text-dark">
+                <a th:href="@{/User/QuyDinhs/id/{id}(id=${quyDinh.id})}"
+                   class="card mb-4 text-decoration-none text-dark">
                     <div class="card-img-top" style="height: 200px; overflow: hidden;">
-                        <img th:src="@{${quyDinh.imageUrl}}" alt="Quy định" class="img-fluid h-100 w-100 object-fit-cover">
+                        <img th:src="@{${quyDinh.imageUrl}}" alt="Quy định"
+                             class="img-fluid h-100 w-100 object-fit-cover">
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title" th:text="${quyDinh.tenQuyDinh}">Quy định phòng cháy chữa cháy</h5>
+                        <h5 class="card-title" th:text="${quyDinh.tenQuyDinh}"></h5>
                     </div>
                 </a>
             </div>
@@ -189,5 +193,477 @@
 </script>
 <th:block th:replace="~{layout::footer}"></th:block>
 <script th:src="@{/js/setEndday.js}"></script>
+</body>
+</html>-->
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initialscale=1.0">
+    <title>HỆ THỐNG HỖ TRỢ CUỘC THI</title>
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,700,900" rel="stylesheet">
+    <link th:fragment="custom-css" rel="stylesheet" th:href="@{/fonts/icomoon/style.css}">
+    <link th:fragment="custom-css" rel="stylesheet" th:href="@{/css/jquery-ui.css}">
+    <!--<link th:fragment="custom-css" rel="stylesheet" th:href="@{/css/owl.carousel.min.css}">
+    <link th:fragment="custom-css" rel="stylesheet" th:href="@{/css/owl.theme.default.min.css}">-->
+    <link th:fragment="custom-css" rel="stylesheet" th:href="@{/css/jquery.fancybox.min.css}">
+    <link th:fragment="custom-css" rel="stylesheet" th:href="@{/css/bootstrap-datepicker.css}">
+    <link th:fragment="custom-css" rel="stylesheet" th:href="@{/fonts/flaticon/font/flaticon.css}">
+    <!--    <link th:fragment="custom-css" rel="stylesheet" th:href="@{/css/aos.css}">-->
+    <!--    <link th:fragment="custom-css" rel="stylesheet" th:href="@{/css/jquery.mb.YTPlayer.min.css}" media="all">-->
+    <link th:fragment="custom-css" rel="stylesheet" th:href="@{/css/style1.css}">
+    <!-- Owl Carousel CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+    <style>
+        .advertisement-qc {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+        }
+
+        .container-qc {
+            position: relative;
+            width: 100vw; /* Đặt chiều rộng bằng 100% chiều rộng màn hình */
+            height: 200vh; /* Đặt chiều cao bằng 100% chiều cao màn hình */
+            overflow: hidden; /* Ẩn phần vượt ngoài khung */
+        }
+
+        .active {
+            opacity: 1; /* Hiển thị ảnh đang active */
+            transform: scale(1.05); /* Tăng kích thước ảnh chút ít để làm nổi bật */
+        }
+
+        .page-selector-qc button {
+            background-color: rgba(255, 255, 255, 0.7);
+            border: none;
+            margin: 0 5px;
+            padding: 5px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .page-selector-qc {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .page-selector-qc button.active {
+            background-color: rgba(255, 255, 255, 1);
+        }
+
+        .feature-1 {
+            width: 100%; /* Chiếm toàn bộ chiều rộng trong cột */
+            max-width: 350px; /* Giới hạn chiều rộng cho từng box */
+            margin: 0 auto 20px; /* Tạo khoảng cách giữa các box */
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+            border-radius: 10px; /* Bo góc */
+        }
+
+        .icon-wrapper {
+            width: 60px; /* Kích thước icon */
+            height: 60px;
+            margin: 0 auto 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+        }
+
+        .site-section {
+            padding: 60px 0; /* Khoảng cách trên dưới cho từng section */
+        }
+
+
+        .row {
+            margin-bottom: 30px; /* Khoảng cách giữa các hàng */
+        }
+
+        .feature-1-content h2 {
+            font-size: 20px; /* Kích thước tiêu đề */
+            margin-bottom: 10px;
+        }
+
+        .feature-1-content p {
+            font-size: 16px; /* Kích thước chữ nội dung */
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .container-qc {
+                padding: 0 15px;
+            }
+
+            .advertisement-qc {
+                width: 100%;
+                height: auto;
+            }
+
+            .feature-1 {
+                max-width: 100%; /* Cho phép các box kéo dài toàn chiều ngang */
+                margin: 10px auto;
+            }
+
+            .row {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+
+
+        .section-title-underline {
+            margin-top: 30px; /* Dịch chuyển tiêu đề xuống */
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+    </style>
+
+</head>
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+<th:block th:replace="~{layout::header}"></th:block>
+
+<div class="site-wrap wrapper" style="padding-top: 90px;">
+    <div class="site-section">
+        <section class="section1">
+            <div class="container-qc">
+                <img class="advertisement-qc" src="../images/anhnen1.jpg" alt="Advertisement 1">
+                <img class="advertisement-qc" src="../images/anhnen2.png" alt="Advertisement 2">
+                <img class="advertisement-qc" src="../images/IC3-Spark.png" alt="Advertisement 3">
+                <img class="advertisement-qc" src="../images/anhnen4.png" alt="Advertisement 4">
+                <img class="advertisement-qc" src="../images/anhnen5.jpg" alt="Advertisement 5">
+                <img class="advertisement-qc" src="../images/anhnen6.png" alt="Advertisement 6">
+                <div class="page-selector-qc">
+                    <button onclick="showAdvertisement(0)" class="active"></button>
+                    <button onclick="showAdvertisement(1)"></button>
+                    <button onclick="showAdvertisement(2)"></button>
+                    <button onclick="showAdvertisement(3)"></button>
+                    <button onclick="showAdvertisement(4)"></button>
+                    <button onclick="showAdvertisement(5)"></button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="site-section">
+        <div class="container">
+            <div class="row mb-5 justify-content-center text-center">
+                <div class="col-lg-4 mb-5">
+                    <h2 class="section-title-underline mb-5">
+                        <span>Tại Sao Phải Thi MOS</span>
+                    </h2>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                    <div class="feature-1 border">
+                        <div class="icon-wrapper bg-primary">
+                            <span class="flaticon-mortarboard text-white"></span>
+                        </div>
+                        <div class="feature-1-content">
+                            <h2>Chứng chỉ Văn phòng Quốc tế</h2>
+                            <p>MOS giúp bạn sở hữu chứng chỉ được công nhận trên toàn thế giới về kỹ năng tin học văn
+                                phòng.</p>
+                            <p><a href="#" class="btn btn-primary px-4 rounded-0">Tìm hiểu thêm</a></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                    <div class="feature-1 border">
+                        <div class="icon-wrapper bg-primary">
+                            <span class="flaticon-school-material text-white"></span>
+                        </div>
+                        <div class="feature-1-content">
+                            <h2>Hoàn thiện kiến thức văn phòng chuyên sâu</h2>
+                            <p>Giúp bạn làm chủ các công cụ văn phòng và tối ưu hóa kỹ năng làm việc.</p>
+                            <p><a href="#" class="btn btn-primary px-4 rounded-0">Tìm hiểu thêm</a></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                    <div class="feature-1 border">
+                        <div class="icon-wrapper bg-primary">
+                            <span class="flaticon-library text-white"></span>
+                        </div>
+                        <div class="feature-1-content">
+                            <h2>Được ứng dụng rộng rãi trong đời sống</h2>
+                            <p>Chứng chỉ MOS hỗ trợ bạn trong học tập, làm việc và phát triển sự nghiệp.</p>
+                            <p><a href="#" class="btn btn-primary px-4 rounded-0">Tìm hiểu thêm</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                    <div class="feature-1 border">
+                        <div class="icon-wrapper bg-primary">
+                            <span class="flaticon-books-1 text-white"></span>
+                        </div>
+                        <div class="feature-1-content">
+                            <h2>Có giá trị vô thời hạn</h2>
+                            <p>Một khi đạt được, chứng chỉ MOS sẽ luôn có giá trị trong suốt sự nghiệp của bạn.</p>
+                            <p><a href="#" class="btn btn-primary px-4 rounded-0">Tìm hiểu thêm</a></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                    <div class="feature-1 border">
+                        <div class="icon-wrapper bg-primary">
+                            <span class="flaticon-diploma text-white"></span>
+                        </div>
+                        <div class="feature-1-content">
+                            <h2>Tăng cơ hội có được công việc tốt</h2>
+                            <p>MOS là minh chứng cho khả năng làm việc chuyên nghiệp, giúp bạn nổi bật hơn trong mắt nhà
+                                tuyển dụng.</p>
+                            <p><a href="#" class="btn btn-primary px-4 rounded-0">Tìm hiểu thêm</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                    <div class="feature-1 border">
+                        <div class="icon-wrapper bg-primary">
+                            <span class="flaticon-ink text-white"></span>
+                        </div>
+                        <div class="feature-1-content">
+                            <h2>Tăng năng suất và hiệu quả công việc</h2>
+                            <p>Giúp bạn làm việc thông minh hơn và đạt hiệu quả cao hơn trong các nhiệm vụ hàng
+                                ngày.</p>
+                            <p><a href="#" class="btn btn-primary px-4 rounded-0">Tìm hiểu thêm</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-bg style-1" style="background-image: url('images/about_1.jpg');">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <h2 class="section-title-underline style-2">
+                        <span>Thành lập MOS và Cuộc Thi</span>
+                    </h2>
+                </div>
+                <div class="col-lg-8">
+                    <p class="lead">MOS (Microsoft Office Specialist) là một trong những chứng chỉ hàng đầu thế giới về
+                        kỹ năng tin học văn phòng do Microsoft cấp.</p>
+                    <p>
+                        Cuộc thi MOS đã được tổ chức nhằm tìm kiếm và vinh danh các tài năng trẻ xuất sắc trong việc sử
+                        dụng các công cụ tin học văn phòng như Word, Excel, PowerPoint. Đây là sân chơi giúp các thí
+                        sinh nâng cao kỹ năng, mở ra cơ hội học tập và làm việc ở môi trường chuyên nghiệp quốc tế.
+                    </p>
+                    <p>
+                        Cuộc thi không chỉ mang lại kiến thức mà còn giúp xây dựng những kỹ năng cần thiết cho công việc
+                        như tư duy logic, khả năng xử lý dữ liệu và thuyết trình hiệu quả. Hãy tham gia để khẳng định
+                        bản thân và chinh phục những đỉnh cao mới!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row mb-5 justify-content-center text-center">
+            <div class="col-lg-4 mb-5">
+                <h2 class="section-title-underline mb-5">
+                    <span>Danh sách quy định</span>
+                </h2>
+            </div>
+        </div>
+        <!-- Slider -->
+        <div class="row">
+            <div id="quyDinhCarousel" class="owl-carousel owl-theme">
+                <div class="item" th:each="quyDinh : ${quyDinhs}">
+                    <a th:href="@{/User/QuyDinhs/id/{id}(id=${quyDinh.id})}"
+                       class="card mb-4 text-decoration-none text-dark">
+                        <div class="card-img-top" style="height: 200px; overflow: hidden;">
+                            <img th:src="@{${quyDinh.imageUrl}}" alt="Quy định"
+                                 class="img-fluid h-100 w-100 object-fit-cover">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${quyDinh.tenQuyDinh}"></h5>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="site-section">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-lg-4">
+                    <h2 class="section-title-underline">
+                        <span>Cảm Nhận Về MOS</span>
+                    </h2>
+                </div>
+            </div>
+            <div class="owl-slide owl-carousel">
+                <div class="ftco-testimonial-1">
+                    <div class="ftco-testimonial-vcard d-flex align-items-center mb-4">
+                        <!--                        <img src="images/person_1.jpg" alt="Image" class="img-fluid mr-3">-->
+                        <img th:src="@{/imagesLayoutUser/person_1.jpg}" alt="Anh" class="img-fluid mr-3">
+                        <div>
+                            <h3>Nguyễn Văn A</h3>
+                            <span>Sinh viên Đại học Bách Khoa</span>
+                        </div>
+                    </div>
+                    <div>
+                        <p>&ldquo;Kỳ thi MOS đã giúp tôi nâng cao kỹ năng sử dụng tin học văn phòng, đặc biệt là Excel
+                            và Word.
+                            Đây là nền tảng vững chắc cho công việc của tôi trong tương lai!&rdquo;</p>
+                    </div>
+                </div>
+
+                <div class="ftco-testimonial-1">
+                    <div class="ftco-testimonial-vcard d-flex align-items-center mb-4">
+                        <img src="images/person_2.jpg" alt="Image" class="img-fluid mr-3">
+                        <div>
+                            <h3>Trần Thị B</h3>
+                            <span>Giáo viên Tin học</span>
+                        </div>
+                    </div>
+                    <div>
+                        <p>&ldquo;MOS không chỉ là chứng chỉ, mà còn là cơ hội để tôi học hỏi và cải thiện kỹ năng sử
+                            dụng PowerPoint
+                            một cách chuyên nghiệp. Tôi rất tự hào khi đạt chứng chỉ này!&rdquo;</p>
+                    </div>
+                </div>
+
+                <div class="ftco-testimonial-1">
+                    <div class="ftco-testimonial-vcard d-flex align-items-center mb-4">
+                        <img src="images/person_3.jpg" alt="Image" class="img-fluid mr-3">
+                        <div>
+                            <h3>Phạm Văn C</h3>
+                            <span>Nhân viên Văn phòng</span>
+                        </div>
+                    </div>
+                    <div>
+                        <p>&ldquo;Chứng chỉ MOS đã mở ra nhiều cơ hội cho công việc của tôi. Tôi đã cải thiện khả năng
+                            xử lý dữ liệu nhanh chóng và hiệu quả hơn!&rdquo;</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+<th:block th:replace="~{layout::footer}"></th:block>
+<script>
+    let currentIndex = 0; // Biến chỉ số ảnh hiện tại
+    const ads = document.querySelectorAll('.advertisement-qc');
+    const buttons = document.querySelectorAll('.page-selector-qc button');
+
+    // Hàm để hiển thị ảnh hiện tại và ẩn các ảnh còn lại
+    function showAdvertisement(index) {
+        // Ẩn tất cả ảnh
+        ads.forEach((ad, i) => {
+            ad.classList.remove('active');
+            buttons[i].classList.remove('active');
+        });
+
+        // Hiển thị ảnh hiện tại
+        ads[index].classList.add('active');
+        buttons[index].classList.add('active');
+        currentIndex = index;
+    }
+
+    // Tự động chuyển ảnh mỗi 3 giây
+    setInterval(() => {
+        currentIndex = (currentIndex + 1) % ads.length; // Lặp lại từ đầu khi đến ảnh cuối cùng
+        showAdvertisement(currentIndex);
+    }, 5000); // Thời gian chuyển ảnh (3000ms = 3 giây)
+
+    // Gán sự kiện cho các nút chọn ảnh
+    buttons.forEach((button, index) => {
+        button.addEventListener('click', () => {
+            showAdvertisement(index);
+        });
+    });
+
+    // Khởi tạo hiển thị ảnh đầu tiên
+    showAdvertisement(currentIndex);
+
+</script>
+<script>
+    $(document).ready(function () {
+        $('#quyDinhCarousel').owlCarousel({
+            loop: true,
+            margin: 10,
+            nav: true,
+            autoplay: true,
+            autoplayTimeout: 3000,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 2
+                },
+                1000: {
+                    items: 3
+                }
+            }
+        });
+    });
+</script>
+
+<!--------------------------------------------------------------------------------------------->
+<script th:src="@{/js/jquery-3.7.0.min.js}"></script>
+<script th:src="@{/js/jquery-migrate-3.0.1.min.js}"></script>
+<script th:src="@{/js/jquery-ui.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<!--<script th:src="@{/js/owl.carousel.min.js}"></script>-->
+<script th:src="@{/js/jquery.stellar.min.js}"></script>
+<script th:src="@{/js/jquery.countdown.min.js}"></script>
+<script th:src="@{/js/bootstrap-datepicker.min.js}"></script>
+<script th:src="@{/js/jquery.easing.1.3.js}"></script>
+<script th:src="@{/js/aos.js}"></script>
+<script th:src="@{/js/jquery.fancybox.min.js}"></script>
+<script th:src="@{/js/jquery.sticky.js}"></script>
+<script th:src="@{/js/jquery.mb.YTPlayer.min.js}"></script>
+<!-- Owl Carousel JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+
+<!--------------------------------------------------------------------------------------------->
 </body>
 </html>

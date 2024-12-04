@@ -8,6 +8,30 @@
     <th:block th:replace="~{layout :: link-css}"></th:block>
     <th:block th:replace="~{layout::custom-css}"></th:block>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        .form-group{
+            position: relative;
+        }
+
+        .form-control {
+            padding-right: 40px;
+        }
+
+        .eye-icon {
+            position: absolute;
+            top: 70%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #aaa;
+            font-size: 1.2rem;
+        }
+
+        .eye-icon:hover {
+            color: #333;
+        }
+    </style>
 </head>
 <body style="background: #f6f7fc;">
 <th:block th:replace="~{layout :: header}"></th:block>
@@ -27,11 +51,14 @@
                             <div class="col-md-4 text-center p-4 border rounded shadow-sm">
                                 <h4 class="mb-3">Ảnh Đại Diện</h4>
                                 <div class="mb-3">
-                                    <img th:src="@{${user.imageUrl}}" class="img-fluid" id="profileImage" alt="Profile Image" style="width: 300px; height: 300px; object-fit: cover;">
+                                    <img th:src="@{${user.imageUrl}}" class="img-fluid" id="profileImage"
+                                         alt="Profile Image" style="width: 300px; height: 300px; object-fit: cover;">
                                 </div>
                                 <div class="form-group">
-                                    <label for="imageUrl" class="form-label" style="cursor: pointer; color: #0a53be">Chọn ảnh</label>
-                                    <input type="file" class="form-control" id="imageUrl" th:field="*{imageUrl}" onchange="previewImage(event)" style="display: none;" accept="image/*">
+                                    <label for="imageUrl" class="form-label" style="cursor: pointer; color: #0a53be">Chọn
+                                        ảnh</label>
+                                    <input type="file" class="form-control" id="imageUrl" th:field="*{imageUrl}"
+                                           onchange="previewImage(event)" style="display: none;" accept="image/*">
                                 </div>
                             </div>
                             <div class="col-md-4 ThongTinCaNhan">
@@ -43,13 +70,15 @@
                                 </div>
                                 <div class="form-group mb-4">
                                     <label for="hoten">Họ và tên</label>
-                                    <input type="text" class="form-control form-control-lg" required id="hoten" th:field="*{hoten}"
+                                    <input type="text" class="form-control form-control-lg" required id="hoten"
+                                           th:field="*{hoten}"
                                            placeholder="Nguyễn Văn A"
                                            title="Họ và tên chỉ được phép nhập chữ cái (có dấu) và khoảng trắng, không nhập số">
                                 </div>
                                 <div class="form-group">
                                     <label for="ngaySinh">Ngày sinh</label>
-                                    <input type="date" class="form-control" id="ngaySinh" th:field="*{ngaySinh}" max="" required>
+                                    <input type="date" class="form-control" id="ngaySinh" th:field="*{ngaySinh}" max=""
+                                           required>
                                 </div>
                                 <div class="form-group">
                                     <label for="phone">Điện thoại</label>
@@ -61,31 +90,41 @@
                                     <label for="truong">Trường</label>
                                     <select class="form-control form-control-lg" id="truong" th:field="*{truong}">
                                         <option value="">-- Chọn trường --</option>
-                                        <option th:each="truong : ${listTruong}" th:value="${truong.id}" th:text="${truong.tenTruong}"></option>
+                                        <option th:each="truong : ${listTruong}" th:value="${truong.id}"
+                                                th:text="${truong.tenTruong}"></option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="email">Email</label>
                                     <input type="email" class="form-control" id="email" th:field="*{email}"
-                                           placeholder="Nhập địa chỉ email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                           placeholder="Nhập địa chỉ email" required
+                                           pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                                            title="Vui lòng nhập địa chỉ email hợp lệ">
                                 </div>
                             </div>
                             <div class="col-md-4 ThongTinTaiKhoan">
                                 <div class="form-group mb-4">
                                     <label for="username">Tài khoản</label>
-                                    <input type="text" class="form-control form-control-lg" required id="username" th:field="*{username}" placeholder="Username">
+                                    <input type="text" class="form-control form-control-lg" required id="username"
+                                           th:field="*{username}" placeholder="Username">
                                 </div>
                                 <div class="form-group mb-4">
                                     <label for="password">Mật khẩu</label>
-                                    <input type="password" class="form-control form-control-lg" required id="password" th:field="*{password}" placeholder="********">
+                                    <input type="password" class="form-control"
+                                           required id="password" name="password" th:field="*{password}"
+                                           placeholder="********">
+                                    <span class="position-absolute eye-icon" onclick="togglePasswordVisibility()">
+                                      <i id="togglePasswordIcon" class="fa fa-eye"></i>
+                                    </span>
                                 </div>
+
                             </div>
                         </div>
 
                         <div class="d-grid gap-2 form-action mb-4">
                             <button type="submit" class="btn btn-primary btn-lg btn-block">Đăng ký</button>
-                            <p class="mt-3 mb-0">Bạn đã có tài khoản? <a class="text-info text-center" th:href="${'/login'}">Đăng nhập?</a></p>
+                            <p class="mt-3 mb-0">Bạn đã có tài khoản? <a class="text-info text-center"
+                                                                         th:href="${'/login'}">Đăng nhập?</a></p>
                         </div>
                     </form>
                 </div>
@@ -126,6 +165,22 @@
         const maxDate = yyyy + '-' + mm + '-' + dd;
         document.getElementById('ngaySinh').setAttribute('max', maxDate);
     });
+</script>
+<script>
+    function togglePasswordVisibility() {
+        const passwordInput = document.getElementById("password");
+        const toggleIcon = document.getElementById("togglePasswordIcon");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            toggleIcon.classList.remove("fa-eye");
+            toggleIcon.classList.add("fa-eye-slash");
+        } else {
+            passwordInput.type = "password";
+            toggleIcon.classList.remove("fa-eye-slash");
+            toggleIcon.classList.add("fa-eye");
+        }
+    }
 </script>
 </body>
 </html>

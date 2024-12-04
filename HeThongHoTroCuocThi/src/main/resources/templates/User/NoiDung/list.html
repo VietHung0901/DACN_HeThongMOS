@@ -28,8 +28,9 @@
         <!-- Kiểm tra xem người dùng đã nộp bài hay chưa -->
         <div th:if="${phieuNopBaiService.findPhieuNopBaiByCuocThiIdAndNoiDungAndUser(cuocThiId, nd.noiDung, user) != null}">
 
+          <!--//copy thẻ a này để chuyển sang detail phiếu nộp cho user-->
           <a th:if="${phieuNopBaiService.findPhieuNopBaiByCuocThiIdAndNoiDungAndUser(cuocThiId, nd.noiDung, user).trangThai == 1}"
-             class="btn btn-primary" th:href="@{/User/CuocThis/details/{id}(id=${cuocThiId})}">Xem kết quả</a>
+             class="btn btn-primary" th:href="@{/User/PhieuNopBais/details/{id}/{cuocThiId}(id=${phieuNopBaiService.findPhieuNopBaiByCuocThiIdAndNoiDungAndUser(cuocThiId, nd.noiDung, user).id}, cuocThiId=${cuocThiId})}">Xem kết quả</a>
 
           <label th:if="${phieuNopBaiService.findPhieuNopBaiByCuocThiIdAndNoiDungAndUser(cuocThiId, nd.noiDung, user).trangThai == 0}">Đang chấm</label>
 

@@ -7,6 +7,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -112,11 +115,17 @@ public class CuocThiController {
     }
 
     @GetMapping("/quy-dinh/{id}")
-    public String viewQuyDinh(@PathVariable Long id, Model model) {
-        List<ChiTietQuyDinh> chiTietQuyDinhs = CTQDService.getChiTietQuyDinhsByCuocThiId(id);
-        model.addAttribute("chiTietQuyDinhs", chiTietQuyDinhs);
-        model.addAttribute("quyDinhId", id);
-        return "/User/QuyDinh/list"; // Đường dẫn tới trang quy định
+    public String viewQuyDinh(@PathVariable Long id,
+                              @RequestParam(defaultValue = "0") int page,
+                              @RequestParam(defaultValue = "1") int size,
+                              Model model) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<ChiTietQuyDinh> chiTietQuyDinhsPage = CTQDService.getChiTietQuyDinhsByCuocThiId(id, pageable);
+
+        model.addAttribute("chiTietQuyDinhsPage", chiTietQuyDinhsPage);
+        model.addAttribute("cuocThiId", id);
+        return "/User/CuocThi/quyDinh";
     }
 
     @GetMapping("/noi-dung/{id}")

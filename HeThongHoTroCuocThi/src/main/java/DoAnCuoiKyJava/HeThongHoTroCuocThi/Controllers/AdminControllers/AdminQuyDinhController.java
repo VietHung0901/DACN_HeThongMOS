@@ -7,6 +7,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +30,7 @@ public class AdminQuyDinhController {
     @GetMapping("/id/{id}")
     public String showQuyDinh(@PathVariable Long id, @NotNull Model model) {
         QuyDinh quyDinh = quyDinhService.getQuyDinhById(id).orElseThrow(() -> new EntityNotFoundException(""));
+
         model.addAttribute("quyDinh", quyDinh);
         return "/Admin/QuyDinh/detail";
     }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>Quy định cuộc thi</title>
+    <title>Quy Định Cuộc Thi</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
@@ -9,8 +9,7 @@
 <div class="container" style="padding-top: 95px; padding-bottom: 15px;">
     <h1>Danh sách Quy định</h1>
     <div th:each="qd : ${chiTietQuyDinhs}">
-        <h3 th:text="${qd.quyDinh.tenQuyDinh}"></h3>
-        <div th:text="${qd.quyDinh.moTaQuyDinh}"></div>
+        <div th:utext="${qd.quyDinh.moTaQuyDinh}"></div>
     </div>
     <a href="#" class="btn btn-primary mt-3" th:href="@{/User/CuocThis/details/{id}(id=${quyDinhId})}">Trở về</a>
 </div>

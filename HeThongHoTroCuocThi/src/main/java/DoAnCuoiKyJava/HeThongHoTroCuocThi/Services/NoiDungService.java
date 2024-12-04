@@ -108,8 +108,8 @@ public class NoiDungService {
 
     public String saveFile(MultipartFile file) {
         // Xử lý lưu file vào thư mục cụ thể và trả về đường dẫn
-//        String uploadDir = "E:\\HeThongHoTroCuocThiJaVa\\HeThongHoTroCuocThi\\src\\main\\resources\\static\\uploads\\exercise";
-        String uploadDir = "/Users/tranviethung/Documents/Học tập/HeThongHoTroCuocThiJaVa/HeThongHoTroCuocThi/src/main/resources/static/uploads/exercise/";
+          String uploadDir = "F:\\DACN_HeThongMOS\\HeThongHoTroCuocThi\\src\\main\\resources\\static\\uploads\\exercise\\";
+        /*String uploadDir = "/Users/tranviethung/Documents/Học tập/HeThongHoTroCuocThiJaVa/HeThongHoTroCuocThi/src/main/resources/static/uploads/exercise/";*/
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
         try {

@@ -7,6 +7,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -261,4 +264,22 @@ public class AdminCuocThiController {
         model.addAttribute("phieuDangKyService", phieuDangKyService);
         return "/Admin/CuocThi/list";
     }
+
+    @GetMapping("/quy-dinh/{id}")
+    public String viewQuyDinh(@PathVariable Long id,
+                              @RequestParam(defaultValue = "0") int page,
+                              @RequestParam(defaultValue = "1") int size,
+                              Model model) {
+        Pageable pageable = PageRequest.of(page, size); // Khởi tạo phân trang với mỗi trang có 1 quy định
+
+        // Lấy danh sách các ChiTietQuyDinh với phân trang
+        Page<ChiTietQuyDinh> chiTietQuyDinhsPage = CTQDService.getChiTietQuyDinhsByCuocThiId(id, pageable);
+
+        // Thêm dữ liệu vào model để hiển thị trong view
+        model.addAttribute("chiTietQuyDinhsPage", chiTietQuyDinhsPage);
+        model.addAttribute("cuocThiId", id); // Truyền id của cuộc thi để dùng trong các liên kết phân trang
+        return "/Admin/CuocThi/quyDinh"; // Đường dẫn đến trang quy định
+    }
+
+
 }

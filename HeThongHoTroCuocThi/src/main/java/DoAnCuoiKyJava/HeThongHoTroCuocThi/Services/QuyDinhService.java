@@ -72,7 +72,7 @@ public class QuyDinhService {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
         // Đường dẫn lưu file
-        String uploadDir = "/Users/tranviethung/Documents/Học tập/DACN_HeThongMOS/HeThongHoTroCuocThi/src/main/resources/static/images/";
+        String uploadDir = "F:\\DACN_HeThongMOS\\HeThongHoTroCuocThi\\src\\main\\resources\\static\\images\\";
         Path filePath = Paths.get(uploadDir, fileName);
 
         try {

@@ -66,6 +66,6 @@ public class AdminPhieuDangKyController {
         model.addAttribute("listTruong", truongService.getAllTruongsHien());
         model.addAttribute("loaiTruongService", loaiTruongService);
         model.addAttribute("truongService", truongService);
-        return "/AdminPhieuDangKy/details";
+        return "/Admin/PhieuDangKy/details";
     }
 }

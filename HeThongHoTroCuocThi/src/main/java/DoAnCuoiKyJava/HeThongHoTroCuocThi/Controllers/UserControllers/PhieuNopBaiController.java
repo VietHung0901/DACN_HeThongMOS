@@ -61,4 +61,15 @@ public class PhieuNopBaiController {
         phieuNopBaiService.add(phieuNopBai, UrlFile);
         return "redirect:/User/CuocThis/noi-dung/" + cuocThiId;
     }
+
+    // c=copy controller này để chuyển đến details
+    @GetMapping("/details/{id}/{cuocThiId}")
+    public String showNoiDung(@PathVariable Long id,
+                              @PathVariable Long cuocThiId,
+                              @NotNull Model model) {
+        PhieuNopBai phieuNopBai = phieuNopBaiService.findById(id).orElseThrow();
+        model.addAttribute("cuocThiId",cuocThiId);
+        model.addAttribute("phieuNopBai", phieuNopBai);
+        return "/User/PhieuNopBai/details";
+    }
 }

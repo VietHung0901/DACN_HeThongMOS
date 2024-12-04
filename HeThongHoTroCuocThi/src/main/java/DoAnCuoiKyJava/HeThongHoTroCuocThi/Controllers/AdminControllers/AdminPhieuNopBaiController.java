@@ -6,10 +6,17 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Controller
@@ -55,4 +62,23 @@ public class AdminPhieuNopBaiController {
 //        else
 //            return "redirect:/Manager/PhieuSuaDiems/ThatBai";
 //    }
+
+    @GetMapping("/preview/{id}")
+    public ResponseEntity<Resource> previewFile(@PathVariable Long id) {
+        try {
+            System.out.println("Preview file ID: " + id);
+            PhieuNopBai phieuNopBai = phieuNopBaiService.findById(id).orElseThrow();
+            Path filePath = Paths.get("uploads").resolve(phieuNopBai.getFileUrl()).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+            if (!resource.exists()) {
+                throw new RuntimeException("File not found");
+            }
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + phieuNopBai.getFileUrl() + "\"")
+                    .body(resource);
+        } catch (MalformedURLException e) {
+            throw new RuntimeException("Error resolving file URL", e);
+        }
+    }
+
 }

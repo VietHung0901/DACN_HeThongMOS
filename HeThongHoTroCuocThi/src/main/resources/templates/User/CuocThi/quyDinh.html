@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Quy Định Cuộc Thi</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+</head>
+<body>
+<th:block th:replace="~{layout::header}"></th:block>
+<div style="margin-left: 150px; padding: 95px;">
+    <h1>Danh sách Quy định</h1>
+    <div class="card mb-3">
+        <div class="row no-gutters">
+            <div class="col-md-12">
+                <div class="card-body">
+                    <div th:each="qd : ${chiTietQuyDinhsPage.content}">
+                        <p class="card-text" th:utext="${qd.quyDinh.moTaQuyDinh}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pagination">
+        <a class="btn btn-secondary" th:if="${chiTietQuyDinhsPage.hasPrevious()}"
+           th:href="@{/User/CuocThis/quy-dinh/{id}(id=${cuocThiId}, page=${chiTietQuyDinhsPage.number - 1})}">Trước</a>
+        <span class="current-page">
+            Trang <span th:text="${chiTietQuyDinhsPage.number + 1}"></span> /
+            <span th:text="${chiTietQuyDinhsPage.totalPages}"></span>
+        </span>
+        <a class="btn btn-secondary" th:if="${chiTietQuyDinhsPage.hasNext()}"
+           th:href="@{/User/CuocThis/quy-dinh/{id}(id=${cuocThiId}, page=${chiTietQuyDinhsPage.number + 1})}">Sau</a>
+    </div>
+
+    <a href="#" class="btn btn-primary mt-3" th:href="@{/User/CuocThis/details/{id}(id=${cuocThiId})}">Trở về</a>
+</div>
+
+<th:block th:replace="~{layout::footerAdmin}"></th:block>
+</body>
+</html>

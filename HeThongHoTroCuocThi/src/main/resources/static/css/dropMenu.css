@@ -1,0 +1,152 @@
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Style the submenu */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%; /* Position below the main link */
+    left: 0;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+/* Style for each submenu link */
+.dropdown-item {
+    color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-item:hover {
+    background-color: #f1f1f1;
+}
+
+/* Show submenu on hover */
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+/*.btn {*/
+/*    border-radius: 20px; !* Border radius chung *!*/
+/*    font-weight: bold;*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    gap: 5px;*/
+/*    transition: all 0.3s ease;*/
+/*}*/
+
+/*.btn-group .btn:hover {*/
+/*    transform: scale(1.05);*/
+/*    color: black;*/
+/*}*/
+
+/*!* Nút Xem - Kích thước nhỏ hơn *!*/
+/*.btn-primary.btn-sm {*/
+/*    font-size: 12px;*/
+/*    padding: 5px 10px;*/
+/*    border-radius: 20px;*/
+/*}*/
+
+/*.btn-primary.btn-sm i {*/
+/*    font-size: 12px;*/
+/*}*/
+
+/*.btn-warning i {*/
+/*    transition: transform 0.3s ease;*/
+/*}*/
+
+/*.btn-warning:hover i {*/
+/*    animation: spin-clock 1s linear infinite;*/
+/*}*/
+
+/*@keyframes spin-clock {*/
+/*    from {*/
+/*        transform: rotate(0deg);*/
+/*    }*/
+/*    to {*/
+/*        transform: rotate(360deg);*/
+/*    }*/
+/*}*/
+
+/*!* 2. Thành công - Lắc nhẹ *!*/
+/*.btn-success i {*/
+/*    transition: transform 0.3s ease;*/
+/*}*/
+
+/*.btn-success:hover i {*/
+/*    animation: shake-success 0.5s ease;*/
+/*}*/
+
+/*@keyframes shake-success {*/
+/*    0%, 100% {*/
+/*        transform: translateX(0);*/
+/*    }*/
+/*    25% {*/
+/*        transform: translateX(-5px);*/
+/*    }*/
+/*    50% {*/
+/*        transform: translateX(5px);*/
+/*    }*/
+/*    75% {*/
+/*        transform: translateX(-5px);*/
+/*    }*/
+/*}*/
+
+/*!* 3. Thất bại - Phóng to thu nhỏ *!*/
+/*.btn-danger i {*/
+/*    transition: transform 0.3s ease;*/
+/*}*/
+
+/*.btn-danger:hover i {*/
+/*    animation: pulse-fail 0.6s ease infinite;*/
+/*}*/
+
+/*@keyframes pulse-fail {*/
+/*    0%, 100% {*/
+/*        transform: scale(1);*/
+/*    }*/
+/*    50% {*/
+/*        transform: scale(1.2);*/
+/*    }*/
+/*}*/
+
+/*!* Bảng *!*/
+/*.table {*/
+/*    background-color: #fff;*/
+/*    border-radius: 8px;*/
+/*    overflow: hidden;*/
+/*    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
+/*}*/
+
+/*.table th {*/
+/*    background-color: #007bff;*/
+/*    color: white;*/
+/*}*/
+
+/*.table tbody tr:hover {*/
+/*    background-color: #f1f1f1;*/
+/*}*/
+
+/*!* Nút Action *!*/
+/*.btn-sm {*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*    transition: all 0.3s ease;*/
+/*    gap: 5px;*/
+/*}*/
+
+/*.btn-sm:hover {*/
+/*    transform: scale(1.05);*/
+/*    color: black;*/
+/*}*/
+
+/*.btn-success {*/
+/*    border-radius: 20px;*/
+/*}*/
