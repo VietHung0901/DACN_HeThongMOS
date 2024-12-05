@@ -263,7 +263,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link mx-1" href="/ADMIN_SCHOOL/import-students"
-                           style="text-decoration: none; color: #fff; font-size: 1rem; font-weight: 500;">Tải thí
+                           style="text-decoration: none; color: #fff; font-size: 1rem; font-weight: 500;">Đăng thí
                             sinh</a>
                     </li>
                     <li class="nav-item">
@@ -294,13 +294,81 @@
 </div>
 
 <div th:fragment="footer"
-     style="background-color: #333; color: #fff; text-align: center; padding: 10px; bottom: 0; width: 100%;">
-    <p>© 2024 Trang Quản Trị. Đã đăng ký bản quyền.</p>
+     style="background: linear-gradient(90deg, #6a11cb, #2575fc); color: #fff; text-align: center; padding: 20px; position: relative; width: 100%; font-family: Arial, sans-serif;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+        <!-- Cột bên trái -->
+        <div style="flex: 1; text-align: left; margin-right: 20px;">
+            <div style="margin-bottom: 10px;">
+                <p><strong style="color: #fff;">Địa chỉ:</strong></p>
+                <p style="color: #fff;">Saigon Campus: 475A Điện Biên Phủ, Phường 25, Quận Bình Thạnh, TP.HCM</p>
+                <p style="color: #fff;">Ung Van Khiem Campus: 31/36 Ung Văn Khiêm, Phường 25, Quận Bình Thạnh,
+                    TP.HCM</p>
+                <p style="color: #fff;">Thu Duc Campus: Khu Công nghệ cao TP.HCM (SHTP), Xa lộ Hà Nội, Phường Hiệp Phú,
+                    TP. Thủ Đức, TP.HCM</p>
+                <p style="color: #fff;">Hitech Park Campus: Khu Công nghệ cao TP.HCM (SHTP), Phường Long Thạnh Mỹ, TP.
+                    Thủ Đức, TP.HCM.</p>
+            </div>
+        </div>
+
+        <!-- Dấu gạch ngang ngăn cách -->
+        <div style="border-left: 2px solid #fff; height: 100%; margin: 0 20px;"></div>
+
+        <!-- Cột bên phải -->
+        <div style="flex: 1; text-align: left;">
+            <div style="margin-bottom: 10px;">
+                <p><strong style="color: #fff;">Liên hệ:</strong></p>
+                <p style="color: #fff;">Hotline: 1900636929 </p>
+                <p style="color: #fff;">Email: <a href="mailto:moshung090103@gmail.com" style="color: #fff;">moshung090103@gmail.com</a>
+                </p>
+            </div>
+            <img th:src="@{~/imagesLogo/logo-footer.png}" alt="Đơn vị 12"
+                 style="max-width: 20%; height: auto; object-fit: contain;">
+        </div>
+    </div>
+
+    <!-- Thông tin bản quyền -->
+    <div style="margin-top: 10px;">
+        <p style="color: #fff;">© 2024 IIG Vietnam. Đã đăng ký bản quyền.</p>
+    </div>
 </div>
 
 <div th:fragment="footerAdmin"
-     style="background-color: #333; color: #fff; text-align: center; padding: 10px; position: fixed; bottom: 0; width: 100%;">
-    <p>© 2024 Trang Quản Trị. Đã đăng ký bản quyền.</p>
+     style="background: linear-gradient(90deg, #6a11cb, #2575fc); color: #fff; text-align: center; padding: 20px; position: relative; width: 100%; font-family: Arial, sans-serif;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+        <!-- Cột bên trái -->
+        <div style="flex: 1; text-align: left; margin-right: 20px;">
+            <div style="margin-bottom: 10px;">
+                <p><strong style="color: #fff;">Địa chỉ:</strong></p>
+                <p style="color: #fff;">Saigon Campus: 475A Điện Biên Phủ, Phường 25, Quận Bình Thạnh, TP.HCM</p>
+                <p style="color: #fff;">Ung Van Khiem Campus: 31/36 Ung Văn Khiêm, Phường 25, Quận Bình Thạnh,
+                    TP.HCM</p>
+                <p style="color: #fff;">Thu Duc Campus: Khu Công nghệ cao TP.HCM (SHTP), Xa lộ Hà Nội, Phường Hiệp Phú,
+                    TP. Thủ Đức, TP.HCM</p>
+                <p style="color: #fff;">Hitech Park Campus: Khu Công nghệ cao TP.HCM (SHTP), Phường Long Thạnh Mỹ, TP.
+                    Thủ Đức, TP.HCM.</p>
+            </div>
+        </div>
+
+        <!-- Dấu gạch ngang ngăn cách -->
+        <div style="border-left: 2px solid #fff; height: 100%; margin: 0 20px;"></div>
+
+        <!-- Cột bên phải -->
+        <div style="flex: 1; text-align: left;">
+            <div style="margin-bottom: 10px;">
+                <p><strong style="color: #fff;">Liên hệ:</strong></p>
+                <p style="color: #fff;">Hotline: 1900636929 </p>
+                <p style="color: #fff;">Email: <a href="mailto:moshung090103@gmail.com" style="color: #fff;">moshung090103@gmail.com</a>
+                </p>
+            </div>
+            <img th:src="@{~/imagesLogo/logo-footer.png}" alt="Đơn vị 12"
+                 style="max-width: 20%; height: auto; object-fit: contain;">
+        </div>
+    </div>
+
+    <!-- Thông tin bản quyền -->
+    <div style="margin-top: 10px;">
+        <p style="color: #fff;">© 2024 IIG Vietnam. Đã đăng ký bản quyền.</p>
+    </div>
 </div>
 
 <div th:fragment="footerAdminTruong"

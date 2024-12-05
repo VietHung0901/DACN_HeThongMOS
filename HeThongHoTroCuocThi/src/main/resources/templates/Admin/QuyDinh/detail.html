@@ -63,22 +63,22 @@
 </head>
 <body>
 <th:block th:replace="~{layout::headerAdmin}"></th:block>
+<div style="padding-bottom: 300px;">
+    <div class="container-detail" style="padding: 95px;">
+        <div class="card card-detail">
+            <div class="card-header">
+                Thông tin quy định
+            </div>
+            <div class="card-body">
+                <p class="card-text" th:utext="${quyDinh.moTaQuyDinh}"></p>
+            </div>
+        </div>
 
-<div class="container-detail" style="padding: 95px;">
-    <div class="card card-detail">
-        <div class="card-header">
-            Thông tin quy định
-        </div>
-        <div class="card-body">
-            <p class="card-text" th:utext="${quyDinh.moTaQuyDinh}"></p>
-        </div>
+        <a th:href="@{/Admin/QuyDinhs}" class="btn btn-back">
+            <i class="fas fa-arrow-left"></i> Trở về
+        </a>
     </div>
-
-    <a th:href="@{/Admin/QuyDinhs}" class="btn btn-back">
-        <i class="fas fa-arrow-left"></i> Trở về
-    </a>
 </div>
-
 <th:block th:replace="~{layout::footerAdmin}"></th:block>
 
 </body>

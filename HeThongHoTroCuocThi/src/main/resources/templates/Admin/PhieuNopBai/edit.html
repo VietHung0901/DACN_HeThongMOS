@@ -45,10 +45,10 @@
             font-weight: bold;
         }
 
-        .btn:hover{
-          transform: scale(1.05);
-          color: black;
-          font-weight: bold;
+        .btn:hover {
+            transform: scale(1.05);
+            color: black;
+            font-weight: bold;
         }
 
         .btn-primary {
@@ -95,45 +95,49 @@
 </head>
 <body>
 <th:block th:replace="~{layout::headerAdmin}"></th:block>
-<div class="container main-content" style="padding: 95px;">
-    <!-- Tiêu đề -->
-    <h1><i class="fas fa-pen"></i> CHẤM BÀI</h1>
+<div style="padding-bottom: 300px;">
+    <div class="container main-content" style="padding: 95px;">
+        <!-- Tiêu đề -->
+        <h1><i class="fas fa-pen"></i> CHẤM BÀI</h1>
 
-    <!-- Form Chấm Bài -->
-    <form th:action="@{/Admin/PhieuNopBais/edit}" th:object="${phieuNopBai}" method="post">
-        <!-- Hiển thị lỗi -->
-        <div th:if="${errorMessage != null}" class="alert alert-danger" th:text="${errorMessage}"
-             style="margin-bottom: 20px;"></div>
+        <!-- Form Chấm Bài -->
+        <form th:action="@{/Admin/PhieuNopBais/edit}" th:object="${phieuNopBai}" method="post">
+            <!-- Hiển thị lỗi -->
+            <div th:if="${errorMessage != null}" class="alert alert-danger" th:text="${errorMessage}"
+                 style="margin-bottom: 20px;"></div>
 
-        <input type="hidden" th:field="*{id}">
-        <input type="hidden" th:field="*{fileUrl}">
-        <input type="hidden" th:field="*{noiDung}">
-        <input type="hidden" th:field="*{user}">
-        <input type="hidden" th:field="*{cuocThiId}">
+            <input type="hidden" th:field="*{id}">
+            <input type="hidden" th:field="*{fileUrl}">
+            <input type="hidden" th:field="*{noiDung}">
+            <input type="hidden" th:field="*{user}">
+            <input type="hidden" th:field="*{cuocThiId}">
 
-        <!-- Nhận xét -->
-        <div class="form-group">
-            <label for="nhanXet">Nhận xét</label>
-            <textarea class="form-control" id="nhanXet" th:field="*{nhanXet}" rows="4" placeholder="Nhập nhận xét..."
-                      required></textarea>
-        </div>
+            <!-- Nhận xét -->
+            <div class="form-group">
+                <label for="nhanXet">Nhận xét</label>
+                <textarea class="form-control" id="nhanXet" th:field="*{nhanXet}" rows="4"
+                          placeholder="Nhập nhận xét..."
+                          required></textarea>
+            </div>
 
-        <!-- Điểm -->
-        <div class="form-group">
-            <label for="diem">Điểm</label>
-            <input type="number" class="form-control" id="diem" th:field="*{diem}" placeholder="Nhập điểm..." required>
-        </div>
+            <!-- Điểm -->
+            <div class="form-group">
+                <label for="diem">Điểm</label>
+                <input type="number" class="form-control" id="diem" th:field="*{diem}" placeholder="Nhập điểm..."
+                       required>
+            </div>
 
-        <!-- Nút Lưu và Quay lại -->
-        <div class="d-flex justify-content-between mt-4">
-            <a th:href="@{/Admin/PhieuNopBais/ChuaCham}" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Trở về
-            </a>
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-save"></i> Lưu
-            </button>
-        </div>
-    </form>
+            <!-- Nút Lưu và Quay lại -->
+            <div class="d-flex justify-content-between mt-4">
+                <a th:href="@{/Admin/PhieuNopBais/ChuaCham}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Trở về
+                </a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Lưu
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
 <th:block th:replace="~{layout::footerAdmin}"></th:block>
 </body>

@@ -102,31 +102,34 @@
 </head>
 <body>
 <th:block th:replace="~{layout::headerAdmin}"></th:block>
+<div style="padding-bottom: 300px;">
+    <div class="container-form" style="padding: 95px;">
+        <h1> Thêm Quy Định</h1>
+        <form th:action="@{/Admin/QuyDinhs/add}" th:object="${quyDinh}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="tenQuyDinh"><i class="fas fa-font icon"></i>Tên quy định</label>
+                <input type="text" class="form-control" id="tenQuyDinh" th:field="*{tenQuyDinh}" required>
+            </div>
+            <div class="form-group">
+                <label for="moTaQuyDinh"><i class="fas fa-align-left icon"></i>Mô tả nội dung</label>
+                <textarea class="form-control" name="moTaQuyDinh" id="moTaQuyDinh" th:field="*{moTaQuyDinh}"
+                          required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="imageUrl"><i class="fas fa-image icon"></i>Ảnh</label>
+                <input type="file" class="form-control-file" required id="imageUrl" onchange="previewImage()"
+                       th:field="*{imageUrl}">
+                <img id="preview-image" src="#" alt="Preview Image" style="display: none;">
+            </div>
 
-<div class="container-form" style="padding: 95px;">
-    <h1> Thêm Quy Định</h1>
-    <form th:action="@{/Admin/QuyDinhs/add}" th:object="${quyDinh}" method="post" enctype="multipart/form-data">
-        <div class="form-group">
-            <label for="tenQuyDinh"><i class="fas fa-font icon"></i>Tên quy định</label>
-            <input type="text" class="form-control" id="tenQuyDinh" th:field="*{tenQuyDinh}" required>
-        </div>
-        <div class="form-group">
-            <label for="moTaQuyDinh"><i class="fas fa-align-left icon"></i>Mô tả nội dung</label>
-            <textarea class="form-control" name="moTaQuyDinh" id="moTaQuyDinh" th:field="*{moTaQuyDinh}" required></textarea>
-        </div>
-        <div class="form-group">
-            <label for="imageUrl"><i class="fas fa-image icon"></i>Ảnh</label>
-            <input type="file" class="form-control-file" required id="imageUrl" onchange="previewImage()" th:field="*{imageUrl}">
-            <img id="preview-image" src="#" alt="Preview Image" style="display: none;">
-        </div>
-
-        <div class="d-flex justify-content-between">
-            <button type="submit" class="btn btn-primary"><i class="fas fa-save icon"></i>Tạo</button>
-            <a th:href="@{/Admin/QuyDinhs}" class="btn btn-secondary"><i class="fas fa-arrow-left icon"></i>Trở về</a>
-        </div>
-    </form>
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save icon"></i>Tạo</button>
+                <a th:href="@{/Admin/QuyDinhs}" class="btn btn-secondary"><i class="fas fa-arrow-left icon"></i>Trở
+                    về</a>
+            </div>
+        </form>
+    </div>
 </div>
-
 <th:block th:replace="~{layout::footerAdmin}"></th:block>
 
 <script th:src="@{/js/Register.js}"></script>

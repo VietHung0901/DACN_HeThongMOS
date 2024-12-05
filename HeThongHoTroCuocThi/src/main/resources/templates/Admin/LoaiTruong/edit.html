@@ -103,33 +103,33 @@
 </head>
 <body>
 <th:block th:replace="~{layout::headerAdmin}"></th:block>
+<div style="padding-bottom: 300px;">
+    <div class="form-container" style="padding: 95px;">
+        <h1>
+            <i class="fas fa-edit"></i> Sửa Loại Trường
+        </h1>
+        <form th:action="@{/Admin/LoaiTruongs/edit}" method="post" th:object="${loaiTruong}">
+            <!-- Trường ID ẩn -->
+            <input type="hidden" th:field="*{id}">
 
-<div class="form-container" style="padding: 95px;">
-    <h1>
-        <i class="fas fa-edit"></i> Sửa Loại Trường
-    </h1>
-    <form th:action="@{/Admin/LoaiTruongs/edit}" method="post" th:object="${loaiTruong}">
-        <!-- Trường ID ẩn -->
-        <input type="hidden" th:field="*{id}">
+            <!-- Nhập tên loại trường -->
+            <div class="form-group">
+                <label for="ten">Tên Loại Trường</label>
+                <input type="text" class="form-control" id="ten" th:field="*{tenLoaiTruong}" required>
+            </div>
 
-        <!-- Nhập tên loại trường -->
-        <div class="form-group">
-            <label for="ten">Tên Loại Trường</label>
-            <input type="text" class="form-control" id="ten" th:field="*{tenLoaiTruong}" required>
-        </div>
-
-        <!-- Nút lưu và trở về -->
-        <div class="d-flex justify-content-between mt-4">
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-save"></i> Lưu
-            </button>
-            <a th:href="@{/Admin/LoaiTruongs}" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Trở về
-            </a>
-        </div>
-    </form>
+            <!-- Nút lưu và trở về -->
+            <div class="d-flex justify-content-between mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Lưu
+                </button>
+                <a th:href="@{/Admin/LoaiTruongs}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Trở về
+                </a>
+            </div>
+        </form>
+    </div>
 </div>
-
 <th:block th:replace="~{layout::footerAdmin}"></th:block>
 </body>
 </html>

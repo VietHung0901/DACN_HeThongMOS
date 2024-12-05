@@ -35,7 +35,7 @@
 </head>
 <body style="background: #f6f7fc;">
 <th:block th:replace="~{layout :: header}"></th:block>
-<div class="container" style="padding-top: 95px;">
+<div class="container" style="padding-top: 95px; padding-bottom: 80px;">
     <div class="row justify-content-center align-items-center h-100">
         <div class="col-12 col-lg-6 col-md-8 col-xl-5">
             <div class="card shadow" style="border-radius: 1rem;">
@@ -86,7 +86,7 @@
         </div>
     </div>
 </div>
-
+<th:block th:replace="~{layout :: footer}"></th:block>
 <script>
     function togglePasswordVisibility() {
         const passwordInput = document.getElementById("password");

@@ -89,54 +89,61 @@
 <body>
 <th:block th:replace="~{layout::headerAdmin}"></th:block>
 
-<div class="container-form" style="padding: 95px;">
-    <h1><i class="fas fa-edit icon"></i>SỬA NỘI DUNG</h1>
-    <form th:action="@{/Admin/NoiDungs/edit}" th:object="${noiDung}" method="post" enctype="multipart/form-data">
-        <!-- Thông báo lỗi -->
-        <div th:if="${errorMessage != null}" class="alert alert-danger" th:text="${errorMessage}"></div>
+<div style="padding-bottom: 300px;">
+    <div class="container-form" style="padding: 95px;">
+        <h1><i class="fas fa-edit icon"></i>SỬA NỘI DUNG</h1>
+        <form th:action="@{/Admin/NoiDungs/edit}" th:object="${noiDung}" method="post" enctype="multipart/form-data">
+            <!-- Thông báo lỗi -->
+            <div th:if="${errorMessage != null}" class="alert alert-danger" th:text="${errorMessage}"></div>
 
-        <!-- ID Ẩn -->
-        <input type="hidden" th:field="*{id}">
+            <!-- ID Ẩn -->
+            <input type="hidden" th:field="*{id}">
 
-        <!-- Tên Nội Dung -->
-        <div class="form-group">
-            <label for="tenNoiDung"><i class="fas fa-font icon"></i>Tên Nội Dung</label>
-            <input type="text" class="form-control" id="tenNoiDung" th:field="*{tenNoiDung}" placeholder="Nhập tên nội dung" required>
-        </div>
-
-        <!-- Mô Tả Nội Dung -->
-        <div class="form-group">
-            <label for="moTaNoiDung"><i class="fas fa-align-left icon"></i>Mô Tả Nội Dung</label>
-            <textarea class="form-control" id="moTaNoiDung" th:field="*{moTaNoiDung}" placeholder="Nhập mô tả nội dung"></textarea>
-        </div>
-
-        <!-- Ảnh -->
-        <div class="form-group">
-            <label for="imageUrl"><i class="fas fa-image icon"></i>Ảnh</label>
-            <input type="hidden" class="form-control form-control-lg" id="imageUrlText" th:field="*{imageUrl}">
-            <input type="file" class="form-control form-control-lg" id="imageUrl" onchange="previewImage()" name="imageUrlFile">
-            <img id="preview-image" th:src="@{${noiDung.imageUrl}}" alt="Preview Image" class="img-fluid">
-        </div>
-
-        <div class="form-group">
-            <label for="fileBaiTap"><i class="fas fa-file icon"></i>File bài tập</label>
-            <div>
-                <a th:href="@{${noiDung.fileBaiTapUrl}}" target="_blank" class="btn btn-link p-0" th:if="${noiDung.fileBaiTapUrl != null}">
-                    <i class="fas fa-download"></i> Xem file bài tập hiện tại
-                </a>
+            <!-- Tên Nội Dung -->
+            <div class="form-group">
+                <label for="tenNoiDung"><i class="fas fa-font icon"></i>Tên Nội Dung</label>
+                <input type="text" class="form-control" id="tenNoiDung" th:field="*{tenNoiDung}"
+                       placeholder="Nhập tên nội dung" required>
             </div>
-            <input type="file" class="form-control-file" id="fileBaiTap" th:field="*{fileBaiTapUrl}" onchange="previewFile()" required>
 
-        </div>
+            <!-- Mô Tả Nội Dung -->
+            <div class="form-group">
+                <label for="moTaNoiDung"><i class="fas fa-align-left icon"></i>Mô Tả Nội Dung</label>
+                <textarea class="form-control" id="moTaNoiDung" th:field="*{moTaNoiDung}"
+                          placeholder="Nhập mô tả nội dung"></textarea>
+            </div>
 
-        <!-- Nút Lưu và Trở Về -->
-        <div class="d-flex justify-content-between">
-            <button type="submit" class="btn btn-primary"><i class="fas fa-save icon"></i>Lưu</button>
-            <a th:href="@{/Admin/NoiDungs}" class="btn btn-secondary"><i class="fas fa-arrow-left icon"></i>Trở về</a>
-        </div>
-    </form>
+            <!-- Ảnh -->
+            <div class="form-group">
+                <label for="imageUrl"><i class="fas fa-image icon"></i>Ảnh</label>
+                <input type="hidden" class="form-control form-control-lg" id="imageUrlText" th:field="*{imageUrl}">
+                <input type="file" class="form-control form-control-lg" id="imageUrl" onchange="previewImage()"
+                       name="imageUrlFile">
+                <img id="preview-image" th:src="@{${noiDung.imageUrl}}" alt="Preview Image" class="img-fluid">
+            </div>
+
+            <div class="form-group">
+                <label for="fileBaiTap"><i class="fas fa-file icon"></i>File bài tập</label>
+                <div>
+                    <a th:href="@{${noiDung.fileBaiTapUrl}}" target="_blank" class="btn btn-link p-0"
+                       th:if="${noiDung.fileBaiTapUrl != null}">
+                        <i class="fas fa-download"></i> Xem file bài tập hiện tại
+                    </a>
+                </div>
+                <input type="file" class="form-control-file" id="fileBaiTap" th:field="*{fileBaiTapUrl}"
+                       onchange="previewFile()" required>
+
+            </div>
+
+            <!-- Nút Lưu và Trở Về -->
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save icon"></i>Lưu</button>
+                <a th:href="@{/Admin/NoiDungs}" class="btn btn-secondary"><i class="fas fa-arrow-left icon"></i>Trở
+                    về</a>
+            </div>
+        </form>
+    </div>
 </div>
-
 <th:block th:replace="~{layout::footerAdmin}"></th:block>
 
 <script>

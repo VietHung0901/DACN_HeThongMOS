@@ -9,7 +9,7 @@
     <style>
         .form-container {
             background: linear-gradient(135deg, #f8f9fa, #ffffff);
-            padding: 30px;
+            padding: 95px;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             max-width: 800px;
@@ -83,31 +83,31 @@
 </head>
 <body>
 <th:block th:replace="~{layout::headerAdmin}"></th:block>
+<div style="padding-bottom: 300px;">
+    <div class="form-container">
+        <h1><i class="fas fa-edit"></i> Sửa Trường</h1>
 
-<div class="form-container">
-    <h1><i class="fas fa-edit"></i> Sửa Môn Thi</h1>
+        <!-- Thông báo thành công hoặc lỗi -->
+        <div th:if="${success}" class="alert alert-success" role="alert" th:text="${success}"></div>
+        <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
 
-    <!-- Thông báo thành công hoặc lỗi -->
-    <div th:if="${success}" class="alert alert-success" role="alert" th:text="${success}"></div>
-    <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
+        <form th:action="@{/Admin/Truongs/edit}" method="post" th:object="${truong}">
+            <input type="hidden" th:field="*{id}">
 
-    <form th:action="@{/Admin/MonThis/edit}" method="post" th:object="${monThi}">
-        <input type="hidden" th:field="*{id}">
+            <!-- Tên môn thi -->
+            <div class="form-group">
+                <label for="tenMonThi">Tên Trường</label>
+                <input type="text" class="form-control" id="tenTruong" th:field="*{tenTruong}" required>
+            </div>
 
-        <!-- Tên môn thi -->
-        <div class="form-group">
-            <label for="tenMonThi">Tên Môn Thi</label>
-            <input type="text" class="form-control" id="tenMonThi" th:field="*{tenMonThi}" required>
-        </div>
-
-        <!-- Nút Lưu và Trở về -->
-        <div class="form-group text-center">
-            <button type="submit" class="btn btn-submit"><i class="fas fa-save"></i> Lưu</button>
-            <a th:href="@{/Admin/MonThis}" class="btn btn-back"><i class="fas fa-arrow-left"></i> Trở về</a>
-        </div>
-    </form>
+            <!-- Nút Lưu và Trở về -->
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-submit"><i class="fas fa-save"></i> Lưu</button>
+                <a th:href="@{/Admin/Truongs}" class="btn btn-back"><i class="fas fa-arrow-left"></i> Trở về</a>
+            </div>
+        </form>
+    </div>
 </div>
-
 <th:block th:replace="~{layout::footerAdmin}"></th:block>
 </body>
 </html>

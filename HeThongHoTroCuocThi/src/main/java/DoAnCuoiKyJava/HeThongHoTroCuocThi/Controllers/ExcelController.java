@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -274,6 +275,23 @@ public class ExcelController {
             redirectAttributes.addFlashAttribute("error", "Đã xảy ra lỗi khi nhập: " + e.getMessage());
             return "redirect:/api/excel/import/form/pdk/cuocThiId/" + cuocThiId;
         }
+
+        for (String[] failRow : listFail) {
+            for (int j = 0; j < failRow.length; j++) {
+                if (j == 3) { // Cột index = 3
+                    try {
+                        double excelDate = Double.parseDouble(failRow[j]);
+                        // Chuyển đổi từ số ngày Excel sang Date
+                        LocalDate  date = LocalDate.of(1900, 1, 1).plusDays((long) excelDate - 2); // Trừ 2 ngày (1 cho Excel epoch + 1 do Excel sai sót)
+                        failRow[j] = date.toString(); // Định dạng lại theo yyyy-MM-dd
+                    } catch (NumberFormatException e) {
+                        failRow[j] = "Invalid Date"; // Nếu không phải số
+                    }
+                }
+            }
+        }
+
+
         redirectAttributes.addFlashAttribute("listFail", listFail);
         return "redirect:/api/excel/import/form/pdk/cuocThiId/" + cuocThiId;
     }

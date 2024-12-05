@@ -102,45 +102,46 @@
 </head>
 <body>
 <th:block th:replace="~{layout::headerAdmin}"></th:block>
+<div style="padding-bottom: 300px;">
+    <div class="container-form" style="padding: 95px;">
+        <h1><i class="fas fa-edit icon"></i>SỬA QUY ĐỊNH</h1>
+        <form th:action="@{/Admin/QuyDinhs/edit}" th:object="${quyDinh}" method="post" enctype="multipart/form-data">
+            <div th:if="${errorMessage != null}" class="alert alert-danger" th:each="errMsg : ${errorMessage}"
+                 th:text="${errMsg}" style="margin-top: 20px; margin-bottom: 20px;"></div>
+            <input type="hidden" th:field="*{id}">
 
-<div class="container-form" style="padding: 95px;">
-    <h1><i class="fas fa-edit icon"></i>SỬA QUY ĐỊNH</h1>
-    <form th:action="@{/Admin/QuyDinhs/edit}" th:object="${quyDinh}" method="post" enctype="multipart/form-data">
-        <div th:if="${errorMessage != null}" class="alert alert-danger" th:each="errMsg : ${errorMessage}"
-             th:text="${errMsg}" style="margin-top: 20px; margin-bottom: 20px;"></div>
-        <input type="hidden" th:field="*{id}">
+            <!-- Tên Quy Định -->
+            <div class="form-group">
+                <label for="tenQuyDinh"><i class="fas fa-font icon"></i>Tên Quy Định</label>
+                <input type="text" class="form-control" id="tenQuyDinh" th:field="*{tenQuyDinh}" required>
+            </div>
 
-        <!-- Tên Quy Định -->
-        <div class="form-group">
-            <label for="tenQuyDinh"><i class="fas fa-font icon"></i>Tên Quy Định</label>
-            <input type="text" class="form-control" id="tenQuyDinh" th:field="*{tenQuyDinh}" required>
-        </div>
+            <!-- Mô Tả Quy Định -->
+            <div class="form-group">
+                <label for="moTaQuyDinh"><i class="fas fa-align-left icon"></i>Mô Tả Quy Định</label>
+                <textarea class="form-control" name="moTaQuyDinh" id="moTaQuyDinh" th:field="*{moTaQuyDinh}"
+                          required></textarea>
+            </div>
 
-        <!-- Mô Tả Quy Định -->
-        <div class="form-group">
-            <label for="moTaQuyDinh"><i class="fas fa-align-left icon"></i>Mô Tả Quy Định</label>
-            <textarea class="form-control" name="moTaQuyDinh" id="moTaQuyDinh" th:field="*{moTaQuyDinh}"
-                      required></textarea>
-        </div>
+            <!-- Ảnh -->
+            <div class="form-group mb-4">
+                <label for="imageUrl"><i class="fas fa-image icon"></i>Ảnh</label>
+                <input type="hidden" class="form-control form-control-lg" id="imageUrlText" th:field="*{imageUrl}">
+                <input type="file" class="form-control form-control-lg" id="imageUrl" onchange="previewImage()"
+                       name="imageUrlFile">
+                <img id="preview-image" th:src="@{${quyDinh.imageUrl}}" alt="Preview Image" class="img-fluid mb-3"
+                     style="display: block;">
+            </div>
 
-        <!-- Ảnh -->
-        <div class="form-group mb-4">
-            <label for="imageUrl"><i class="fas fa-image icon"></i>Ảnh</label>
-            <input type="hidden" class="form-control form-control-lg" id="imageUrlText" th:field="*{imageUrl}">
-            <input type="file" class="form-control form-control-lg" id="imageUrl" onchange="previewImage()"
-                   name="imageUrlFile">
-            <img id="preview-image" th:src="@{${quyDinh.imageUrl}}" alt="Preview Image" class="img-fluid mb-3"
-                 style="display: block;">
-        </div>
-
-        <!-- Submit Button -->
-        <div class="d-flex justify-content-between">
-            <button type="submit" class="btn btn-primary"><i class="fas fa-save icon"></i>Lưu</button>
-            <a th:href="@{/Admin/QuyDinhs}" class="btn btn-secondary"><i class="fas fa-arrow-left icon"></i>Trở về</a>
-        </div>
-    </form>
+            <!-- Submit Button -->
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save icon"></i>Lưu</button>
+                <a th:href="@{/Admin/QuyDinhs}" class="btn btn-secondary"><i class="fas fa-arrow-left icon"></i>Trở
+                    về</a>
+            </div>
+        </form>
+    </div>
 </div>
-
 <th:block th:replace="~{layout::footerAdmin}"></th:block>
 
 <script th:src="@{/js/Register.js}"></script>

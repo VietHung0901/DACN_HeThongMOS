@@ -101,27 +101,27 @@
 </head>
 <body>
 <th:block th:replace="~{layout::headerAdmin}"></th:block>
-
-<div class="form-container" style="padding: 95px;">
-    <h1>
-        <i class="fas fa-book"></i> Thêm Môn Thi
-    </h1>
-    <form th:action="@{/Admin/MonThis/add}" th:object="${monThis}" method="post">
-        <div class="form-group">
-            <label for="tenMonThi">Tên Môn Thi</label>
-            <input type="text" id="tenMonThi" class="form-control" th:field="*{tenMonThi}" required>
-        </div>
-        <div class="text-center">
-            <button type="submit" class="btn btn-submit">
-                <i class="fas fa-plus-circle"></i> Tạo
-            </button>
-            <a th:href="@{/Admin/MonThis}" class="btn btn-back">
-                <i class="fas fa-arrow-left"></i> Trở về
-            </a>
-        </div>
-    </form>
+<div style="padding-bottom: 300px;">
+    <div class="form-container" style="padding: 95px;">
+        <h1>
+            <i class="fas fa-book"></i> Thêm Môn Thi
+        </h1>
+        <form th:action="@{/Admin/MonThis/add}" th:object="${monThis}" method="post">
+            <div class="form-group">
+                <label for="tenMonThi">Tên Môn Thi</label>
+                <input type="text" id="tenMonThi" class="form-control" th:field="*{tenMonThi}" required>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-submit">
+                    <i class="fas fa-plus-circle"></i> Tạo
+                </button>
+                <a th:href="@{/Admin/MonThis}" class="btn btn-back">
+                    <i class="fas fa-arrow-left"></i> Trở về
+                </a>
+            </div>
+        </form>
+    </div>
 </div>
-
 <th:block th:replace="~{layout::footerAdmin}"></th:block>
 </body>
 </html>

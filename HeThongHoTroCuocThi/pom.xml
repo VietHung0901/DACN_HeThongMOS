@@ -124,13 +124,6 @@
 			<version>1.16.1</version>
 		</dependency>
 
-		<!-- pom.xml -->
-	<!--	<dependency>
-			<groupId>com.cksource</groupId>
-			<artifactId>ckfinder3</artifactId>
-			<version>3.3.1</version>
-		</dependency>
--->
 	</dependencies>
 	<build>
 		<plugins>

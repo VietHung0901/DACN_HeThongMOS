@@ -164,7 +164,8 @@ public class UserService implements UserDetailsService {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
         // Đường dẫn lưu file
-        String uploadDir = "/Users/tranviethung/Documents/Học tập/DACN_HeThongMOS/HeThongHoTroCuocThi/src/main/resources/static/images/";
+        /*String uploadDir = "/Users/tranviethung/Documents/Học tập/DACN_HeThongMOS/HeThongHoTroCuocThi/src/main/resources/static/images/";*/
+        String uploadDir = "F:\\DACN_HeThongMOS\\HeThongHoTroCuocThi\\src\\main\\resources\\static\\images\\";
         Path filePath = Paths.get(uploadDir, fileName);
 
         try {
@@ -286,7 +287,7 @@ public class UserService implements UserDetailsService {
                         verificationTokenRepository.save(verificationToken);
 
                     } else {
-                        failedUsers.add(user); // Thêm vào danh sách thất bại
+                        failedUsers.add(user);
                     }
                 }
             }

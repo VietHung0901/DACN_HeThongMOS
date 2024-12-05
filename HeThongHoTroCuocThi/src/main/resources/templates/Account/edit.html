@@ -1,177 +1,3 @@
-<!--<!DOCTYPE html>-->
-<!--<html xmlns:th="http://www.thymeleaf.org"-->
-<!--      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>CHỈNH SỬA THÔNG TIN CÁ NHÂN</title>-->
-<!--    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">-->
-<!--    <th:block th:replace="~{layout::link-css}"></th:block>-->
-<!--    <th:block th:replace="~{layout::custom-css}"></th:block>-->
-<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">-->
-<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">-->
-<!--    <style>-->
-<!--        .card {-->
-<!--            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);-->
-<!--            border-radius: 10px;-->
-<!--            overflow: hidden;-->
-<!--        }-->
-
-<!--        .card .card-body {-->
-<!--            padding: 0.5rem;-->
-<!--        }-->
-
-<!--        .card-img {-->
-<!--            border-radius: 10px;-->
-<!--            max-width: 100%;-->
-<!--            height: auto;-->
-<!--        }-->
-
-<!--        .form-group {-->
-<!--            margin-bottom: 0.5rem;-->
-<!--        }-->
-
-<!--        .btn-primary {-->
-<!--            background-color: #007bff;-->
-<!--            border-color: #007bff;-->
-<!--            padding: 0.5rem 2rem;-->
-<!--            font-size: 1rem;-->
-<!--            border-radius: 5px;-->
-<!--        }-->
-
-<!--        .btn-primary:hover {-->
-<!--            background-color: #0056b3;-->
-<!--            border-color: #004085;-->
-<!--        }-->
-
-<!--        /* CSS cho container khi người dùng có quyền ADMIN hoặc MANAGER */-->
-<!--        .container {-->
-<!--            padding-top: 95px;-->
-<!--        }-->
-<!--        .admin-manager-container {-->
-<!--            margin-left: 200px;-->
-<!--            padding: 95px;-->
-<!--        }-->
-
-<!--    </style>-->
-<!--</head>-->
-<!--<body>-->
-<!--<th:block sec:authorize="hasAnyAuthority('ADMIN','MANAGER')" th:replace="~{layout::headerAdmin}"></th:block>-->
-<!--<th:block sec:authorize="!isAuthenticated() or hasAuthority('USER')" th:replace="~{layout::header}"></th:block>-->
-<!--<form th:action="@{/edit}" th:object="${user}" method="post" enctype="multipart/form-data">-->
-<!--    <div th:classappend="${#authorization.expression('hasAnyAuthority(''ADMIN'',''MANAGER'')') ? 'admin-manager-container' : ''}" class="container" >-->
-<!--        <div class="d-flex justify-content-between align-items-center mb-3">-->
-<!--            <h1 class="my-4">-->
-<!--                CHỈNH SỬA THÔNG TIN CÁ NHÂN-->
-<!--            </h1>-->
-<!--            <a class="btn btn-success mb-4" th:href="@{/User/ChangePassword}">Đổi mật khẩu</a>-->
-<!--        </div>-->
-
-<!--        &lt;!&ndash; Yêu cầi người dùng cập nhật lại thông tin cá nhân  &ndash;&gt;-->
-<!--        <div th:if="${user.trangThai == 2}" class="alert alert-danger">-->
-<!--            <span>Thông tin bạn cung cấp không chính xác. Vui lòng cập nhật lại.</span>-->
-<!--        </div>-->
-
-<!--        &lt;!&ndash; Kiểm tra và hiển thị thông báo thành công &ndash;&gt;-->
-<!--        <div th:if="${successMessage}" class="alert alert-success">-->
-<!--            <span th:text="${successMessage}"></span>-->
-<!--        </div>-->
-
-<!--        &lt;!&ndash; Kiểm tra và hiển thị thông báo lỗi &ndash;&gt;-->
-<!--        <div th:if="${error}" class="alert alert-danger">-->
-<!--            <span th:text="${error}"></span>-->
-<!--        </div>-->
-
-<!--        <div class="card" >-->
-<!--            <div class="row no-gutters">-->
-<!--                <div class="col-md-4 text-center p-4 border rounded shadow-sm">-->
-<!--                    <h4 class="mb-3">Ảnh Đại Diện</h4>-->
-<!--                    <div class="mb-3">-->
-<!--                        <img th:src="@{${user.imageUrl}}" class="img-fluid rounded-circle" id="profileImage" alt="Profile Image" style="width: 300px; height: 300px; object-fit: cover;">-->
-<!--                    </div>-->
-<!--                    <div class="form-group">-->
-<!--                        <label for="imageUrl" class="form-label" style="cursor: pointer; color: #0a53be">Thay đổi ảnh</label>-->
-<!--                        <input type="file" class="form-control" id="imageUrl" th:field="*{imageUrl}" onchange="previewImage(event)" style="display: none;" accept="image/*">-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--                <div class="col-md-8">-->
-<!--                    <div class="card-body">-->
-<!--                        <input type="hidden" th:field="*{id}">-->
-<!--                        <div class="form-group">-->
-<!--                            <label for="username">Username</label>-->
-<!--                            <input type="text" class="form-control" id="username" th:value="${user.username}" readonly>-->
-<!--                        </div>-->
-<!--                        <div class="form-group">-->
-<!--                            <label for="hoten">Họ tên</label>-->
-<!--                            <input type="text" class="form-control" id="hoten" th:field="*{hoten}"-->
-<!--                                   th:attr="readonly=${user.trangThai == 2 ? null : 'readonly'}">-->
-<!--                        </div>-->
-<!--                        <div class="form-group">-->
-<!--                            <label for="cccd">CCCD</label>-->
-<!--                            <input type="text" class="form-control" id="cccd" th:field="*{cccd}"-->
-<!--                                   th:attr="readonly=${user.trangThai == 2 ? null : 'readonly'}">-->
-<!--                        </div>-->
-<!--                        <div class="form-group">-->
-<!--                            <label for="ngaySinh">Ngày sinh</label>-->
-<!--                            <input type="date" class="form-control" id="ngaySinh" th:field="*{ngaySinh}" max="" required>-->
-<!--                        </div>-->
-<!--                        <div class="form-group">-->
-<!--                            <label for="email">Email</label>-->
-<!--                            <input type="email" class="form-control" id="email" th:field="*{email}"-->
-<!--                                   placeholder="Nhập địa chỉ email" title="Vui lòng nhập địa chỉ email hợp lệ">-->
-<!--&lt;!&ndash;                                   required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"&ndash;&gt;-->
-
-<!--                        </div>-->
-<!--                        <div class="form-group">-->
-<!--                            <label for="phone">Điện thoại</label>-->
-<!--                            <input type="tel" class="form-control" id="phone" th:field="*{phone}"-->
-<!--                                   pattern="\d{10}" title="Số điện thoại phải có đúng 10 chữ số"-->
-<!--                                   placeholder="Nhập số điện thoại" maxlength="10" required>-->
-<!--                        </div>-->
-<!--                        <div class="form-group">-->
-<!--                            <label for="truong">Trường</label>-->
-<!--                            <select class="form-control" id="truong" th:field="*{truong}">-->
-<!--                                <option th:each="truong : ${listTruong}" th:value="${truong.id}"-->
-<!--                                        th:text="${truong.tenTruong}"></option>-->
-<!--                            </select>-->
-<!--                        </div>-->
-<!--                        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</form>-->
-<!--<script>-->
-<!--&lt;!&ndash;    Đoạn script để đổi ảnh&ndash;&gt;-->
-<!--    function previewImage(event) {-->
-<!--        const reader = new FileReader();-->
-<!--        reader.onload = function () {-->
-<!--            const output = document.getElementById('profileImage');-->
-<!--            output.src = reader.result;-->
-<!--        };-->
-<!--        reader.readAsDataURL(event.target.files[0]);-->
-<!--    }-->
-<!--</script>-->
-<!--<script>-->
-<!--    // Thiết lập giá trị max cho input date là ngày hiện tại-->
-<!--    document.addEventListener('DOMContentLoaded', function () {-->
-<!--        const today = new Date();-->
-<!--        const dd = String(today.getDate()).padStart(2, '0'); // Ngày-->
-<!--        const mm = String(today.getMonth() + 1).padStart(2, '0'); // Tháng (Tháng bắt đầu từ 0)-->
-<!--        const yyyy = today.getFullYear(); // Năm-->
-
-<!--        // Định dạng ngày ở định dạng YYYY-MM-DD-->
-<!--        const maxDate = yyyy + '-' + mm + '-' + dd;-->
-<!--        document.getElementById('ngaySinh').setAttribute('max', maxDate);-->
-<!--    });-->
-<!--</script>-->
-<!--<script th:src="@{/js/bootstrap.min.js}"></script>-->
-<!--<script th:src="@{/js/jquery-3.7.0.min.js}"></script>-->
-<!--<th:block th:replace="~{layout::footerAdmin}"></th:block>-->
-<!--</body>-->
-<!--</html>-->
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
@@ -181,6 +7,9 @@
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Cropper.js CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
+
     <style>
         /* Reset mặc định */
         * {
@@ -301,69 +130,100 @@
     </style>
 </head>
 <body>
+
+
 <th:block sec:authorize="hasAnyAuthority('ADMIN','MANAGER')" th:replace="~{layout::headerAdmin}"></th:block>
 <th:block sec:authorize="!isAuthenticated() or hasAuthority('USER')" th:replace="~{layout::header}"></th:block>
-<div class="container" style="padding: 95px;">
+<div style="padding-bottom: 300px;">
+    <div class="container" style="padding: 95px;">
 
-    <form th:action="@{/edit}" th:object="${user}" method="post" enctype="multipart/form-data">
+        <form th:action="@{/edit}" th:object="${user}" method="post" enctype="multipart/form-data">
 
-        <div class="card p-4">
-            <div class="row">
-                <h1>CHỈNH SỬA THÔNG TIN CÁ NHÂN</h1>
-                <div class="col-md-4 text-center">
+            <div class="card p-4">
+                <div class="row">
+                    <h1>CHỈNH SỬA THÔNG TIN CÁ NHÂN</h1>
+                    <div class="col-md-4 text-center">
 
-                    <h4>Ảnh Đại Diện</h4>
-                    <img th:src="@{${user.imageUrl}}" class="img-fluid rounded-circle" id="profileImage"
-                         alt="Profile Image" style="width: 300px; height: 300px; object-fit: cover;">
-                    <label for="imageUrl" class="btn btn-primary mt-3">
-                        <i class="fas fa-upload"></i> Thay đổi ảnh
-                    </label>
-                    <input type="file" class="form-control d-none" id="imageUrl" th:field="*{imageUrl}"
-                           onchange="previewImage(event)" accept="image/*">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <input type="hidden" th:field="*{id}">
-                        <div class="form-group">
-                            <label for="username">Username</label>
-                            <input type="text" class="form-control" id="username" th:value="${user.username}" readonly>
+                        <h4>Ảnh Đại Diện</h4>
+                        <img th:src="@{${user.imageUrl}}" class="img-fluid rounded-circle" id="profileImage"
+                             alt="Profile Image" style="width: 300px; height: 300px; object-fit: cover;">
+                        <label for="imageUrl" class="btn btn-primary mt-3">
+                            <i class="fas fa-upload"></i> Thay đổi ảnh
+                        </label>
+                        <input type="file" class="form-control d-none" id="imageUrl" th:field="*{imageUrl}"
+                               onchange="previewImage(event)" accept="image/*">
+                    </div>
+                    <div class="modal fade" id="cropImageModal" tabindex="-1" aria-labelledby="cropImageModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="cropImageModalLabel">Cắt ảnh</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="image-container">
+                                        <img id="cropperImage" style="max-width: 100%; display: block;" alt="Crop Image">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                    <button type="button" class="btn btn-primary" id="cropImageButton">Cắt và Lưu</button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="hoten">Họ tên</label>
-                            <input type="text" class="form-control" id="hoten" th:field="*{hoten}">
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <input type="hidden" th:field="*{id}">
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" id="username" th:value="${user.username}"
+                                       readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="hoten">Họ tên</label>
+                                <input type="text" class="form-control" id="hoten" th:field="*{hoten}">
+                            </div>
+                            <div class="form-group">
+                                <label for="cccd">CCCD</label>
+                                <input type="text" class="form-control" id="cccd" th:field="*{cccd}">
+                            </div>
+                            <div class="form-group">
+                                <label for="ngaySinh">Ngày sinh</label>
+                                <input type="date" class="form-control" id="ngaySinh" th:field="*{ngaySinh}" max="">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" th:field="*{email}"
+                                       placeholder="Nhập địa chỉ email">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Điện thoại</label>
+                                <input type="tel" class="form-control" id="phone" th:field="*{phone}"
+                                       placeholder="Nhập số điện thoại">
+                            </div>
+                            <div class="form-group">
+                                <label for="truong">Trường</label>
+                                <select class="form-control custom-select" id="truong" th:field="*{truong}">
+                                    <option th:each="truong : ${listTruong}" th:value="${truong.id}"
+                                            th:text="${truong.tenTruong}"></option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-3">Lưu thay đổi</button>
                         </div>
-                        <div class="form-group">
-                            <label for="cccd">CCCD</label>
-                            <input type="text" class="form-control" id="cccd" th:field="*{cccd}">
-                        </div>
-                        <div class="form-group">
-                            <label for="ngaySinh">Ngày sinh</label>
-                            <input type="date" class="form-control" id="ngaySinh" th:field="*{ngaySinh}" max="">
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" th:field="*{email}"
-                                   placeholder="Nhập địa chỉ email">
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Điện thoại</label>
-                            <input type="tel" class="form-control" id="phone" th:field="*{phone}"
-                                   placeholder="Nhập số điện thoại">
-                        </div>
-                        <div class="form-group">
-                            <label for="truong">Trường</label>
-                            <select class="form-control custom-select" id="truong" th:field="*{truong}">
-                                <option th:each="truong : ${listTruong}" th:value="${truong.id}"
-                                        th:text="${truong.tenTruong}"></option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary mt-3">Lưu thay đổi</button>
                     </div>
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>
+<!-- Cropper.js JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/jquery-3.7.0.min.js}"></script>
+<th:block th:replace="~{layout::footerAdmin}"></th:block>
 <script>
     <!--    Đoạn script để đổi ảnh-->
     function previewImage(event) {
@@ -388,9 +248,57 @@
         document.getElementById('ngaySinh').setAttribute('max', maxDate);
     });
 </script>
-<script th:src="@{/js/bootstrap.min.js}"></script>
-<script th:src="@{/js/jquery-3.7.0.min.js}"></script>
-<th:block th:replace="~{layout::footerAdmin}"></th:block>
+
+<script>
+    let cropper; // Biến lưu trữ cropper instance
+
+    function previewImage(event) {
+        const input = event.target;
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const image = document.getElementById('cropperImage');
+                image.src = e.target.result;
+
+                // Hiển thị modal
+                const cropModal = new bootstrap.Modal(document.getElementById('cropImageModal'));
+                cropModal.show();
+
+                // Khởi tạo cropper khi ảnh đã load
+                image.onload = function () {
+                    if (cropper) {
+                        cropper.destroy(); // Xóa cropper cũ nếu đã tồn tại
+                    }
+                    cropper = new Cropper(image, {
+                        aspectRatio: 1, // Tỉ lệ khung hình (1:1 cho ảnh đại diện)
+                        viewMode: 2,
+                    });
+                };
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // Xử lý khi người dùng nhấn nút "Cắt và Lưu"
+    document.getElementById('cropImageButton').addEventListener('click', function () {
+        if (cropper) {
+            // Lấy ảnh đã cắt
+            const canvas = cropper.getCroppedCanvas({
+                width: 300,
+                height: 300,
+            });
+
+            // Hiển thị ảnh đã cắt (trong ảnh đại diện)
+            document.getElementById('profileImage').src = canvas.toDataURL();
+
+            // Đóng modal
+            const cropModal = bootstrap.Modal.getInstance(document.getElementById('cropImageModal'));
+            cropModal.hide();
+        }
+    });
+
+</script>
+
 </body>
 </html>
 

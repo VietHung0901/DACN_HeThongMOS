@@ -121,7 +121,7 @@
 <body>
 <th:block th:replace="~{layout:: headerAdmin}"></th:block>
 
-<div class="management-board" style="margin-left: 200px; padding: 95px;">
+<div class="management-board" style=" padding: 95px; padding-bottom: 300px;">
     <h1>BẢNG THỐNG KÊ</h1>
     <div class="card-container">
         <div class="card" style="cursor: pointer;">
@@ -165,7 +165,7 @@
 
     </canvas>
 </div>
-
+<th:block th:replace="~{layout::footer}"></th:block>
 <script th:inline="javascript">
     /*<![CDATA[*/
     var userCountsByLoaiTruong = /*[[${userCountsByLoaiTruong}]]*/ [];
@@ -257,6 +257,6 @@
         }
     });
 </script>
-<th:block th:replace="~{layout::footer}"></th:block>
+
 </body>
 </html>

@@ -237,7 +237,7 @@
 <body>
 <th:block th:replace="~{layout::headerAdmin}"></th:block>
 
-<div class="container" style="padding: 95px;">
+<div class="container" style="padding: 95px; padding-bottom: 300px;">
     <h1 class="my-4 text-center"><i class="fas fa-pen-to-square"></i> SỬA CUỘC THI</h1>
 
     <!-- Progress Bar -->
@@ -338,6 +338,7 @@
     </form>
 </div>
 
+<th:block th:replace="~{layout::footerAdmin}"></th:block>
 <script th:src="@{/js/TaoCuocThi.js}"></script>
 <script>
     function updateStepper(step) {

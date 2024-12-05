@@ -106,37 +106,39 @@
 <body>
 <th:block th:replace="~{layout::headerAdmin}"></th:block>
 
-<div class="form-container" style="padding: 95px;">
-    <h1>
-        <i class="fas fa-edit"></i> Sửa Môn Thi
-    </h1>
+<div style="padding-bottom: 300px;">
+    <div class="form-container" style="padding: 95px;">
+        <h1>
+            <i class="fas fa-edit"></i> Sửa Môn Thi
+        </h1>
 
-    <!-- Thông báo thành công hoặc lỗi -->
-    <div th:if="${success}" class="alert alert-success" role="alert" th:text="${success}"></div>
-    <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
+        <!-- Thông báo thành công hoặc lỗi -->
+        <div th:if="${success}" class="alert alert-success" role="alert" th:text="${success}"></div>
+        <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
 
-    <!-- Form chỉnh sửa môn thi -->
-    <form th:action="@{/Admin/MonThis/edit}" method="post" th:object="${monThi}">
-        <input type="hidden" th:field="*{id}">
+        <!-- Form chỉnh sửa môn thi -->
+        <form th:action="@{/Admin/MonThis/edit}" method="post" th:object="${monThi}">
+            <input type="hidden" th:field="*{id}">
 
-        <!-- Tên môn thi -->
-        <div class="form-group">
-            <label for="tenMonThi">Tên môn thi</label>
-            <input type="text" class="form-control" id="tenMonThi" th:field="*{tenMonThi}" placeholder="Nhập tên môn thi" required>
-        </div>
+            <!-- Tên môn thi -->
+            <div class="form-group">
+                <label for="tenMonThi">Tên môn thi</label>
+                <input type="text" class="form-control" id="tenMonThi" th:field="*{tenMonThi}"
+                       placeholder="Nhập tên môn thi" required>
+            </div>
 
-        <!-- Nút Lưu và Trở về -->
-        <div class="d-flex justify-content-between mt-4">
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-save"></i> Lưu
-            </button>
-            <a th:href="@{/Admin/MonThis}" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Trở về
-            </a>
-        </div>
-    </form>
+            <!-- Nút Lưu và Trở về -->
+            <div class="d-flex justify-content-between mt-4">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Lưu
+                </button>
+                <a th:href="@{/Admin/MonThis}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Trở về
+                </a>
+            </div>
+        </form>
+    </div>
 </div>
-
 <th:block th:replace="~{layout::footerAdmin}"></th:block>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

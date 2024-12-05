@@ -35,6 +35,7 @@ public class AdminSchoolController {
     public String importStudents(@RequestParam("file") MultipartFile file,
                                  RedirectAttributes redirectAttributes, Model model) {
         List<User> successfulUsers = new ArrayList<>();
+
         List<User> failedUsers = new ArrayList<>();
 
         try {
