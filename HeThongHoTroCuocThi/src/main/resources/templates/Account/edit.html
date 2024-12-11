@@ -54,7 +54,7 @@
 
         /* Ảnh đại diện */
         #profileImage {
-            border: 5px solid #0099ff;
+            border: 2px solid #0099ff;
             transition: transform 0.3s ease-in-out;
         }
 
@@ -127,6 +127,14 @@
         .custom-select {
             border-radius: 10px;
         }
+
+        #cropperImage {
+            max-width: 100%; /* Không vượt quá kích thước container */
+            max-height: 100%; /* Không vượt quá chiều cao container */
+            display: block; /* Đảm bảo ảnh được căn giữa */
+            margin: auto;
+        }
+
     </style>
 </head>
 <body>
@@ -145,14 +153,16 @@
                     <div class="col-md-4 text-center">
 
                         <h4>Ảnh Đại Diện</h4>
-                        <img th:src="@{${user.imageUrl}}" class="img-fluid rounded-circle" id="profileImage"
-                             alt="Profile Image" style="width: 300px; height: 300px; object-fit: cover;">
+                        <img th:src="@{${user.imageUrl}}" class="img-fluid " id="profileImage"
+                             alt="Profile Image" style="width: 113px; height: 151px; object-fit: cover;">
+                        </br>
                         <label for="imageUrl" class="btn btn-primary mt-3">
                             <i class="fas fa-upload"></i> Thay đổi ảnh
                         </label>
                         <input type="file" class="form-control d-none" id="imageUrl" th:field="*{imageUrl}"
                                onchange="previewImage(event)" accept="image/*">
                     </div>
+
                     <div class="modal fade" id="cropImageModal" tabindex="-1" aria-labelledby="cropImageModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
@@ -210,6 +220,13 @@
                                             th:text="${truong.tenTruong}"></option>
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="gender">Giới tính</label>
+                                <select class="form-control custom-select" id="gender" th:field="*{gender}">
+                                    <option value="0">Nam</option>
+                                    <option value="1">Nữ</option>
+                                </select>
+                            </div>
                             <button type="submit" class="btn btn-primary mt-3">Lưu thay đổi</button>
                         </div>
                     </div>
@@ -250,50 +267,69 @@
 </script>
 
 <script>
-    let cropper; // Biến lưu trữ cropper instance
+    let cropper; // Khai báo cropper toàn cục
 
     function previewImage(event) {
         const input = event.target;
+
         if (input.files && input.files[0]) {
+
+            if (input.files[0].size > 5 * 1024 * 1024) {
+                alert('Vui lòng chọn tệp nhỏ hơn 5MB.');
+                return; // Thoát hàm nếu tệp vượt quá giới hạn
+            }
+
             const reader = new FileReader();
+
             reader.onload = function (e) {
                 const image = document.getElementById('cropperImage');
-                image.src = e.target.result;
+                image.src = e.target.result; // Load ảnh mới
+
+                // Reset Cropper nếu đã có cropper trước đó
+                if (cropper) {
+                    cropper.destroy();
+                    cropper = null; // Xóa đối tượng cũ
+                }
 
                 // Hiển thị modal
                 const cropModal = new bootstrap.Modal(document.getElementById('cropImageModal'));
                 cropModal.show();
 
-                // Khởi tạo cropper khi ảnh đã load
+                // Khởi tạo Cropper khi ảnh đã load
                 image.onload = function () {
-                    if (cropper) {
-                        cropper.destroy(); // Xóa cropper cũ nếu đã tồn tại
-                    }
                     cropper = new Cropper(image, {
-                        aspectRatio: 1, // Tỉ lệ khung hình (1:1 cho ảnh đại diện)
-                        viewMode: 2,
+                        aspectRatio: 3 / 4, // Tỉ lệ khung hình 3:4
+                        viewMode: 2, // Chế độ xem đảm bảo không vỡ ảnh
+                        scalable: true, // Cho phép phóng to/thu nhỏ
+                        zoomable: true, // Cho phép zoom
+                        background: false, // Loại bỏ nền đen để dễ nhìn hơn
                     });
                 };
             };
-            reader.readAsDataURL(input.files[0]);
+
+            reader.readAsDataURL(input.files[0]); // Đọc tệp ảnh để hiển thị
         }
     }
 
     // Xử lý khi người dùng nhấn nút "Cắt và Lưu"
     document.getElementById('cropImageButton').addEventListener('click', function () {
         if (cropper) {
-            // Lấy ảnh đã cắt
+            // Lấy ảnh đã cắt dưới dạng canvas
             const canvas = cropper.getCroppedCanvas({
-                width: 300,
-                height: 300,
+                width: 300, // Đặt kích thước đầu ra
+                height: 400, // Tương ứng tỉ lệ 3:4
             });
 
-            // Hiển thị ảnh đã cắt (trong ảnh đại diện)
+            // Hiển thị ảnh đã cắt vào vùng ảnh đại diện
             document.getElementById('profileImage').src = canvas.toDataURL();
 
             // Đóng modal
             const cropModal = bootstrap.Modal.getInstance(document.getElementById('cropImageModal'));
             cropModal.hide();
+
+            // Xóa cropper để sẵn sàng cho lần chọn ảnh tiếp theo
+            cropper.destroy();
+            cropper = null;
         }
     });
 

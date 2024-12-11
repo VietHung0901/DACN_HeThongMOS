@@ -34,14 +34,14 @@ public class UserController {
 
     @GetMapping("/login")
     public String login() {
-        return "/Account/login";
+        return "Account/login";
     }
 
     @GetMapping("/register")
     public String register(@NotNull Model model) {
         model.addAttribute("user", new UserCreateRequest());
         model.addAttribute("listTruong", truongService.getAllTruongsHien());
-        return "/Account/register";
+        return "Account/register";
     }
 
     @PostMapping("/register")
@@ -56,7 +56,7 @@ public class UserController {
                     .toArray(String[]::new);
             model.addAttribute("errors", errors);
             model.addAttribute("listTruong", truongService.getAllTruongsHien());
-            return "/Account/register";
+            return "Account/register";
         }
 
         String ketQua = userService.checkUser(userRequest);
@@ -64,7 +64,7 @@ public class UserController {
             model.addAttribute("error", ketQua);
             model.addAttribute("user", userRequest);
             model.addAttribute("listTruong", truongService.getAllTruongsHien());
-            return "/Account/register";
+            return "Account/register";
         }
         userService.createNewUser(userRequest);
 
@@ -86,7 +86,7 @@ public class UserController {
         User user = userService.findByUsername(username);
         model.addAttribute("user", user);
         model.addAttribute("listTruong", truongService.getAllTruongsHien());
-        return "/Account/edit";
+        return "Account/edit";
     }
 
     @PostMapping("/edit")
@@ -106,26 +106,26 @@ public class UserController {
     @GetMapping("/list/ThanhCong")
     public String showAllUser(@NotNull Model model) {
         model.addAttribute("users", userService.getAllUsersByTrangThai(1));
-        return "/Account/list";
+        return "Account/list";
     }
 
     @GetMapping("/list/ChuaDuyet")
     public String showAllUserChuaDuyet(@NotNull Model model) {
         model.addAttribute("users", userService.getAllUsersByTrangThai(0));
-        return "/Account/list";
+        return "Account/list";
     }
 
     @GetMapping("/list/ThatBai")
     public String showAllUserThatBai(@NotNull Model model) {
         model.addAttribute("users", userService.getAllUsersByTrangThai(2));
-        return "/Account/list";
+        return "Account/list";
     }
 
     @GetMapping("/id/{id}")
     public String showUser(@PathVariable Long id, @NotNull Model model) {
         User user = userService.findById(id);
         model.addAttribute("user", user);
-        return "/Account/detail";
+        return "Account/detail";
     }
 
     @GetMapping("/KhongDuyet/{id}")
@@ -149,7 +149,7 @@ public class UserController {
         String username = principal.getName();
         User user = userService.findByUsername(username);
         model.addAttribute("user", user);
-        return "/Account/changePassword";
+        return "Account/changePassword";
     }
 
     @PostMapping("/ChangePassword")
@@ -186,7 +186,7 @@ public class UserController {
     //    **************************************************************
     @GetMapping("/gmailForgotPassword")
     public String ForgotPassword() {
-        return "/Account/gmailForgotPassWord";
+        return "Account/gmailForgotPassWord";
     }
 
     @PostMapping("/User/forgotPassword")
@@ -218,7 +218,7 @@ public class UserController {
         if (!newPassword.equals(confirmPassword)) {
             model.addAttribute("user", user);
             model.addAttribute("error", "Mật khẩu mới và mật khẩu xác nhận không khớp.");
-            return "/Account/forgotPassword";
+            return "Account/forgotPassword";
         }
 
         // Cập nhật mật khẩu mới

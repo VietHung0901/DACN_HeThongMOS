@@ -1,9 +1,6 @@
 package DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities;
 
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Validators.annotations.ValidUsername;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -18,8 +15,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
+
 @Getter
 @Setter
 @ToString
@@ -68,6 +65,9 @@ public class User implements UserDetails {
 
     @Column(name = "imageUrl")
     private String imageUrl;
+
+    @Column(name = "gender")
+    private Integer gender;
 
     private int trangThai;
 

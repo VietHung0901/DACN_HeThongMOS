@@ -25,19 +25,19 @@ public class ManagerPhieuSuaDiemController {
     @GetMapping
     public String showAllPhieuSuaDiemChuaDuyet(@NotNull Model model) {
         model.addAttribute("phieuSuaDiems", phieuSuaDiemService.findPhieuSuaDiemsByTrangThai(2));
-        return "/Manager/PhieuSuaDiem/list";
+        return "Manager/PhieuSuaDiem/list";
     }
 
     @GetMapping("/ThanhCong")
     public String showAllPhieuSuaDiemThanhCong(@NotNull Model model) {
         model.addAttribute("phieuSuaDiems", phieuSuaDiemService.findPhieuSuaDiemsByTrangThai(1));
-        return "/Manager/PhieuSuaDiem/list";
+        return "Manager/PhieuSuaDiem/list";
     }
 
     @GetMapping("/ThatBai")
     public String showAllPhieuSuaDiemThatBai(@NotNull Model model) {
         model.addAttribute("phieuSuaDiems", phieuSuaDiemService.findPhieuSuaDiemsByTrangThai(0));
-        return "/Manager/PhieuSuaDiem/list";
+        return "Manager/PhieuSuaDiem/list";
     }
 
     @GetMapping("/psd/id/{id}")

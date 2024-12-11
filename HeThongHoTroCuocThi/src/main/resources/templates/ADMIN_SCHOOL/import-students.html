@@ -95,7 +95,7 @@
                 </div>
                 <div class="card-body p-4">
                     <div class="table-responsive">
-                        <table class="table table-hover table-striped text-center">
+                        <table class="table table-hover table-striped text-center" id="previewTable">
                             <thead class="table-primary">
                             <tr>
                                 <th>CCCD</th>
@@ -104,6 +104,7 @@
                                 <th>SĐT</th>
                                 <th>Trường</th>
                                 <th>Ngày Sinh</th>
+                                <th>Giới Tính</th>
                                 <th>Trạng Thái</th>
                             </tr>
                             </thead>
@@ -135,6 +136,7 @@
                                 <th>SĐT</th>
                                 <th>Trường</th>
                                 <th>Ngày Sinh</th>
+                                <th>Giới Tính</th>
                                 <th>Lý Do</th>
                                 <th>Thao Tác</th>
                             </tr>
@@ -147,6 +149,7 @@
                                 <td th:text="${user.phone}"></td>
                                 <td th:text="${user.truong.tenTruong}"></td>
                                 <td th:text="${user.ngaySinh}"></td>
+                                <td th:text="${user.gender == 0 ? 'Nam' : user.gender == 1 ? 'Nữ' : 'Chưa xác định'}"></td>
                                 <td>Trùng thông tin</td>
                                 <td>
                                     <a th:href="@{/ADMIN_SCHOOL/import-students/update/{cccd}/{email}/{sdt}/{truongID}(cccd=${user.cccd}, email=${user.email}, sdt=${user.phone}, truongID=${user.truong.id})}"
@@ -162,6 +165,7 @@
     </div>
 </div>
 <th:block th:replace="~{layout::footerAdminTruong}"></th:block>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script th:src="@{/js/docFileExcel.js}"></script>
 </body>
 </html>

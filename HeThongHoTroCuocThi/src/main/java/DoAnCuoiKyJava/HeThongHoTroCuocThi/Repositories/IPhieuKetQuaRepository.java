@@ -16,4 +16,11 @@ public interface IPhieuKetQuaRepository extends JpaRepository<PhieuKetQua, Long>
 //    Optional<PhieuKetQua> findByPhieuDangKyAndTrangThai(PhieuDangKy phieuDangKy, int trangThai);
     List<PhieuKetQua> findByTrangThai(int trangThai);
     PhieuKetQua findByPhieuDangKy(PhieuDangKy phieuDangKy);
+
+    List<PhieuKetQua> findByPhieuDangKyUserTruongId(Long truongId);
+
+    @Query("SELECT pkq FROM PhieuKetQua pkq " +
+            "WHERE pkq.phieuDangKy.truongId = :truongId " +
+            "AND pkq.phieuDangKy.cuocThi.id = :cuocThiId")
+    List<PhieuKetQua> findAllByTruongIdAndCuocThiId(@Param("truongId") Long truongId, @Param("cuocThiId") Long cuocThiId);
 }

@@ -41,7 +41,7 @@ public class CuocThiController {
         model.addAttribute("phieuDangKyService", phieuDangKyService);
         model.addAttribute("monThis", monThiService.getAllMonThisHien());
         model.addAttribute("loaiTruongs", loaiTruongService.getAllLoaiTruongsHien());
-        return "/User/CuocThi/list";
+        return "User/CuocThi/list";
     }
 
     @GetMapping("/details/{id}")
@@ -63,7 +63,7 @@ public class CuocThiController {
         model.addAttribute("chiTietQuyDinhs", isRegistered ? chiTietQuyDinhs : Collections.emptyList()); // Chỉ hiển thị nếu đã đăng ký
         model.addAttribute("loaiTruongService", loaiTruongService);
         model.addAttribute("isRegistered", isRegistered);
-        return "/User/CuocThi/details";
+        return "User/CuocThi/details";
     }
 
     @GetMapping("/search")
@@ -83,7 +83,7 @@ public class CuocThiController {
             model.addAttribute("phieuDangKyService", phieuDangKyService);
             model.addAttribute("monThis", monThiService.getAllMonThisHien());
             model.addAttribute("loaiTruongs", loaiTruongService.getAllLoaiTruongsHien());
-            return "/User/CuocThi/list";
+            return "User/CuocThi/list";
         }
 
         if(startDate != null && endDate != null)
@@ -111,7 +111,7 @@ public class CuocThiController {
         model.addAttribute("loaiTruongs", loaiTruongService.getAllLoaiTruongsHien());
         model.addAttribute("loaiTruongService", loaiTruongService);
         model.addAttribute("phieuDangKyService", phieuDangKyService);
-        return "/User/CuocThi/list";
+        return "User/CuocThi/list";
     }
 
     @GetMapping("/quy-dinh/{id}")

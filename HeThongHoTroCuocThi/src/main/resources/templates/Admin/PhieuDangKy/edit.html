@@ -66,7 +66,7 @@
                         <p><strong>Tên cuộc thi:</strong> <span th:text="${phieuDangKy.cuocThi.tenCuocThi}"></span></p>
                         <p><strong>Môn thi:</strong> <span th:text="${phieuDangKy.cuocThi.monThi.getTenMonThi()}"></span></p>
                         <p><strong>Cấp thi:</strong> <span th:text="${loaiTruongService.getLoaiTruongById(phieuDangKy.cuocThi.loaiTruongId).getTenLoaiTruong()}"></span></p>
-                        <p><strong>Thời gian:</strong> <span th:text="${phieuDangKy.cuocThi.ngayThi}"></span></p>
+                        <p><strong>Thời gian:</strong> <span th:text="${#temporals.format(phieuDangKy.cuocThi.ngayThi, 'dd/MM/yyyy HH:mm a')}"></span></p>
                         <p><strong>Địa điểm:</strong> <span th:text="${phieuDangKy.cuocThi.diaDiemThi}"></span></p>
                     </div>
                 </div>

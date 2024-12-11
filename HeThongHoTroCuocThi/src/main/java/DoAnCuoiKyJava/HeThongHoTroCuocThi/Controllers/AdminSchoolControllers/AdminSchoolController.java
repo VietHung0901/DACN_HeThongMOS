@@ -41,7 +41,7 @@ public class AdminSchoolController {
         try {
             userService.importStudentsFromExcel(file, successfulUsers, failedUsers);
 
-            redirectAttributes.addFlashAttribute("message", "Thông báo sẽ gửi đến email của thí sinh trong thời gian sớm nhất. Xin cảm ơn!");
+            redirectAttributes.addFlashAttribute("message", "Đăng ký thành công. Xin cảm ơn!");
 
             if (!failedUsers.isEmpty()) {
                 model.addAttribute("failedUsers", failedUsers);
@@ -76,6 +76,7 @@ public class AdminSchoolController {
             String formattedDate = user1.getNgaySinh().format(formatter);
             user.setNgaySinh(LocalDate.parse(formattedDate, formatter));
         }
+        user.setGender(user1.getGender());
 
         model.addAttribute("user1", user1);
 
@@ -84,8 +85,11 @@ public class AdminSchoolController {
         return "ADMIN_SCHOOL/update-student";
     }
 
-    @PostMapping("/update/{cccd}")
+    @PostMapping("/update/{cccd}/{email}/{sdt}/{truongID}")
     public String updateStudent(@PathVariable String cccd,
+                                @PathVariable String email,
+                                @PathVariable String sdt,
+                                @PathVariable Long truongID,
                                 @ModelAttribute("existingUser") User updatedUser,
                                 RedirectAttributes redirectAttributes) {
 
@@ -102,7 +106,7 @@ public class AdminSchoolController {
             existingUser.setPhone(updatedUser.getPhone());
             existingUser.setTruong(truong);
 
-            userRepository.save(existingUser);
+                userRepository.save(existingUser);
 
             redirectAttributes.addFlashAttribute("message", "Thông tin thí sinh đã được cập nhật thành công!");
             return "redirect:/ADMIN_SCHOOL/import-students";

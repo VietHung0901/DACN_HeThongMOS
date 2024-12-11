@@ -104,13 +104,18 @@
 
             <!-- Navigation -->
             <nav class="main-nav">
-                <ul class="nav d-flex align-items-center" style="margin: 0; padding: 0; list-style: none;">
+                <ul class="nav d-flex align-items-center">
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="/" style="text-decoration: none; color: #fff;">Trang chủ</a>
+                        <a class="nav-link" href="/"
+                           style="text-decoration: none; color: #fff;">
+                            Trang chủ
+                        </a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="/User/CuocThis" style="text-decoration: none; color: #fff;">Cuộc
-                            thi</a>
+                        <a class="nav-link" href="/User/CuocThis"
+                           style="text-decoration: none; color: #fff;">
+                            Cuộc thi
+                        </a>
                     </li>
                     <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                         <a class="nav-link" href="/User/PhieuDangKys/search"
@@ -139,15 +144,20 @@
                     <a class="nav-link" href="#">
                         <i class="bi bi-person-circle"></i>
                         <form th:action="@{/logout}" method="post">
-                            <button class="btn btn-outline-danger btn-sm" type="submit">Logout</button>
+                            <button class="btn btn-outline-light btn-sm px-4" type="submit"
+                                    style="font-size: 0.9rem; border-radius: 20px;">
+                                Logout
+                            </button>
                         </form>
                     </a>
                 </li>
                 <li sec:authorize="!isAuthenticated()">
                     <a class="nav-link" href="/login">
                         <i class="bi bi-person-circle"></i>
-                        <button class="btn btn-outline-danger btn-sm" type="submit">Login</button>
-
+                        <button class="btn btn-outline-light btn-sm px-4" type="submit"
+                                style="font-size: 0.9rem; border-radius: 20px;">
+                            Login
+                        </button>
                     </a>
                 </li>
             </ul>
@@ -192,7 +202,7 @@
                             Xem thêm
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown"
-                            style="min-width: 200px; background: #6a11cb; border: none; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);">
+                            style="min-width: 200px; background: #6ea8fe; border: none; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);">
                             <li><a class="dropdown-item" href="/Admin/MonThis" style="color: #fff; padding: 10px;">Môn
                                 thi</a></li>
                             <li><a class="dropdown-item" href="/Admin/QuyDinhs" style="color: #fff; padding: 10px;">Quy
@@ -230,9 +240,11 @@
                         </button>
                     </form>
                 </a>
-                <a sec:authorize="!isAuthenticated()" href="/login" class="ms-3 text-white"
-                   style="text-decoration: none; font-size: 0.9rem; font-weight: 500;">
-                    Đăng nhập
+                <a sec:authorize="!isAuthenticated()" href="/login">
+                    <button class=" btn btn-outline-light btn-sm px-4"
+                            style="font-size: 0.9rem; border-radius: 20px;">
+                        Đăng Nhập
+                    </button>
                 </a>
             </div>
 
@@ -263,7 +275,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link mx-1" href="/ADMIN_SCHOOL/import-students"
-                           style="text-decoration: none; color: #fff; font-size: 1rem; font-weight: 500;">Đăng thí
+                           style="text-decoration: none; color: #fff; font-size: 1rem; font-weight: 500;">Đăng kí thí
                             sinh</a>
                     </li>
                     <li class="nav-item">

@@ -47,7 +47,7 @@ public class PhieuNopBaiController {
             List<ChiTietNoiDung> chiTietNoiDungs = CTNDService.getChiTietNoiDungsByCuocThiId(cuocThiId);
             model.addAttribute("chiTietNoiDungs", chiTietNoiDungs);
             model.addAttribute("cuocThiId", cuocThiId);
-            return "/User/NoiDung/list";
+            return "User/NoiDung/list";
         }
 
         phieuNopBai.setCuocThiId(cuocThiId);

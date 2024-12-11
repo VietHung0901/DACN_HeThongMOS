@@ -64,7 +64,7 @@
                             <input type="password" class="form-control"
                                    required id="password" name="password" placeholder="Mật khẩu">
                             <span class="position-absolute eye-icon" onclick="togglePasswordVisibility()">
-                              <i id="togglePasswordIcon" class="fa fa-eye"></i>
+                              <i id="togglePasswordIcon" class="fa fa-eye-slash"></i>
                             </span>
                         </div>
                         <div class="d-grid gap-2 form-action">
@@ -94,12 +94,12 @@
 
         if (passwordInput.type === "password") {
             passwordInput.type = "text";
-            toggleIcon.classList.remove("fa-eye");
-            toggleIcon.classList.add("fa-eye-slash");
-        } else {
-            passwordInput.type = "password";
             toggleIcon.classList.remove("fa-eye-slash");
             toggleIcon.classList.add("fa-eye");
+        } else {
+            passwordInput.type = "password";
+            toggleIcon.classList.remove("fa-eye");
+            toggleIcon.classList.add("fa-eye-slash");
         }
     }
 </script>

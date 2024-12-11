@@ -15,15 +15,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-@RequestMapping("/QuyDinhs")
+@RequestMapping("/User/QuyDinhs")
 @RequiredArgsConstructor
 public class QuyDinhController {
     private final QuyDinhService quyDinhService;
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/detail/id/{id}")
     public String showQuyDinh(@PathVariable Long id, @NotNull Model model) {
         QuyDinh quyDinh = quyDinhService.getQuyDinhById(id).orElseThrow(() -> new EntityNotFoundException(""));
         model.addAttribute("quyDinh", quyDinh);
-        return "QuyDinh/detail";
+        return "User/QuyDinh/detail";
     }
 }

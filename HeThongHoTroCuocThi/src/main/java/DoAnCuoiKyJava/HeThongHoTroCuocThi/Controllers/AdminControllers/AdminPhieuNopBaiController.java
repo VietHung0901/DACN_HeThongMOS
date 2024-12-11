@@ -29,7 +29,7 @@ public class AdminPhieuNopBaiController {
     @GetMapping("/ChuaCham")
     public String showAllPhieuNopBaiChuaCham(@NotNull Model model) {
         model.addAttribute("phieuNopBai", phieuNopBaiService.findAllByTrangThai(0));
-        return "/Admin/PhieuNopBai/list";
+        return "Admin/PhieuNopBai/list";
     }
 
     @GetMapping("/DaCham")
@@ -42,7 +42,7 @@ public class AdminPhieuNopBaiController {
     public String showNoiDung(@PathVariable Long id, @NotNull Model model) {
         PhieuNopBai phieuNopBai = phieuNopBaiService.findById(id).orElseThrow();
         model.addAttribute("phieuNopBai", phieuNopBai);
-        return "/Admin/PhieuNopBai/edit";
+        return "Admin/PhieuNopBai/edit";
     }
 
     @PostMapping("/edit")

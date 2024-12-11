@@ -32,7 +32,7 @@ public class AdminPhieuKetQuaController {
         CuocThi cuocThi = cuocThiService.getCuocThiById(id).orElseThrow(() -> new EntityNotFoundException(""));
         List<PhieuKetQua> phieuKetQuas = phieuKetQuaService.getAllPhieuKetQuastheoCuocThi(cuocThi);
         model.addAttribute("phieuKetQuas", phieuKetQuas);
-        return "/Admin/PhieuKetQua/list";
+        return "Admin/PhieuKetQua/list";
     }
 
     @GetMapping("/add/pkq/pdkId/{id}")
@@ -41,7 +41,7 @@ public class AdminPhieuKetQuaController {
         PhieuKetQua phieuKetQua = new PhieuKetQua();
         phieuKetQua.setPhieuDangKy(phieuDangKy);
         model.addAttribute("phieuKetQua", phieuKetQua);
-        return "/Admin/PhieuKetQua/add";
+        return "Admin/PhieuKetQua/add";
     }
 
     @PostMapping("/add")
@@ -55,7 +55,7 @@ public class AdminPhieuKetQuaController {
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .toArray(String[]::new);
             model.addAttribute("errors", errors);
-            return "/Admin/PhieuKetQua/add";
+            return "Admin/PhieuKetQua/add";
         }
         phieuKetQuaService.addPhieuKetQua(phieuKetQua);
         Long cuocThiId = phieuKetQua.getPhieuDangKy().getCuocThi().getId();
@@ -67,7 +67,7 @@ public class AdminPhieuKetQuaController {
         PhieuDangKy phieuDangKy = phieuDangKyService.getPhieuDangKyById(id).orElseThrow(() -> new EntityNotFoundException(""));
         PhieuKetQua phieuKetQua = phieuKetQuaService.getPhieuKetQuaByPhieuDangKy(phieuDangKy);
         model.addAttribute("phieuKetQua", phieuKetQua);
-        return "/Admin/PhieuKetQua/edit";
+        return "Admin/PhieuKetQua/edit";
     }
 
     @PostMapping("/edit")
@@ -83,7 +83,7 @@ public class AdminPhieuKetQuaController {
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .toArray(String[]::new);
             model.addAttribute("errors", errors);
-            return "/Admin/PhieuKetQua/edit";
+            return "Admin/PhieuKetQua/edit";
         }
         //Đây là đoạn code sau khi sủa sẽ chờ duyệt!
         Long phieuKetQuaCuId = phieuKetQua.getId();
@@ -103,7 +103,7 @@ public class AdminPhieuKetQuaController {
         List<PhieuKetQua> phieuKetQuas = phieuKetQuaService.getAllPhieuKetQuastheoCuocThi(cuocThi);
         List<Integer> diems = phieuKetQuas.stream().map(phieuKetQua -> phieuKetQua.getDiem()).collect(Collectors.toList());
         model.addAttribute("diems", diems);
-        return "/Admin/PhieuKetQua/thongke";
+        return "Admin/PhieuKetQua/thongke";
     }
 
 }

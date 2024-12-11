@@ -54,59 +54,12 @@
     <div class="row justify-content-center">
         <!-- Tiêu đề -->
         <div class="col-12 text-center">
-            <h2 class="mb-4 text-primary fw-bold">Danh Sách Thí Sinh Theo Trường</h2>
+            <a class="btn btn-info mb-4" th:href="@{/api/excel/export/diem/cuocThi/{cuocThiId}/truong/{truongId}(cuocThiId=${cuocThiId}, truongId=${truongId})}">
+                <i class="fas fa-file-excel"></i> Danh Sách Thí Sinh Theo Trường
+            </a>
         </div>
     </div>
 
-    <!-- Bộ lọc -->
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <label for="filterCuocThi" class="form-label">Lọc theo cuộc thi:</label>
-            <select id="filterCuocThi" class="form-select">
-                <option value="all">Tất cả các cuộc thi</option>
-                <option th:each="cuocThi : ${cuocThiList}"
-                        th:value="${cuocThi.id}"
-                        th:text="${cuocThi.tenCuocThi}"></option>
-            </select>
-        </div>
-        <div class="col-md-6">
-            <label for="searchKeyword" class="form-label">Tìm kiếm theo tên hoặc CCCD:</label>
-            <input type="text" id="searchKeyword" class="form-control" placeholder="Nhập tên hoặc CCCD">
-        </div>
-    </div>
-
-
-    <!-- Bảng danh sách -->
-<!--    <div class="table-responsive">-->
-<!--        <table class="table table-bordered table-hover align-middle">-->
-<!--            <thead class="table-dark">-->
-<!--            <tr>-->
-<!--                <th>Mã phiếu</th>-->
-<!--                <th>Cuộc thi</th>-->
-<!--                <th>CCCD</th>-->
-<!--                <th>Họ và tên</th>-->
-<!--                <th>Ngày sinh</th>-->
-<!--                <th>Email</th>-->
-<!--                <th>SDT</th>-->
-<!--                <th>Trường</th>-->
-<!--                <th>Điểm</th>-->
-<!--            </tr>-->
-<!--            </thead>-->
-<!--            <tbody>-->
-<!--            <tr th:each="phieuDangKy : ${phieuDangKys}">-->
-<!--                <td th:text="${phieuDangKy.id}"></td>-->
-<!--                <td th:text="${phieuDangKy.cuocThi.tenCuocThi}"></td> &lt;!&ndash; Sửa lại để đảm bảo gọi đúng thuộc tính &ndash;&gt;-->
-<!--                <td th:text="${phieuDangKy.user.cccd}"></td> &lt;!&ndash; Gọi trực tiếp thuộc tính CCCD &ndash;&gt;-->
-<!--                <td th:text="${phieuDangKy.user.hoten}"></td> &lt;!&ndash; Gọi trực tiếp thuộc tính họ tên &ndash;&gt;-->
-<!--                <td th:text="${phieuDangKy.user.ngaySinh}"></td> &lt;!&ndash; Gọi trực tiếp thuộc tính ngày sinh &ndash;&gt;-->
-<!--                <td th:text="${phieuDangKy.email}"></td> &lt;!&ndash; Gọi trực tiếp email &ndash;&gt;-->
-<!--                <td th:text="${phieuDangKy.sdt}"></td> &lt;!&ndash; Gọi trực tiếp số điện thoại &ndash;&gt;-->
-<!--                <td th:text="${truongService.findTruongById(phieuDangKy.truongId).tenTruong}"></td> &lt;!&ndash; Truyền trường từ service &ndash;&gt;-->
-<!--                <td th:text="${phieuKetQuaService.getDiemByCuocThiIdvaUserId(phieuDangKy.cuocThi.id, phieuDangKy.user.id)}"></td> &lt;!&ndash; Điểm của thí sinh &ndash;&gt;-->
-<!--            </tr>-->
-<!--            </tbody>-->
-<!--        </table>-->
-<!--    </div>-->
 
 
     <!-- Export Buttons -->

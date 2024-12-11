@@ -23,20 +23,20 @@ public class AdminNoiDungController {
     @GetMapping
     public String showAllNoiDung(@NotNull Model model) {
         model.addAttribute("noiDungs", noiDungService.getAllNoiDungs());
-        return "/Admin/NoiDung/list";
+        return "Admin/NoiDung/list";
     }
 
     @GetMapping("/id/{id}")
     public String showNoiDung(@PathVariable Long id, @NotNull Model model) {
         NoiDung noiDung = noiDungService.getNoiDungById(id).orElseThrow(() -> new EntityNotFoundException(""));
         model.addAttribute("noiDung", noiDung);
-        return "/Admin/NoiDung/detail";
+        return "Admin/NoiDung/detail";
     }
 
     @GetMapping("/add")
     public String addNoiDungForm(@NotNull Model model) {
         model.addAttribute("noiDung", new NoiDungCreateRequest());
-        return "/Admin/NoiDung/add";
+        return "Admin/NoiDung/add";
     }
 
     @PostMapping("/add")
@@ -51,7 +51,7 @@ public class AdminNoiDungController {
                     .toArray(String[]::new);
             model.addAttribute("errors", errors);
             model.addAttribute("noiDung", noiDungCreateRequest);
-            return "/Admin/NoiDung/add";
+            return "Admin/NoiDung/add";
         }
         NoiDung noiDung = noiDungService.mapToNoiDung(noiDungCreateRequest);
         noiDungService.addNoiDung(noiDung);
@@ -64,7 +64,7 @@ public class AdminNoiDungController {
         NoiDung noiDung = noiDungService.getNoiDungById(id)
                 .orElseThrow(() -> new EntityNotFoundException(""));
         model.addAttribute("noiDung", noiDung);
-        return "/Admin/NoiDung/edit";
+        return "Admin/NoiDung/edit";
     }
 
     @PostMapping("/edit")
@@ -80,7 +80,7 @@ public class AdminNoiDungController {
                     .toArray(String[]::new);
             model.addAttribute("errorMessage", errors);
             model.addAttribute("noiDung", noiDung);
-            return "/Admin/NoiDung/edit";
+            return "Admin/NoiDung/edit";
         }
 
         String fileName = imageUrlFile.getOriginalFilename();

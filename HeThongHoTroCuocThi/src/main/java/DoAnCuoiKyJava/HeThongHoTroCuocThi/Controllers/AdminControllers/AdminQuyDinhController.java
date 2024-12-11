@@ -24,7 +24,7 @@ public class AdminQuyDinhController {
     @GetMapping
     public String showAllQuyDinh(@NotNull Model model) {
         model.addAttribute("quyDinhs", quyDinhService.getAllQuyDinhs());
-        return "/Admin/QuyDinh/list";
+        return "Admin/QuyDinh/list";
     }
 
     @GetMapping("/id/{id}")
@@ -32,13 +32,13 @@ public class AdminQuyDinhController {
         QuyDinh quyDinh = quyDinhService.getQuyDinhById(id).orElseThrow(() -> new EntityNotFoundException(""));
 
         model.addAttribute("quyDinh", quyDinh);
-        return "/Admin/QuyDinh/detail";
+        return "Admin/QuyDinh/detail";
     }
 
     @GetMapping("/add")
     public String addQuyDinhForm(@NotNull Model model) {
         model.addAttribute("quyDinh", new QuyDinhCreateRequest());
-        return "/Admin/QuyDinh/add";
+        return "Admin/QuyDinh/add";
     }
 
     @PostMapping("/add")
@@ -53,7 +53,7 @@ public class AdminQuyDinhController {
                     .toArray(String[]::new);
             model.addAttribute("errors", errors);
             model.addAttribute("quyDinh", quyDinhCreateRequest);
-            return "/Admin/QuyDinh/add";
+            return "Admin/QuyDinh/add";
         }
 
         QuyDinh quyDinh = quyDinhService.mapToQuyDinh(quyDinhCreateRequest);
@@ -67,7 +67,7 @@ public class AdminQuyDinhController {
         QuyDinh quyDinh = quyDinhService.getQuyDinhById(id)
                 .orElseThrow(() -> new EntityNotFoundException(""));
         model.addAttribute("quyDinh", quyDinh);
-        return "/Admin/QuyDinh/edit";
+        return "Admin/QuyDinh/edit";
     }
 
     @PostMapping("/edit")
@@ -82,7 +82,7 @@ public class AdminQuyDinhController {
                     .toArray(String[]::new);
             model.addAttribute("errorMessage", errors);
             model.addAttribute("quyDinh", quyDinh);
-            return "/Admin/QuyDinh/edit";
+            return "Admin/QuyDinh/edit";
         }
 
         String fileName = imageUrlFile.getOriginalFilename();

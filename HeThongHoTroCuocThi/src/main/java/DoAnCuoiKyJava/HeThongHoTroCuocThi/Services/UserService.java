@@ -91,7 +91,7 @@ public class UserService implements UserDetailsService {
         user.setPassword(userRequest.getPassword());
         user.setPhone(userRequest.getPhone());
         user.setEmail(userRequest.getEmail());
-        user.setNgaySinh(userRequest.getNgaySinh());
+        user.setGender(userRequest.getGender());
         user.setImageUrl(image);
         user.setTruong(userRequest.getTruong());
         user.setTrangThai(0);
@@ -198,6 +198,7 @@ public class UserService implements UserDetailsService {
                 user.setImageUrl(images);
             }
             user.setTruong(updatedUser.getTruong());
+            user.setGender(updatedUser.getGender());
             userRepository.save(user);
         }
     }
@@ -319,6 +320,7 @@ public class UserService implements UserDetailsService {
         String phone = dataFormatter.formatCellValue(row.getCell(3));
         String tenTruongFromExcel = dataFormatter.formatCellValue(row.getCell(4));
         LocalDate birthDate = parseBirthDate(row.getCell(5));
+        Integer gioiTinh = parseGender(dataFormatter.formatCellValue(row.getCell(6)));
 
         String username = extractUsernameFromEmail(email);
 
@@ -328,7 +330,7 @@ public class UserService implements UserDetailsService {
             return null;
         }
 
-        return createUser(cccd, email, hoten, password, phone, username, birthDate, tenTruongFromExcel);
+        return createUser(cccd, email, hoten, password, phone, username, birthDate, tenTruongFromExcel, gioiTinh);
     }
 
     private LocalDate parseBirthDate(Cell cell) {
@@ -356,7 +358,7 @@ public class UserService implements UserDetailsService {
     }
 
     private User createUser(String cccd, String email, String hoten, String password, String phone,
-                            String username, LocalDate birthDate, String tenTruongFromExcel) {
+                            String username, LocalDate birthDate, String tenTruongFromExcel, Integer gioiTinh) {
         User user = new User();
         user.setCccd(cccd);
         user.setEmail(email);
@@ -365,6 +367,7 @@ public class UserService implements UserDetailsService {
         user.setPhone(phone);
         user.setUsername(username);
         user.setNgaySinh(birthDate);
+        user.setGender(gioiTinh);
 
         Truong truong = truongRepository.findByTenTruong(tenTruongFromExcel);
         if (truong != null) {
@@ -388,5 +391,15 @@ public class UserService implements UserDetailsService {
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
         return pattern.matcher(normalized).replaceAll("").replaceAll("đ", "d").replaceAll("Đ", "D");
     }
+
+    private Integer parseGender(String genderValue) {
+        if ("Nam".equalsIgnoreCase(genderValue)) {
+            return 0;  // 1 là Nam
+        } else if ("Nữ".equalsIgnoreCase(genderValue)) {
+            return 1;  // 0 là Nữ
+        }
+        return null; // Trả về null nếu giá trị không hợp lệ
+    }
+
 
 }

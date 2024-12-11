@@ -21,13 +21,13 @@ public class AdminMonThiController {
     @GetMapping
     public String showAllMonThi(@NotNull Model model) {
         model.addAttribute("monThis", monThiService.getAllMonThis());
-        return "/Admin/MonThi/list";
+        return "Admin/MonThi/list";
     }
 
     @GetMapping("/add")
     public String addMonThiForm(@NotNull Model model) {
         model.addAttribute("monThis", new MonThi());
-        return "/Admin/MonThi/add";
+        return "Admin/MonThi/add";
     }
 
     @PostMapping("/add")
@@ -41,7 +41,7 @@ public class AdminMonThiController {
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .toArray(String[]::new);
             model.addAttribute("errors", errors);
-            return "/Admin/MonThi/add";
+            return "Admin/MonThi/add";
         }
         monThiService.addMonThi(monThi);
         return "redirect:/Admin/MonThis";
@@ -52,7 +52,7 @@ public class AdminMonThiController {
         MonThi monThi = monThiService.getMonThiById(id)
                 .orElseThrow(() -> new EntityNotFoundException("MonThi not found with id: " + id));
         model.addAttribute("monThi", monThi);
-        return "/Admin/MonThi/edit";
+        return "Admin/MonThi/edit";
     }
 
     @PostMapping("/edit")
@@ -65,7 +65,7 @@ public class AdminMonThiController {
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .toArray(String[]::new);
             model.addAttribute("errors", errors);
-            return "/Admin/MonThi/edit";
+            return "Admin/MonThi/edit";
         }
         monThiService.updateMonThi(monthi);
         return "redirect:/Admin/MonThis";

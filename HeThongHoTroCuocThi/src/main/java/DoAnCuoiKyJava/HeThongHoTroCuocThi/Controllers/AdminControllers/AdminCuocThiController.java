@@ -39,7 +39,7 @@ public class AdminCuocThiController {
         model.addAttribute("phieuDangKyService", phieuDangKyService);
         model.addAttribute("monThis", monThiService.getAllMonThis());
         model.addAttribute("loaiTruongs", loaiTruongService.getAllLoaiTruongs());
-        return "/Admin/CuocThi/list";
+        return "Admin/CuocThi/list";
     }
 
     @GetMapping("/add")
@@ -49,7 +49,7 @@ public class AdminCuocThiController {
         model.addAttribute("allQuyDinhs", quyDinhService.getAllQuyDinhsHien());
         model.addAttribute("allNoiDungs", noiDungService.getAllNoiDungsHien());
         model.addAttribute("listLoaiTruong",loaiTruongService.getAllLoaiTruongsHien());
-        return "/Admin/CuocThi/add";
+        return "Admin/CuocThi/add";
     }
 
     @PostMapping("/add")
@@ -70,7 +70,7 @@ public class AdminCuocThiController {
             model.addAttribute("allQuyDinhs", quyDinhService.getAllQuyDinhsHien());
             model.addAttribute("allNoiDungs", noiDungService.getAllNoiDungsHien());
             model.addAttribute("listLoaiTruong",loaiTruongService.getAllLoaiTruongsHien());
-            return "/Admin/CuocThi/add";
+            return "Admin/CuocThi/add";
         }
 
         if (cuocThi.getTenCuocThi() == null
@@ -85,7 +85,7 @@ public class AdminCuocThiController {
             model.addAttribute("allQuyDinhs", quyDinhService.getAllQuyDinhsHien());
             model.addAttribute("allNoiDungs", noiDungService.getAllNoiDungsHien());
             model.addAttribute("listLoaiTruong", loaiTruongService.getAllLoaiTruongsHien());
-            return "/Admin/CuocThi/add";
+            return "Admin/CuocThi/add";
         }
 
         cuocThiService.addCuocThi(cuocThi);
@@ -124,7 +124,7 @@ public class AdminCuocThiController {
         List<QuyDinh> chiTietQuyDinhs = CTQDService.getAllQuyDinhByCuocThi(cuocThi);
         model.addAttribute("chiTietNoiDungs", chiTietNoiDungs);
         model.addAttribute("chiTietQuyDinhs", chiTietQuyDinhs);
-        return "/Admin/CuocThi/edit";
+        return "Admin/CuocThi/edit";
     }
 
     @PostMapping("/edit")
@@ -140,7 +140,7 @@ public class AdminCuocThiController {
                     .toArray(String[]::new);
             model.addAttribute("errors", errors);
             model.addAttribute("listMonThi",monThiService.getAllMonThisHien());
-            return "/Admin/CuocThi/edit";
+            return "Admin/CuocThi/edit";
         }
 
         if(selectedQuyDinhIds == null)
@@ -155,7 +155,7 @@ public class AdminCuocThiController {
             model.addAttribute("chiTietNoiDungs", chiTietNoiDungs);
             model.addAttribute("chiTietQuyDinhs", chiTietQuyDinhs);
             model.addAttribute("errorMessageQuyDinh", "Vui lòng chọn ít nhất 1 quy định!");
-            return "/Admin/CuocThi/edit";
+            return "Admin/CuocThi/edit";
         }
         if(selectedNoiDungIds == null)
         {
@@ -169,7 +169,7 @@ public class AdminCuocThiController {
             model.addAttribute("chiTietNoiDungs", chiTietNoiDungs);
             model.addAttribute("chiTietQuyDinhs", chiTietQuyDinhs);
             model.addAttribute("errorMessageNoiDung", "Vui lòng chọn ít nhất 1 nội dung!");
-            return "/Admin/CuocThi/edit";
+            return "Admin/CuocThi/edit";
         }
 
         CTNDService.deleteAllNoiDungByCuocThi(cuocThi.getId());
@@ -214,7 +214,7 @@ public class AdminCuocThiController {
         model.addAttribute("chiTietNoiDungs", chiTietNoiDungs);
         model.addAttribute("chiTietQuyDinhs", chiTietQuyDinhs);
         model.addAttribute("loaiTruongService", loaiTruongService);
-        return "/Admin/CuocThi/details";
+        return "Admin/CuocThi/details";
     }
 
     @GetMapping("/search")
@@ -234,7 +234,7 @@ public class AdminCuocThiController {
             model.addAttribute("phieuDangKyService", phieuDangKyService);
             model.addAttribute("monThis", monThiService.getAllMonThis());
             model.addAttribute("loaiTruongs", loaiTruongService.getAllLoaiTruongs());
-            return "/Admin/CuocThi/list";
+            return "Admin/CuocThi/list";
         }
 
         if(startDate != null && endDate != null)
@@ -262,7 +262,7 @@ public class AdminCuocThiController {
         model.addAttribute("loaiTruongs", loaiTruongService.getAllLoaiTruongs());
         model.addAttribute("loaiTruongService", loaiTruongService);
         model.addAttribute("phieuDangKyService", phieuDangKyService);
-        return "/Admin/CuocThi/list";
+        return "Admin/CuocThi/list";
     }
 
     @GetMapping("/quy-dinh/{id}")
@@ -278,7 +278,7 @@ public class AdminCuocThiController {
         // Thêm dữ liệu vào model để hiển thị trong view
         model.addAttribute("chiTietQuyDinhsPage", chiTietQuyDinhsPage);
         model.addAttribute("cuocThiId", id); // Truyền id của cuộc thi để dùng trong các liên kết phân trang
-        return "/Admin/CuocThi/quyDinh"; // Đường dẫn đến trang quy định
+        return "Admin/CuocThi/quyDinh"; // Đường dẫn đến trang quy định
     }
 
 

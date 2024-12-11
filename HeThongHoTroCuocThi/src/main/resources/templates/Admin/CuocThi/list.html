@@ -172,7 +172,7 @@
         <tr th:each="cuocThi : ${cuocThis}">
             <td th:text="${cuocThi.id}"></td>
             <td th:text="${cuocThi.tenCuocThi}"></td>
-            <td th:text="${cuocThi.ngayThi}"></td>
+            <td th:text="${#temporals.format(cuocThi.ngayThi, 'dd/MM/yyyy HH:mm a')}"></td>
             <td th:text="${phieuDangKyService.countPhieuDangKyByCuocThiId(cuocThi.id)} + '/' + ${cuocThi.soLuongThiSinh}"></td>
 <!--            <td th:classappend="${phieuDangKyService.countPhieuDangKyByCuocThiId(cuocThi.id)} >= cuocThi.soLuongThiSinh ? 'text-danger' : 'text-success'">-->
 <!--                <span th:text="${phieuDangKyService.countPhieuDangKyByCuocThiId(cuocThi.id)} + '/' + cuocThi.soLuongThiSinh"></span>-->

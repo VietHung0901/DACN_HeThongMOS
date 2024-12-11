@@ -24,6 +24,9 @@ document.getElementById('confirmInfoButton').addEventListener('click', function(
             document.getElementById('truongId').value = data.truongId;
             document.getElementById('truongName').value = data.truongName;
 
+            var genderElement = document.getElementById('gender');
+            genderElement.textContent = data.gender === '0' ? 'Nam' : 'Nữ';
+
             // Cập nhật ảnh
             var imageElement = document.getElementById('imageUrl');
             imageElement.src = data.imageUrl;

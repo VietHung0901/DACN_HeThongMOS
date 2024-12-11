@@ -129,9 +129,62 @@
                     <i class="fas fa-arrow-left"></i> Trở về
                 </a>
             </div>
+            <span id="feedback" class="mt-2 d-block"></span>
+
         </form>
     </div>
 </div>
 <th:block th:replace="~{layout::footerAdmin}"></th:block>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const tenTruongInput = document.getElementById("tenTruong");
+        const checkFeedback = document.getElementById("checkFeedback");
+        const submitBtn = document.getElementById("submitBtn");
+
+        tenTruongInput.addEventListener("input", function () {
+            const tenTruong = tenTruongInput.value.trim();
+
+            // Nếu tên trường rỗng, không thực hiện kiểm tra
+            if (!tenTruong) {
+                checkFeedback.classList.add("d-none");
+                submitBtn.disabled = true;
+                return;
+            }
+
+            // Gửi yêu cầu kiểm tra trường học
+            fetch(`/api/check-school`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ tenTruong })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.exists) {
+                        checkFeedback.classList.remove("d-none");
+                        checkFeedback.classList.replace("text-danger", "text-success");
+                        checkFeedback.textContent = "Trường học này đã tồn tại.";
+                        submitBtn.disabled = false;
+                    } else {
+                        checkFeedback.classList.remove("d-none");
+                        checkFeedback.classList.replace("text-success", "text-danger");
+                        checkFeedback.textContent = "Trường học không tồn tại hoặc chưa được xác thực.";
+                        submitBtn.disabled = true;
+                    }
+                })
+                .catch(error => {
+                    console.error("Error checking school:", error);
+                    checkFeedback.classList.remove("d-none");
+                    checkFeedback.classList.replace("text-success", "text-danger");
+                    checkFeedback.textContent = "Không thể kiểm tra trường học. Vui lòng thử lại sau.";
+                    submitBtn.disabled = true;
+                });
+        });
+    });
+
+</script>
+
 </body>
 </html>

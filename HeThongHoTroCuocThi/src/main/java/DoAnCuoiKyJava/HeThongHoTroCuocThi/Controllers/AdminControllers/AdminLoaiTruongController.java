@@ -19,13 +19,13 @@ public class AdminLoaiTruongController {
     @GetMapping
     public String showAllLoaiTruong(@NotNull Model model) {
         model.addAttribute("loaiTruongs", loaiTruongService.getAllLoaiTruongs());
-        return "/Admin/LoaiTruong/list";
+        return "Admin/LoaiTruong/list";
     }
 
     @GetMapping("/add")
     public String addLoaiTruongForm(@NotNull Model model) {
         model.addAttribute("loaiTruong", new LoaiTruong());
-        return "/Admin/LoaiTruong/add";
+        return "Admin/LoaiTruong/add";
     }
 
     @PostMapping("/add")
@@ -49,7 +49,7 @@ public class AdminLoaiTruongController {
     public String editLoaiTruong(@PathVariable Long id, Model model) {
         LoaiTruong loaiTruong = loaiTruongService.getLoaiTruongById(id);
         model.addAttribute("loaiTruong", loaiTruong);
-        return "/Admin/LoaiTruong/edit";
+        return "Admin/LoaiTruong/edit";
     }
 
     @PostMapping("/edit")
@@ -62,7 +62,7 @@ public class AdminLoaiTruongController {
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .toArray(String[]::new);
             model.addAttribute("errors", errors);
-            return "/Admin/LoaiTruong/edit";
+            return "Admin/LoaiTruong/edit";
         }
         loaiTruongService.updateLoaiTruong(loaitruong);
         return "redirect:/Admin/LoaiTruongs";

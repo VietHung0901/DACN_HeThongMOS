@@ -36,7 +36,7 @@ public class PhieuDangKyController {
         model.addAttribute("phieuDangKy", phieuDangKy);
         model.addAttribute("cuocThi", cuocThi);
         model.addAttribute("loaiTruongService", loaiTruongService);
-        return "/User/PhieuDangKy/add";
+        return "User/PhieuDangKy/add";
     }
 
     @PostMapping("/add")
@@ -58,7 +58,7 @@ public class PhieuDangKyController {
             model.addAttribute("phieuDangKy", phieuDangKyCreate);
             model.addAttribute("cuocThi", cuocThi);
             model.addAttribute("loaiTruongService", loaiTruongService);
-            return "/User/PhieuDangKy/add";
+            return "User/PhieuDangKy/add";
         }
 
         // Kiểm tra các dữ liệu đầu vào không được null
@@ -73,7 +73,7 @@ public class PhieuDangKyController {
             model.addAttribute("phieuDangKy", phieuDangKyCreate);
             model.addAttribute("cuocThi", cuocThi);
             model.addAttribute("loaiTruongService", loaiTruongService);
-            return "/User/PhieuDangKy/add";
+            return "User/PhieuDangKy/add";
         }
 
         // Kiểm tra trạng thái của thí sinh đã được duyệt chưa
@@ -86,7 +86,7 @@ public class PhieuDangKyController {
             model.addAttribute("phieuDangKy", phieuDangKyCreate);
             model.addAttribute("cuocThi", cuocThi);
             model.addAttribute("loaiTruongService", loaiTruongService);
-            return "/User/PhieuDangKy/add";
+            return "User/PhieuDangKy/add";
         }
 
         // Kiểm tra xem số lượng thí sinh đã đạt mức tối đa chưa
@@ -99,7 +99,7 @@ public class PhieuDangKyController {
             model.addAttribute("phieuDangKy", phieuDangKyCreate);
             model.addAttribute("cuocThi", cuocThi);
             model.addAttribute("loaiTruongService", loaiTruongService);
-            return "/User/PhieuDangKy/add";
+            return "User/PhieuDangKy/add";
         }
 
         //Kiểm tra cấp học của người dùng có phù hợp với cuộc thi
@@ -114,7 +114,7 @@ public class PhieuDangKyController {
             model.addAttribute("phieuDangKy", phieuDangKyCreate);
             model.addAttribute("cuocThi", cuocThi);
             model.addAttribute("loaiTruongService", loaiTruongService);
-            return "/User/PhieuDangKy/add";
+            return "User/PhieuDangKy/add";
         }
 
         // Kiểm tra xem người dùng đã đăng ký cuộc thi này chưa
@@ -126,7 +126,7 @@ public class PhieuDangKyController {
             model.addAttribute("phieuDangKy", phieuDangKyCreate);
             model.addAttribute("cuocThi", cuocThi);
             model.addAttribute("loaiTruongService", loaiTruongService);
-            return "/User/PhieuDangKy/add";
+            return "User/PhieuDangKy/add";
         }
 
         PhieuDangKy phieuDangKy = phieuDangKyService.mapToPhieuDangKy(phieuDangKyCreate);
@@ -145,7 +145,7 @@ public class PhieuDangKyController {
         else{
             model.addAttribute("errorMessage", "Bạn chưa có phiếu đăng ký cuộc thi.");
         }
-        return "/User/PhieuDangKy/pdkSearch";
+        return "User/PhieuDangKy/pdkSearch";
     }
 
     @GetMapping("/details/{id}")
@@ -156,6 +156,6 @@ public class PhieuDangKyController {
         model.addAttribute("listTruong", truongService.getAllTruongsHien());
         model.addAttribute("loaiTruongService", loaiTruongService);
         model.addAttribute("truongService", truongService);
-        return "/User/PhieuDangKy/details";
+        return "User/PhieuDangKy/details";
     }
 }

@@ -29,7 +29,7 @@ public class AdminPhieuDangKyController {
         model.addAttribute("phieuKetQuaService", phieuKetQuaService);
         model.addAttribute("truongService", truongService);
         model.addAttribute("cuocThiId", id);
-        return "/Admin/PhieuDangKy/list";
+        return "Admin/PhieuDangKy/list";
     }
 
     @GetMapping("/edit/{id}")
@@ -39,7 +39,7 @@ public class AdminPhieuDangKyController {
         model.addAttribute("phieuDangKy", phieuDangKy);
         model.addAttribute("listTruong", truongService.getAllTruongsHien());
         model.addAttribute("loaiTruongService", loaiTruongService);
-        return "/Admin/PhieuDangKy/edit";
+        return "Admin/PhieuDangKy/edit";
     }
 
     @PostMapping("/edit")
@@ -52,7 +52,7 @@ public class AdminPhieuDangKyController {
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .toArray(String[]::new);
             model.addAttribute("errors", errors);
-            return "/Admin/PhieuDangKy/edit";
+            return "Admin/PhieuDangKy/edit";
         }
         phieuDangKyService.updatePhieuDangKy(phieuDangKy);
         return "redirect:/Admin/PhieuDangKys/cuocThi/id/" + phieuDangKy.getCuocThi().getId();
@@ -66,6 +66,6 @@ public class AdminPhieuDangKyController {
         model.addAttribute("listTruong", truongService.getAllTruongsHien());
         model.addAttribute("loaiTruongService", loaiTruongService);
         model.addAttribute("truongService", truongService);
-        return "/Admin/PhieuDangKy/details";
+        return "Admin/PhieuDangKy/details";
     }
 }

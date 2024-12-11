@@ -119,7 +119,7 @@
                 </tr>
                 <tr>
                     <td>Ngày thi</td>
-                    <td th:text="${cuocThi.ngayThi}"></td>
+                    <td th:text="${#temporals.format(cuocThi.ngayThi, 'dd/MM/yyyy HH:mm a')}"></td>
                 </tr>
                 <tr>
                     <td>Số lượng</td>

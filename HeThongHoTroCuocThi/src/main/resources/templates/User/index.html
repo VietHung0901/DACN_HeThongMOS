@@ -431,7 +431,7 @@
         <div class="swiper" data-aos="slide-up">
             <div class="swiper-wrapper">
                 <div class="swiper-slide" th:each="quyDinh : ${quyDinhs}">
-                    <a th:href="@{/User/QuyDinhs/id/{id}(id=${quyDinh.id})}" class="card mb-4  text-dark">
+                    <a th:href="@{/User/QuyDinhs/detail/id/{id}(id=${quyDinh.id})}" class="card mb-4  text-dark">
                         <div class="card-img-top" style="height: 200px; overflow: hidden;">
                             <img th:src="@{${quyDinh.imageUrl}}" alt="Quy định"
                                  class="img-fluid h-100 w-100 object-fit-cover">

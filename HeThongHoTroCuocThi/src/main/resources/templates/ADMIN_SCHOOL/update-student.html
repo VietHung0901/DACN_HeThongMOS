@@ -184,6 +184,10 @@
                         <label for="ngaySinh"><i class="fa-solid fa-calendar"></i> Ngày sinh</label>
                         <input type="text" id="ngaySinh" name="ngaySinh" class="form-control" th:value="${user1.ngaySinh}" readonly />
                     </div>
+                    <div class="form-group">
+                        <label for="gender"><i class="fa-solid fa-calendar"></i> Giới tính</label>
+                        <input type="text" id="gender" name="gender" class="form-control" th:value="${user.gender == 0 ? 'Nam' : user.gender == 1 ? 'Nữ' : 'Chưa xác định'}" readonly />
+                    </div>
                 </div>
             </div>
         </div>
@@ -195,7 +199,7 @@
                     <h5>Thí sinh hiện tại</h5>
                 </div>
                 <div class="card-body">
-                    <form th:action="@{/ADMIN_SCHOOL/import-students/update/{cccd}(cccd=${user.cccd})}" method="post">
+                    <form th:action="@{/ADMIN_SCHOOL/import-students/update/{cccd}/{email}/{sdt}/{truongID}(cccd=${user.cccd}, email=${user.email}, sdt=${user.phone}, truongID=${user.truong.id})}" method="post">
                         <!-- Cảnh báo -->
                         <div th:if="${message}" class="alert alert-success">
                             <span th:text="${message}"></span>
@@ -229,7 +233,10 @@
                             <label for="ngaySinh"><i class="fa-solid fa-calendar"></i> Ngày sinh</label>
                             <input type="date" id="ngaySinh" name="ngaySinh" class="form-control" th:value="${user.ngaySinh}" readonly />
                         </div>
-
+                        <div class="form-group">
+                            <label for="gender"><i class="fa-solid fa-calendar"></i> Giới tính</label>
+                            <input type="text" id="gender" name="gender" class="form-control" th:value="${user.gender == 0 ? 'Nam' : user.gender == 1 ? 'Nữ' : 'Chưa xác định'}" readonly />
+                        </div>
                         <button type="submit" class="btn btn-primary btn-block">Cập Nhật</button>
                     </form>
                 </div>
@@ -237,11 +244,6 @@
         </div>
     </div>
 </div>
-
-
-
-
-
 
 <th:block th:replace="~{layout::footerAdminTruong}"></th:block>
 </body>

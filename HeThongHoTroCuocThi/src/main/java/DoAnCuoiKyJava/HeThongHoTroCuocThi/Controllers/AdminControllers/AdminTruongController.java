@@ -23,14 +23,14 @@ public class AdminTruongController {
     @GetMapping
     public String showAllTruong(@NotNull Model model) {
         model.addAttribute("truongs", truongService.getAllTruongs());
-        return "/Admin/Truong/list";
+        return "Admin/Truong/list";
     }
 
     @GetMapping("/add")
     public String addTruongForm(@NotNull Model model) {
         model.addAttribute("truong", new Truong());
         model.addAttribute("listLoaiTruong",loaiTruongService.getAllLoaiTruongsHien());
-        return "/Admin/Truong/add";
+        return "Admin/Truong/add";
     }
 
     @PostMapping("/add")
@@ -44,14 +44,14 @@ public class AdminTruongController {
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .toArray(String[]::new);
             model.addAttribute("errors", errors);
-            return "/Admin/Truong/add";
+            return "Admin/Truong/add";
         }
 
         if(truong.getLoaiTruong() == null)
         {
             model.addAttribute("errorMessage", "Chọn loại trường cho trường.");
             model.addAttribute("listLoaiTruong",loaiTruongService.getAllLoaiTruongsHien());
-            return "/Admin/Truong/add";
+            return "Admin/Truong/add";
         }
         truongService.addTruong(truong);
         return "redirect:/Admin/Truongs";
@@ -63,7 +63,7 @@ public class AdminTruongController {
                 .orElseThrow(() -> new EntityNotFoundException("Truong not found with id: " + id));
         model.addAttribute("truong", truong);
         model.addAttribute("listLoaiTruong",loaiTruongService.getAllLoaiTruongsHien());
-        return "/Admin/Truong/edit";
+        return "Admin/Truong/edit";
     }
 
     @PostMapping("/edit")
@@ -77,7 +77,7 @@ public class AdminTruongController {
                     .toArray(String[]::new);
             model.addAttribute("errors", errors);
             model.addAttribute("listLoaiTruong",loaiTruongService.getAllLoaiTruongsHien());
-            return "/Admin/Truong/edit";
+            return "Admin/Truong/edit";
         }
         truongService.updateTruong(truong);
         return "redirect:/Admin/Truongs";

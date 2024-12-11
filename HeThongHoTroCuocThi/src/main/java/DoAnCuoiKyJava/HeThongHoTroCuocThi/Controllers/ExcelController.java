@@ -13,6 +13,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -295,4 +296,49 @@ public class ExcelController {
         redirectAttributes.addFlashAttribute("listFail", listFail);
         return "redirect:/api/excel/import/form/pdk/cuocThiId/" + cuocThiId;
     }
+
+
+    @GetMapping("/export/diem/cuocThi/{cuocThiId}/truong/{truongId}")
+    public ResponseEntity<byte[]> exportDiemTheoTruong(
+            @PathVariable Long cuocThiId,
+            @PathVariable Long truongId) {
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Danh sách thí sinh");
+
+        // Tạo tiêu đề
+        Row headerRow = sheet.createRow(0);
+        headerRow.createCell(0).setCellValue("Mã phiếu");
+        headerRow.createCell(1).setCellValue("Cuộc thi");
+        headerRow.createCell(2).setCellValue("CCCD");
+        headerRow.createCell(3).setCellValue("Họ và tên");
+        headerRow.createCell(4).setCellValue("Email");
+        headerRow.createCell(5).setCellValue("SĐT");
+        headerRow.createCell(6).setCellValue("Điểm");
+
+        // Lấy dữ liệu
+        List<PhieuKetQua> danhSach = phieuKetQuaService.getPhieuKetQuaTheoTruongVaCuocThi(truongId, cuocThiId);
+
+        int rowNum = 1;
+        for (PhieuKetQua ketQua : danhSach) {
+            Row row = sheet.createRow(rowNum++);
+            row.createCell(0).setCellValue(ketQua.getId());
+            row.createCell(1).setCellValue(ketQua.getPhieuDangKy().getCuocThi().getTenCuocThi());
+            row.createCell(2).setCellValue(ketQua.getPhieuDangKy().getUser().getCccd());
+            row.createCell(3).setCellValue(ketQua.getPhieuDangKy().getUser().getHoten());
+            row.createCell(4).setCellValue(ketQua.getPhieuDangKy().getEmail());
+            row.createCell(5).setCellValue(ketQua.getPhieuDangKy().getSdt());
+            row.createCell(6).setCellValue(ketQua.getDiem());
+        }
+
+        // Xuất file Excel
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            workbook.write(outputStream);
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=danhSachThiSinh.xlsx");
+            return new ResponseEntity<>(outputStream.toByteArray(), headers, HttpStatus.OK);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 }

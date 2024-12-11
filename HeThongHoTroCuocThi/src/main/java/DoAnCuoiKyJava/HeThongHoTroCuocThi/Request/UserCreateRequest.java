@@ -5,7 +5,6 @@ import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -24,4 +23,5 @@ public class UserCreateRequest {
     private MultipartFile imageUrl;
     private Truong truong;
     private LocalDate ngaySinh;
+    private Integer gender;
 }

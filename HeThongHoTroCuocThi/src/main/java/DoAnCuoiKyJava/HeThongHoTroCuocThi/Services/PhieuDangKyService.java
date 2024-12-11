@@ -69,7 +69,6 @@ public class PhieuDangKyService {
         phieuDangKy.setEmail(phieuDangKyCreate.getEmail());
         phieuDangKy.setTruongId(phieuDangKyCreate.getTruongId());
         phieuDangKy.setNgayDangKy(LocalDateTime.now());
-
         User user = userService.findById(phieuDangKyCreate.getUserId());
         phieuDangKy.setUser(user);
 

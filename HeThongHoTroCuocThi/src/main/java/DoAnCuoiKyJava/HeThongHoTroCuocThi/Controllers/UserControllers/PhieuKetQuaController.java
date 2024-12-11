@@ -1,10 +1,7 @@
 package DoAnCuoiKyJava.HeThongHoTroCuocThi.Controllers.UserControllers;
 
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.*;
-import DoAnCuoiKyJava.HeThongHoTroCuocThi.Services.CuocThiService;
-import DoAnCuoiKyJava.HeThongHoTroCuocThi.Services.PhieuDangKyService;
-import DoAnCuoiKyJava.HeThongHoTroCuocThi.Services.PhieuKetQuaService;
-import DoAnCuoiKyJava.HeThongHoTroCuocThi.Services.UserService;
+import DoAnCuoiKyJava.HeThongHoTroCuocThi.Services.*;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Viewmodels.PhieuKetQuaGetVm;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -25,13 +22,14 @@ public class PhieuKetQuaController {
     private final PhieuKetQuaService phieuKetQuaService;
     private final CuocThiService cuocThiService;
     private final UserService userService;
+    private final TruongService truongService;
 
     @GetMapping("/cuocThiId/{id}")
     public String showAllPhieuKetQuaByCuocThi(@PathVariable Long id, @NotNull Model model) {
         CuocThi cuocThi = cuocThiService.getCuocThiById(id).orElseThrow(() -> new EntityNotFoundException(""));
         List<PhieuKetQua> phieuKetQuas = phieuKetQuaService.getAllPhieuKetQuastheoCuocThi(cuocThi);
         model.addAttribute("phieuKetQuas", phieuKetQuas);
-        return "/User/PhieuKetQua/list";
+        return "User/PhieuKetQua/list";
     }
 
     @GetMapping("/search")
@@ -57,4 +55,25 @@ public class PhieuKetQuaController {
                 .map(PhieuKetQuaGetVm::from)
                 .toList());
     }
+
+    // Phương thức xử lý trang danh sách phiếu kết quả
+/*    @GetMapping("/danh-sach-phieu-ket-qua")
+    public String getDanhSachPhieuKetQua(@RequestParam(required = false) Long truong, Model model) {
+        // Lấy danh sách trường
+        List<Truong> truongs = truongService.getAllTruongsHien();
+        model.addAttribute("truongs", truongs);
+
+        // Lấy danh sách phiếu kết quả theo trường (nếu có)
+        List<PhieuKetQua> phieuKetQuas;
+        if (truong != null) {
+            phieuKetQuas = phieuKetQuaService.getPhieuKetQuaByTruong(truong);
+            model.addAttribute("selectedTruong", truong);
+        } else {
+            phieuKetQuas = phieuKetQuaService.getAllPhieuKetQua();
+            model.addAttribute("selectedTruong", null);
+        }
+
+        model.addAttribute("phieuKetQuas", phieuKetQuas);
+        return "danh-sach-phieu-ket-qua";
+    }*/
 }

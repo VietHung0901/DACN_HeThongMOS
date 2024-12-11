@@ -177,15 +177,8 @@ public class PhieuKetQuaService {
     }
 // import file excel    *********************************************************
 
-
-    public List<PhieuKetQua> getAllPhieuKetQuaByCuocThiAndTruong(CuocThi cuocThi, Truong truong) {
-        List<PhieuKetQua> list = new ArrayList<>();
-        for (PhieuKetQua pkq : getAllPhieuKetQua()) {
-            if (pkq.getPhieuDangKy().getCuocThi().equals(cuocThi) && pkq.getPhieuDangKy().getTruongId() == truong.getId()) {
-                list.add(pkq);
-            }
-        }
-        return list;
+    public List<PhieuKetQua> getPhieuKetQuaTheoTruongVaCuocThi(Long truongId, Long cuocThiId) {
+        return phieuKetQuaRepository.findAllByTruongIdAndCuocThiId(truongId, cuocThiId);
     }
 
 }
