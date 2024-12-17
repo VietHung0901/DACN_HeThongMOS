@@ -26,24 +26,24 @@
         <h1 class="my-4">DANH SÁCH PHIẾU KẾT QUẢ</h1>
     </div>
 
-    <form th:action="@{/danh-sach-phieu-ket-qua}" method="get">
-        <div class="form-row align-items-center mb-3">
-            <label for="truong" class="col-sm-2 col-form-label">Chọn Trường:</label>
-            <div class="col-sm-10">
-                <select id="truong" name="truong" class="form-control" th:value="${selectedTruong}">
-                    <!-- Hiển thị option "Tất cả" -->
-                    <option value="">Tất cả</option>
+<!--    <form th:action="@{/danh-sach-phieu-ket-qua}" method="get">-->
+<!--        <div class="form-row align-items-center mb-3">-->
+<!--            <label for="truong" class="col-sm-2 col-form-label">Chọn Trường:</label>-->
+<!--            <div class="col-sm-10">-->
+<!--                <select id="truong" name="truong" class="form-control" th:value="${selectedTruong}">-->
+<!--                    &lt;!&ndash; Hiển thị option "Tất cả" &ndash;&gt;-->
+<!--                    <option value="">Tất cả</option>-->
 
-                    <!-- Hiển thị danh sách các trường -->
-                    <option th:each="truong : ${truongs}"
-                            th:value="${truong.id}"
-                            th:text="${truong.tenTruong}">
-                    </option>
-                </select>
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary">Lọc</button>
-    </form>
+<!--                    &lt;!&ndash; Hiển thị danh sách các trường &ndash;&gt;-->
+<!--                    <option th:each="truong : ${truongs}"-->
+<!--                            th:value="${truong.id}"-->
+<!--                            th:text="${truong.tenTruong}">-->
+<!--                    </option>-->
+<!--                </select>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <button type="submit" class="btn btn-primary">Lọc</button>-->
+<!--    </form>-->
 
 
 

@@ -235,7 +235,7 @@
                         </div>
                         <div class="form-group">
                             <label for="gender"><i class="fa-solid fa-calendar"></i> Giới tính</label>
-                            <input type="text" id="gender" name="gender" class="form-control" th:value="${user.gender == 0 ? 'Nam' : user.gender == 1 ? 'Nữ' : 'Chưa xác định'}" readonly />
+                            <input type="text" id="gender" name="gender" class="form-control" th:value="${user.gender == 0 ? 'Nam' : user.gender == 1 ? 'Nữ' : ''}" readonly />
                         </div>
                         <button type="submit" class="btn btn-primary btn-block">Cập Nhật</button>
                     </form>

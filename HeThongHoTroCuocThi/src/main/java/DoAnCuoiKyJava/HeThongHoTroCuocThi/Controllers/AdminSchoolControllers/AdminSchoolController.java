@@ -90,7 +90,7 @@ public class AdminSchoolController {
                                 @PathVariable String email,
                                 @PathVariable String sdt,
                                 @PathVariable Long truongID,
-                                @ModelAttribute("existingUser") User updatedUser,
+//                                @ModelAttribute("existingUser") User updatedUser,
                                 RedirectAttributes redirectAttributes) {
 
         List<User> failedUsers = new ArrayList<>();
@@ -99,14 +99,19 @@ public class AdminSchoolController {
 
             User existingUser = userRepository.findByCccd(cccd)
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy thí sinh với CCCD: " + cccd));
-            Truong truong = truongRepository.findTruongById((updatedUser.getTruong().getId()));
+            Truong truong = truongRepository.findTruongById(truongID);
 
-            existingUser.setCccd(updatedUser.getCccd());
+            /*existingUser.setCccd(updatedUser.getCccd());
             existingUser.setEmail(updatedUser.getEmail());
             existingUser.setPhone(updatedUser.getPhone());
+            existingUser.setTruong(truong);*/
+
+            existingUser.setCccd(cccd);
+            existingUser.setEmail(email);
+            existingUser.setPhone(sdt);
             existingUser.setTruong(truong);
 
-                userRepository.save(existingUser);
+            userRepository.save(existingUser);
 
             redirectAttributes.addFlashAttribute("message", "Thông tin thí sinh đã được cập nhật thành công!");
             return "redirect:/ADMIN_SCHOOL/import-students";
