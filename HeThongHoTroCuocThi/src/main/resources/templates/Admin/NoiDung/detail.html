@@ -110,7 +110,7 @@
                 <div class="col-md-7">
                     <div class="card-body">
                         <h5 class="card-title" th:text="${noiDung.tenNoiDung}">Tên nội dung</h5>
-                        <p class="card-text" th:text="${noiDung.moTaNoiDung}">Mô tả nội dung</p>
+                        <p class="card-text" th:utext="${noiDung.moTaNoiDung}">Mô tả nội dung</p>
                         <!-- Link xem file bài tập -->
                         <div class="mb-3">
                             <a th:href="@{${noiDung.fileBaiTapUrl}}" target="_blank"

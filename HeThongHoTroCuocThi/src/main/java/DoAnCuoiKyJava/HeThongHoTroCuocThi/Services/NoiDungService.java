@@ -47,7 +47,7 @@ public class NoiDungService {
         noiDungRepository.save(noiDung);
     }
 
-    public void updateNoiDung(@NotNull NoiDung noiDung) {
+    public void updateNoiDung(NoiDung noiDung) {
         NoiDung existingNoiDung = noiDungRepository.findById(noiDung.getId()).orElse(null);
         if (existingNoiDung != null) {
             existingNoiDung.setTenNoiDung(noiDung.getTenNoiDung());
@@ -87,9 +87,8 @@ public class NoiDungService {
         // Lấy tên file
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
-        // Đường dẫn lưu file
-        //String uploadDir = "src/main/resources/static/images/";
-        String uploadDir = "src/main/resources/static/images/";
+        // Đường dẫn lưu file trên Linux
+        String uploadDir = "/var/www/project/static/images/";
         Path filePath = Paths.get(uploadDir, fileName);
 
         try {
@@ -103,20 +102,22 @@ public class NoiDungService {
         }
 
         // Trả về đường dẫn của file đã lưu
-        return "/images/" + fileName;
+        return "/images1/" + fileName;
     }
 
     public String saveFile(MultipartFile file) {
-        // Xử lý lưu file vào thư mục cụ thể và trả về đường dẫn
-          String uploadDir = "F:\\DACN_HeThongMOS\\HeThongHoTroCuocThi\\src\\main\\resources\\static\\uploads\\exercise\\";
-        /*String uploadDir = "/Users/tranviethung/Documents/Học tập/HeThongHoTroCuocThiJaVa/HeThongHoTroCuocThi/src/main/resources/static/uploads/exercise/";*/
+        // Đường dẫn lưu file trên VPS Linux
+        String uploadDir = "/var/www/project/uploads/exercise/";
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
         try {
+            // Tạo thư mục nếu chưa tồn tại
             Path uploadPath = Paths.get(uploadDir);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
+
+            // Lưu file vào thư mục
             try (InputStream inputStream = file.getInputStream()) {
                 Path filePath = uploadPath.resolve(fileName);
                 Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
@@ -125,8 +126,8 @@ public class NoiDungService {
             throw new RuntimeException("Không thể lưu file: " + fileName, e);
         }
 
+        // Trả về đường dẫn URL để truy cập file
         return "/uploads/exercise/" + fileName;
     }
-
 }
 

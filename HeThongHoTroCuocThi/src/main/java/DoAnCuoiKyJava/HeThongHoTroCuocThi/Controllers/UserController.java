@@ -1,6 +1,9 @@
 package DoAnCuoiKyJava.HeThongHoTroCuocThi.Controllers;
 
+import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.Role;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.User;
+import DoAnCuoiKyJava.HeThongHoTroCuocThi.Repositories.IRoleRepository;
+import DoAnCuoiKyJava.HeThongHoTroCuocThi.Repositories.IUserRepository;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Request.UserCreateRequest;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Request.UserUpdateRequest;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Services.TruongService;
@@ -10,6 +13,7 @@ import DoAnCuoiKyJava.HeThongHoTroCuocThi.Viewmodels.UserGetVM;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -21,6 +25,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 
@@ -31,6 +37,8 @@ public class UserController {
     private final UserService userService;
     private final TruongService truongService;
     private final EmailService emailService;
+    private final IRoleRepository roleRepository;
+    private final IUserRepository userRepository;
 
     @GetMapping("/login")
     public String login() {
@@ -98,8 +106,13 @@ public class UserController {
             return "redirect:/User/edit";
         }
 
-        userService.saveUser(updateUser);
-        redirectAttributes.addFlashAttribute("successMessage", "Thông tin người dùng đã được cập nhật thành công.");
+        String notification = userService.checkUserUpdate(updateUser);
+        if(notification.equals("success")) {
+            userService.saveUser(updateUser);
+            redirectAttributes.addFlashAttribute("successMessage", "Thông tin người dùng đã được cập nhật thành công.");
+            return "redirect:/User/edit";
+        }
+        redirectAttributes.addFlashAttribute("error", notification);
         return "redirect:/User/edit";
     }
 
@@ -121,9 +134,24 @@ public class UserController {
         return "Account/list";
     }
 
+    @PostMapping("/update-roles")
+    public String updateUserRoles(@ModelAttribute("user") User userForm) {
+        // Lấy user từ database
+        User user = userRepository.findById(userForm.getId());
+
+        // Cập nhật roles cho user
+        user.setRoles(userForm.getRoles());
+
+        // Lưu lại user
+        userRepository.save(user);
+
+        return "redirect:/id/" + user.getId(); // Chuyển hướng sau khi cập nhật
+    }
+
     @GetMapping("/id/{id}")
     public String showUser(@PathVariable Long id, @NotNull Model model) {
         User user = userService.findById(id);
+
         model.addAttribute("user", user);
         return "Account/detail";
     }

@@ -125,7 +125,7 @@ public class CuocThiController {
 
         model.addAttribute("chiTietQuyDinhsPage", chiTietQuyDinhsPage);
         model.addAttribute("cuocThiId", id);
-        return "/User/CuocThi/quyDinh";
+        return "User/CuocThi/quyDinh";
     }
 
     @GetMapping("/noi-dung/{id}")
@@ -140,6 +140,6 @@ public class CuocThiController {
         model.addAttribute("user", user);
 
         model.addAttribute("phieuNopBaiService", phieuNopBaiService);
-        return "/User/NoiDung/list"; // Đường dẫn tới trang nội dung
+        return "User/NoiDung/list"; // Đường dẫn tới trang nội dung
     }
 }

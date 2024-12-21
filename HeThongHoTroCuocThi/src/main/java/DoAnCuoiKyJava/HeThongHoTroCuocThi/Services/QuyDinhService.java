@@ -71,8 +71,8 @@ public class QuyDinhService {
         // Lấy tên file
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
-        // Đường dẫn lưu file
-        String uploadDir = "F:\\DACN_HeThongMOS\\HeThongHoTroCuocThi\\src\\main\\resources\\static\\images\\";
+        // Đường dẫn lưu file trên Linux
+        String uploadDir = "/var/www/project/static/images/";
         Path filePath = Paths.get(uploadDir, fileName);
 
         try {
@@ -86,7 +86,7 @@ public class QuyDinhService {
         }
 
         // Trả về đường dẫn của file đã lưu
-        return "/images/" + fileName;
+        return "/images1/" + fileName;
     }
 
     public void AnHien(Long id) {

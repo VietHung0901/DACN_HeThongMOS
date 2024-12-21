@@ -106,7 +106,7 @@
             <div class="form-group">
                 <label for="imageUrl"><i class="fas fa-image icon"></i>Ảnh</label>
                 <input type="file" class="form-control-file" id="imageUrl" onchange="previewImage()"
-                       th:field="*{imageUrl}">
+                       th:field="*{imageUrl}" required>
                 <img id="preview-image" alt="Preview Image">
             </div>
 

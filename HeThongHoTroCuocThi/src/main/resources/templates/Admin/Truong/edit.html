@@ -96,10 +96,18 @@
 
             <!-- Tên môn thi -->
             <div class="form-group">
-                <label for="tenMonThi">Tên Trường</label>
+                <label for="tenTruong">Tên Trường</label>
                 <input type="text" class="form-control" id="tenTruong" th:field="*{tenTruong}" required>
             </div>
 
+            <div class="form-group mb-4">
+                <label for="truong">Loại Trường</label>
+                <select class="form-control" id="truong" th:field="*{loaiTruong}">
+                    <option value="">-- Chọn Loại Trường --</option>
+                    <option th:each="loaiTruong : ${listLoaiTruong}" th:value="${loaiTruong.id}"
+                            th:text="${loaiTruong.tenLoaiTruong}"></option>
+                </select>
+            </div>
             <!-- Nút Lưu và Trở về -->
             <div class="form-group text-center">
                 <button type="submit" class="btn btn-submit"><i class="fas fa-save"></i> Lưu</button>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 <head>
     <title>Chi Tiết Người Dùng - Duyệt</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -69,6 +70,30 @@
                         <span th:if="${user.trangThai == 1}" class="text-success" th:text="'Thành công'"></span>
                         <span th:if="${user.trangThai == 2}" class="text-danger" th:text="'Thất bại'"></span>
                     </p>
+
+                    <div sec:authorize="hasAuthority('MANAGER')">
+                        <form th:action="@{/update-roles}" method="post" th:object="${user}">
+                            <!-- Input ẩn chứa userId -->
+                            <input type="hidden" th:field="*{id}" />
+
+                            <!-- Danh sách các Roles -->
+                            <div class="form-group">
+                                <label for="roles">Chọn vai trò:</label>
+                                <select class="form-control" id="roles" multiple th:field="*{roles}">
+                                    <!-- Gán cứng danh sách các vai trò -->
+                                    <option value="1" th:selected="${user.roles.contains(1)}">ADMIN</option>
+                                    <option value="2" th:selected="${user.roles.contains(2)}">USER</option>
+                                    <option value="3" th:selected="${user.roles.contains(3)}">MANAGER</option>
+                                    <option value="4" th:selected="${user.roles.contains(4)}">ADMIN_SCHOOL</option>
+                                </select>
+                            </div>
+
+                            <!-- Nút cập nhật -->
+                            <button type="submit" class="btn btn-primary">Cập nhật</button>
+                        </form>
+                    </div>
+
+
                     <div class="action-buttons text-center">
                         <a th:href="@{/KhongDuyet/{id}(id=${user.id})}" class="btn btn-danger">Không Duyệt</a>
                         <a th:href="@{/Duyet/{id}(id=${user.id})}" class="btn btn-success">Duyệt</a>

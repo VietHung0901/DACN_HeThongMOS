@@ -73,10 +73,10 @@ public class AdminCuocThiController {
             return "Admin/CuocThi/add";
         }
 
-        if (cuocThi.getTenCuocThi() == null
+        if (cuocThi.getTenCuocThi().isEmpty()
                 || cuocThi.getNgayThi() == null || LocalDate.from(cuocThi.getNgayThi()).isBefore(LocalDate.now())
                 || cuocThi.getSoLuongThiSinh() <= 0
-                || cuocThi.getDiaDiemThi() == null
+                || cuocThi.getDiaDiemThi().isEmpty()
                 || cuocThi.getMonThi() == null
                 || cuocThi.getLoaiTruongId() == null) {
             model.addAttribute("errorMessage", "Thông tin cuộc thi không hợp lệ, vui lòng kiểm tra lại!");
@@ -85,6 +85,26 @@ public class AdminCuocThiController {
             model.addAttribute("allQuyDinhs", quyDinhService.getAllQuyDinhsHien());
             model.addAttribute("allNoiDungs", noiDungService.getAllNoiDungsHien());
             model.addAttribute("listLoaiTruong", loaiTruongService.getAllLoaiTruongsHien());
+            return "Admin/CuocThi/add";
+        }
+        if(selectedQuyDinhIds == null)
+        {
+            model.addAttribute("cuocThi", cuocThi);
+            model.addAttribute("listMonThi", monThiService.getAllMonThisHien());
+            model.addAttribute("allQuyDinhs", quyDinhService.getAllQuyDinhsHien());
+            model.addAttribute("allNoiDungs", noiDungService.getAllNoiDungsHien());
+            model.addAttribute("listLoaiTruong", loaiTruongService.getAllLoaiTruongsHien());
+            model.addAttribute("errorMessageQuyDinh", "Vui lòng chọn ít nhất 1 quy định!");
+            return "Admin/CuocThi/add";
+        }
+        if(selectedNoiDungIds == null)
+        {
+            model.addAttribute("cuocThi", cuocThi);
+            model.addAttribute("listMonThi", monThiService.getAllMonThisHien());
+            model.addAttribute("allQuyDinhs", quyDinhService.getAllQuyDinhsHien());
+            model.addAttribute("allNoiDungs", noiDungService.getAllNoiDungsHien());
+            model.addAttribute("listLoaiTruong", loaiTruongService.getAllLoaiTruongsHien());
+            model.addAttribute("errorMessageNoiDung", "Vui lòng chọn ít nhất 1 nội dung!");
             return "Admin/CuocThi/add";
         }
 
@@ -142,7 +162,26 @@ public class AdminCuocThiController {
             model.addAttribute("listMonThi",monThiService.getAllMonThisHien());
             return "Admin/CuocThi/edit";
         }
-
+        CuocThi cuocThi1 = cuocThiService.getCuocThiById(cuocThi.getId())
+                .orElseThrow(() -> new EntityNotFoundException(""));
+        if (cuocThi.getTenCuocThi().isEmpty()
+                || cuocThi.getNgayThi() == null || LocalDate.from(cuocThi.getNgayThi()).isBefore(LocalDate.now())
+                || cuocThi.getSoLuongThiSinh() <= 0
+                || cuocThi.getDiaDiemThi().isEmpty()
+                || cuocThi.getMonThi() == null
+                || cuocThi.getLoaiTruongId() == null) {
+            model.addAttribute("errorMessage", "Thông tin cuộc thi không hợp lệ, vui lòng kiểm tra lại!");
+            model.addAttribute("cuocThi", cuocThi);
+            model.addAttribute("listMonThi", monThiService.getAllMonThisHien());
+            model.addAttribute("allQuyDinhs", quyDinhService.getAllQuyDinhsHien());
+            model.addAttribute("allNoiDungs", noiDungService.getAllNoiDungsHien());
+            model.addAttribute("listLoaiTruong", loaiTruongService.getAllLoaiTruongsHien());
+            List<NoiDung> chiTietNoiDungs = CTNDService.getAllNoiDungByCuocThi(cuocThi1);
+            List<QuyDinh> chiTietQuyDinhs = CTQDService.getAllQuyDinhByCuocThi(cuocThi1);
+            model.addAttribute("chiTietNoiDungs", chiTietNoiDungs);
+            model.addAttribute("chiTietQuyDinhs", chiTietQuyDinhs);
+            return "Admin/CuocThi/edit";
+        }
         if(selectedQuyDinhIds == null)
         {
             model.addAttribute("cuocThi", cuocThi);
@@ -150,7 +189,7 @@ public class AdminCuocThiController {
             model.addAttribute("allQuyDinhs", quyDinhService.getAllQuyDinhsHien());
             model.addAttribute("allNoiDungs", noiDungService.getAllNoiDungsHien());
             model.addAttribute("listLoaiTruong", loaiTruongService.getAllLoaiTruongsHien());
-            List<NoiDung> chiTietNoiDungs = CTNDService.getAllNoiDungByCuocThi(cuocThi);
+            List<NoiDung> chiTietNoiDungs = CTNDService.getAllNoiDungByCuocThi(cuocThi1);
             List<QuyDinh> chiTietQuyDinhs = CTQDService.getAllQuyDinhByCuocThi(cuocThi);
             model.addAttribute("chiTietNoiDungs", chiTietNoiDungs);
             model.addAttribute("chiTietQuyDinhs", chiTietQuyDinhs);
@@ -165,7 +204,7 @@ public class AdminCuocThiController {
             model.addAttribute("allNoiDungs", noiDungService.getAllNoiDungsHien());
             model.addAttribute("listLoaiTruong", loaiTruongService.getAllLoaiTruongsHien());
             List<NoiDung> chiTietNoiDungs = CTNDService.getAllNoiDungByCuocThi(cuocThi);
-            List<QuyDinh> chiTietQuyDinhs = CTQDService.getAllQuyDinhByCuocThi(cuocThi);
+            List<QuyDinh> chiTietQuyDinhs = CTQDService.getAllQuyDinhByCuocThi(cuocThi1);
             model.addAttribute("chiTietNoiDungs", chiTietNoiDungs);
             model.addAttribute("chiTietQuyDinhs", chiTietQuyDinhs);
             model.addAttribute("errorMessageNoiDung", "Vui lòng chọn ít nhất 1 nội dung!");

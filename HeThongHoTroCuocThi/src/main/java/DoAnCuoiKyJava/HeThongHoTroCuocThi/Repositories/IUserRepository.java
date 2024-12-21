@@ -19,6 +19,10 @@ public interface IUserRepository extends JpaRepository<User, String> {
     boolean existsByEmail(String email);
     boolean existsByPhone(String phone);
 
+    boolean existsByCccdAndIdNot(String cccd, Long id);
+    boolean existsByPhoneAndIdNot(String phone, Long id);
+    boolean existsByEmailAndIdNot(String email, Long id);
+
     List<User> findUserByTrangThai(int trangThai);
 
     @Query("SELECT lt.tenLoaiTruong, COUNT(u.id) " +

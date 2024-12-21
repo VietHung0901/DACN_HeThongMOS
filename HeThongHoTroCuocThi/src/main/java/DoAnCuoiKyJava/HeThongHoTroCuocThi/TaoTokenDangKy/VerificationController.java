@@ -33,14 +33,14 @@ public class VerificationController {
                 .orElseThrow(() -> new IllegalArgumentException("Token không hợp lệ"));
 
         if (verificationToken.getExpiryDate().isBefore(LocalDateTime.now())) {
-            return "/Account/XacNhanEmail/fail";
+            return "Account/XacNhanEmail/fail";
         }
 
         User user = verificationToken.getUser();
         user.setEnabled(true); // Kích hoạt tài khoản
         userRepository.save(user);
 
-        return "/Account/XacNhanEmail/success";
+        return "Account/XacNhanEmail/success";
     }
 
     @GetMapping("/confirmForgotPassword")
@@ -52,12 +52,12 @@ public class VerificationController {
                 .orElseThrow(() -> new IllegalArgumentException("Token không hợp lệ"));
 
         if (verificationToken.getExpiryDate().isBefore(LocalDateTime.now())) {
-            return "/Account/XacNhanEmail/fail";
+            return "Account/XacNhanEmail/fail";
         }
 
         User user = userService.findByUsername(username);
         model.addAttribute("user", user);
-        return "/Account/forgotPassword";
+        return "Account/forgotPassword";
     }
 }
 

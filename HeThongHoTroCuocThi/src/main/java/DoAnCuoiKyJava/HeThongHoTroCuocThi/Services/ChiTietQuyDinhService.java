@@ -53,6 +53,4 @@ public class ChiTietQuyDinhService {
     public Page<ChiTietQuyDinh> getChiTietQuyDinhsByCuocThiId(Long cuocThiId, Pageable pageable) {
         return CTQDRepository.findByCuocThiId(cuocThiId, pageable);
     }
-
-
 }

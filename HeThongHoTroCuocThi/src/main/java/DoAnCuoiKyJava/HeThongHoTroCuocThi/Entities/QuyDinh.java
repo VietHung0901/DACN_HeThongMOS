@@ -21,9 +21,10 @@ public class QuyDinh {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "tenQuyDinh", length = 50, nullable = false)
+    @Column(name = "tenQuyDinh", length = 500, nullable = false)
     private String tenQuyDinh;
 
+    @Column(name = "mo_ta_quy_dinh", length = 500, nullable = true)
     private String moTaQuyDinh;
 
     private String imageUrl;

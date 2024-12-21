@@ -70,6 +70,6 @@ public class PhieuNopBaiController {
         PhieuNopBai phieuNopBai = phieuNopBaiService.findById(id).orElseThrow();
         model.addAttribute("cuocThiId",cuocThiId);
         model.addAttribute("phieuNopBai", phieuNopBai);
-        return "/User/PhieuNopBai/details";
+        return "User/PhieuNopBai/details";
     }
 }

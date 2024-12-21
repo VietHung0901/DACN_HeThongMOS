@@ -4,6 +4,7 @@
     <title>QUẢN LÝ TRƯỜNG</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link th:fragment="custom-css" rel="stylesheet" th:href="@{/css/dropMenu.css}">
     <style>
         .table-container {
             background: linear-gradient(135deg, #f8f9fa, #ffffff);
@@ -138,9 +139,8 @@
         }
     </style>
 </head>
-
-<body>
 <th:block th:replace="~{layout::headerAdmin}"></th:block>
+<body>
 <div style="padding-bottom: 300px;">
     <div class="table-container" style=" padding: 95px;">
         <h1>

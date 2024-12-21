@@ -23,9 +23,10 @@ public class NoiDung {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "tenNoiDung", length = 50, nullable = false)
+    @Column(name = "tenNoiDung", length = 500, nullable = false)
     private String tenNoiDung;
 
+    @Column(name = "mo_ta_noi_dung", length = 500, nullable = true)
     private String moTaNoiDung;
 
     //Dùng để lưu file

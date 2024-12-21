@@ -34,7 +34,7 @@ public class PhieuKetQuaController {
 
     @GetMapping("/search")
     public String showSearchForm() {
-        return "/User/PhieuKetQua/search";
+        return "User/PhieuKetQua/search";
     }
 
     //API lấy thông tin phiếu kết quả

@@ -167,30 +167,121 @@
             display: block;
         }
 
+        .stepper-wrapper {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+
+        .stepper-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            flex: 1;
+        }
+
+        .stepper-item::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: -50%;
+            width: 100%;
+            height: 3px;
+            background-color: #dcdcdc;
+            z-index: 0;
+        }
+
+        .stepper-item:first-child::before {
+            display: none;
+        }
+
+        .stepper-item.active::before {
+            background-color: #28a745;
+        }
+
+        .step-counter {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #dcdcdc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #6c757d;
+            z-index: 1;
+        }
+
+        /* Bước hiện tại sẽ có màu sáng, nổi bật */
+        .stepper-item.active .step-counter {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .stepper-item.active .step-name {
+            color: #28a745; /* Màu chữ sáng cho bước hiện tại */
+            font-weight: bold;
+        }
+
+        /* Các bước chưa active sẽ có màu mặc định */
+        .stepper-item .step-counter {
+            background-color: #d1d1d1;
+            color: #6c757d;
+        }
+
+        .stepper-item .step-name {
+            color: #6c757d;
+        }
+
+        /* Các bước hoàn thành (đã qua) sẽ có màu sáng */
+        .stepper-item.completed .step-counter {
+            background-color: #28a745;
+            color: white;
+        }
     </style>
 </head>
 <body>
 <th:block th:replace="~{layout::headerAdmin}"></th:block>
 <div class="container" style="padding: 95px; padding-bottom: 300px;">
     <h1 class="text-center my-4"><i class="fas fa-trophy icon"></i> TẠO CUỘC THI</h1>
+
+    <!-- Progress Bar -->
+    <div class="stepper-wrapper">
+        <div class="stepper-item active">
+            <div class="step-counter">1</div>
+            <div class="step-name">Thông tin cơ bản</div>
+        </div>
+        <div class="stepper-item">
+            <div class="step-counter">2</div>
+            <div class="step-name">Quy định</div>
+        </div>
+        <div class="stepper-item">
+            <div class="step-counter">3</div>
+            <div class="step-name">Nội dung</div>
+        </div>
+    </div>
+
     <form th:action="@{/Admin/CuocThis/add}" th:object="${cuocThi}" method="post">
         <!-- Step 1: Thông tin cuộc thi -->
         <div id="step-1" class="step-container active">
             <div class="form-group">
                 <label for="tenCuocThi"><i class="fas fa-pen icon"></i> Tên cuộc thi</label>
-                <input type="text" class="form-control" id="tenCuocThi" th:field="*{tenCuocThi}" required>
+                <input type="text" class="form-control" id="tenCuocThi" th:field="*{tenCuocThi}">
             </div>
             <div class="form-group">
                 <label for="ngayThi"><i class="fas fa-calendar-alt icon"></i> Thời gian tổ chức</label>
-                <input type="datetime-local" class="form-control" id="ngayThi" th:field="*{ngayThi}" required>
+                <input type="datetime-local" class="form-control" id="ngayThi" th:field="*{ngayThi}">
             </div>
             <div class="form-group">
                 <label for="soLuongThiSinh"><i class="fas fa-users icon"></i> Số lượng thí sinh</label>
-                <input type="number" class="form-control" id="soLuongThiSinh" th:field="*{soLuongThiSinh}" required>
+                <input type="number" class="form-control" id="soLuongThiSinh" th:field="*{soLuongThiSinh}">
             </div>
             <div class="form-group">
                 <label for="DiaDiemThi"><i class="fas fa-map-marker-alt icon"></i> Địa điểm tổ chức</label>
-                <input type="text" class="form-control" id="DiaDiemThi" th:field="*{diaDiemThi}" required>
+                <input type="text" class="form-control" id="DiaDiemThi" th:field="*{diaDiemThi}">
             </div>
             <div class="form-group">
                 <label for="monThi"><i class="fas fa-book icon"></i> Môn thi</label>
@@ -207,6 +298,9 @@
                     <option th:each="loaiTruong : ${listLoaiTruong}" th:value="${loaiTruong.id}"
                             th:text="${loaiTruong.tenLoaiTruong}"></option>
                 </select>
+            </div>
+            <div class="form-group">
+                <div th:if="${errorMessage != null}" class="alert alert-danger" th:text="${errorMessage}" style="margin-top: 20px; margin-bottom: 20px;"></div>
             </div>
             <div class="form-group text-center">
                 <a th:href="@{/Admin/CuocThis}" class="btn btn-yellow"><i class="fas fa-arrow-left"></i> Quay lại</a>
@@ -227,6 +321,9 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group">
+                <div th:if="${errorMessageQuyDinh != null}" class="alert alert-danger" th:text="${errorMessageQuyDinh}" style="margin-top: 20px; margin-bottom: 20px;"></div>
+            </div>
             <div class="form-group text-center mt-4">
                 <button type="button" onclick="nextStep(1)" class="btn btn-yellow"><i class="fas fa-arrow-left"></i> Quay lại</button>
                 <button type="button" onclick="nextStep(3)" class="btn btn-blue">Tiếp tục <i class="fas fa-arrow-right"></i></button>
@@ -246,6 +343,9 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group">
+                <div th:if="${errorMessageNoiDung != null}" class="alert alert-danger" th:text="${errorMessageNoiDung}" style="margin-top: 20px; margin-bottom: 20px;"></div>
+            </div>
             <div class="form-group text-center mt-4">
                 <button type="button" onclick="nextStep(2)" class="btn btn-yellow"><i class="fas fa-arrow-left"></i> Quay lại</button>
                 <button type="submit" class="btn btn-green"><i class="fas fa-plus-circle"></i> Tạo cuộc thi</button>
@@ -256,7 +356,43 @@
 </div>
 
 <th:block th:replace="~{layout::footerAdmin}"></th:block>
-<script th:src="@{/js/TaoCuocThi.js}"></script>
+<!--<script th:src="@{/js/TaoCuocThi.js}"></script>-->
+<script>
+    // Hàm để chuyển sang bước tiếp theo và cập nhật thanh tiến trình
+    function nextStep(step) {
+        const steps = document.querySelectorAll('.step-container');
+        steps.forEach((stepContainer) => {
+            stepContainer.classList.remove('active');
+        });
+
+        // Hiển thị bước hiện tại
+        const activeStep = document.getElementById('step-' + step);
+        activeStep.classList.add('active');
+
+        // Cập nhật thanh tiến trình
+        updateStepper(step);
+    }
+
+    // Hàm cập nhật trạng thái thanh tiến trình
+    function updateStepper(step) {
+        const stepperItems = document.querySelectorAll('.stepper-item');
+        stepperItems.forEach((item, index) => {
+            // Nếu bước hiện tại hoặc bước trước đó đã hoàn thành
+            if (index < step - 1) {
+                item.classList.add('completed');
+            } else if (index === step - 1) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active', 'completed');
+            }
+        });
+    }
+
+    // Khi trang được tải, đặt bước đầu tiên là active
+    window.onload = function() {
+        nextStep(1); // Mở đầu với Bước 1
+    };
+</script>
 </body>
 </html>
 

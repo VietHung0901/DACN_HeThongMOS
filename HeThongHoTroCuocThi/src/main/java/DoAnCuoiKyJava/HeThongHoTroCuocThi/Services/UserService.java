@@ -92,6 +92,7 @@ public class UserService implements UserDetailsService {
         user.setPhone(userRequest.getPhone());
         user.setEmail(userRequest.getEmail());
         user.setGender(userRequest.getGender());
+        user.setNgaySinh(userRequest.getNgaySinh());
         user.setImageUrl(image);
         user.setTruong(userRequest.getTruong());
         user.setTrangThai(0);
@@ -106,7 +107,7 @@ public class UserService implements UserDetailsService {
         verificationTokenRepository.save(verificationToken);
 
         // Gửi email xác nhận
-        String confirmationUrl = "http://localhost:8080/confirm?token=" + verificationToken.getToken();
+        String confirmationUrl = "http://103.170.122.75:8080/confirm?token=" + verificationToken.getToken();
         emailService.sendEmail(user.getEmail(), "Xác nhận email", user, confirmationUrl);
     }
 
@@ -163,9 +164,8 @@ public class UserService implements UserDetailsService {
         // Lấy tên file
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
-        // Đường dẫn lưu file
-        /*String uploadDir = "/Users/tranviethung/Documents/Học tập/DACN_HeThongMOS/HeThongHoTroCuocThi/src/main/resources/static/images/";*/
-        String uploadDir = "F:\\DACN_HeThongMOS\\HeThongHoTroCuocThi\\src\\main\\resources\\static\\images\\";
+        // Đường dẫn lưu file trên Linux
+        String uploadDir = "/var/www/project/static/images/";
         Path filePath = Paths.get(uploadDir, fileName);
 
         try {
@@ -179,7 +179,7 @@ public class UserService implements UserDetailsService {
         }
 
         // Trả về đường dẫn của file đã lưu
-        return "/images/" + fileName;
+        return "/images1/" + fileName;
     }
 
     public void saveUser(UserUpdateRequest updatedUser) {
@@ -214,6 +214,20 @@ public class UserService implements UserDetailsService {
 
     public List<User> getAllUsersByTrangThai(int trangThai) {
         return userRepository.findUserByTrangThai(trangThai);
+    }
+
+    public String checkUserUpdate(UserUpdateRequest userRequest) {
+        Long userId = userRequest.getId();
+        if (userRepository.existsByCccdAndIdNot(userRequest.getCccd(), userId)) {
+            return "CCCD này đã được dùng cho tài khoản khác.";
+        }
+        if (userRepository.existsByPhoneAndIdNot(userRequest.getPhone(), userId)) {
+            return "SĐT này đã được dùng cho tài khoản khác.";
+        }
+        if (userRepository.existsByEmailAndIdNot(userRequest.getEmail(), userId)) {
+            return "Email này đã được dùng cho tài khoản khác.";
+        }
+        return "success";
     }
 
     public String checkUser(UserCreateRequest userRequest) {
@@ -261,7 +275,7 @@ public class UserService implements UserDetailsService {
         verificationTokenRepository.save(verificationToken);
 
         // Gửi email xác nhận
-        String confirmationUrl = "http://localhost:8080/confirmForgotPassword?token=" + verificationToken.getToken()
+        String confirmationUrl = "http://103.170.122.75:8080/confirmForgotPassword?token=" + verificationToken.getToken()
                                                                             + "&username=" + user.getUsername();
         emailService.sendEmailFogetPassword(user.getEmail(), "Đổi mật khẩu", user, confirmationUrl);
     }

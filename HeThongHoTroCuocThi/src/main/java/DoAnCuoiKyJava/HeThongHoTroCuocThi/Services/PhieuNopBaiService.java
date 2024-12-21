@@ -57,16 +57,18 @@ public class PhieuNopBaiService {
     }
 
     public String saveFile(MultipartFile file) {
-        // Xử lý lưu file vào thư mục cụ thể và trả về đường dẫn
-        String uploadDir = "F:\\DACN_HeThongMOS\\HeThongHoTroCuocThi\\src\\main\\resources\\static\\uploads\\Result\\";
-        /*String uploadDir = "/Users/tranviethung/Documents/Học tập/HeThongHoTroCuocThiJaVa/HeThongHoTroCuocThi/src/main/resources/static/uploads/Result/";*/
+        // Đường dẫn lưu file trên Linux VPS
+        String uploadDir = "/var/www/project/uploads/Result/";
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
         try {
+            // Tạo thư mục nếu chưa tồn tại
             Path uploadPath = Paths.get(uploadDir);
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
+
+            // Lưu file vào đường dẫn
             try (InputStream inputStream = file.getInputStream()) {
                 Path filePath = uploadPath.resolve(fileName);
                 Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
@@ -75,8 +77,10 @@ public class PhieuNopBaiService {
             throw new RuntimeException("Không thể lưu file: " + fileName, e);
         }
 
+        // Trả về đường dẫn tĩnh của file
         return "/uploads/Result/" + fileName;
     }
+
 
     public PhieuNopBai findPhieuNopBaiByCuocThiIdAndNoiDungAndUser(Long cuocThiId, NoiDung noiDung, User user){
         List<PhieuNopBai> list = findAll();
