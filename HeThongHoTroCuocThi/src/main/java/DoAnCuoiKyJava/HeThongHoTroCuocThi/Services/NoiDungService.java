@@ -89,7 +89,7 @@ public class NoiDungService {
 
         // Đường dẫn lưu file
         //String uploadDir = "src/main/resources/static/images/";
-        String uploadDir = "src/main/resources/static/images/";
+        String uploadDir = "F:\\DACN_HeThongMOS\\HeThongHoTroCuocThi\\src\\main\\resources\\static\\images\\";
         Path filePath = Paths.get(uploadDir, fileName);
 
         try {

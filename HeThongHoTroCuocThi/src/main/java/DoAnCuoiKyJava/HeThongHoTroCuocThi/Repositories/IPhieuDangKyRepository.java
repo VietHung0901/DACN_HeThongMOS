@@ -21,4 +21,9 @@ public interface IPhieuDangKyRepository extends JpaRepository<PhieuDangKy, Long>
     int countByCuocThiId(Long cuocThiId);
 
     PhieuDangKy findByCuocThiAndUser(CuocThi cuocThi, User user);
+
+
+    /*------------------------------- Xuat danh sach ket qua thi sinh --------------------------------------------*/
+    @Query("SELECT p FROM PhieuDangKy p WHERE p.cuocThi.id = :cuocThiId")
+    List<PhieuDangKy> findByCuocThiId(@Param("cuocThiId") Long cuocThiId);
 }

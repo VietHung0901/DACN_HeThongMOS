@@ -51,4 +51,7 @@ public class TruongService {
         truong.setTrangThai(truong.getTrangThai() == 0 ? 1 : 0);
         truongRepository.save(truong);
     }
+
+    /*----------------------------------------------------------*/
+
 }

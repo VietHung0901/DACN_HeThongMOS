@@ -22,10 +22,10 @@ public class PhieuKetQuaService {
     private final IPhieuDangKyRepository phieuDangKyRepository;
 
     //lấy các phiếu kết quả có trạng thái là 1 (Hiện)
-        public List<PhieuKetQua> getAllPhieuKetQua() {
+    public List<PhieuKetQua> getAllPhieuKetQua() {
         return phieuKetQuaRepository.findByTrangThai(1);
     }
-    
+
     public List<PhieuKetQua> getAllPhieuKetQuastheoCuocThi(CuocThi cuocThi) {
         List<PhieuKetQua> listPKQ = new ArrayList<>();
         for (PhieuKetQua pkq : getAllPhieuKetQua()) {
@@ -89,8 +89,7 @@ public class PhieuKetQuaService {
     }
 
     // Hàm để cập nhật PhieuKetQua
-    public PhieuKetQua updatePhieuKetQua(PhieuKetQua updatephieuKetQua)
-    {
+    public PhieuKetQua updatePhieuKetQua(PhieuKetQua updatephieuKetQua) {
         PhieuKetQua pkq = getPhieuKetQuaById(updatephieuKetQua.getId()).orElseThrow(() -> new EntityNotFoundException(""));
         pkq.setDiem(updatephieuKetQua.getDiem());
         pkq.setPhut(updatephieuKetQua.getPhut());
@@ -99,8 +98,7 @@ public class PhieuKetQuaService {
     }
 
     // Hàm chuyển kiểu dữ liệu từ PhieuKetQua sang PhieuKetQuaRequest
-    public PhieuKetQuaRequest mapToPhieuKetQuaRequest(PhieuKetQua phieuKetQua)
-    {
+    public PhieuKetQuaRequest mapToPhieuKetQuaRequest(PhieuKetQua phieuKetQua) {
         PhieuKetQuaRequest phieuKetQuaRequest = new PhieuKetQuaRequest();
         phieuKetQuaRequest.setId(phieuKetQua.getId());
         phieuKetQuaRequest.setPhut(phieuKetQua.getPhut());
@@ -111,12 +109,10 @@ public class PhieuKetQuaService {
     }
 
     // Hàm lấy danh sách pkq theo user
-    public List<PhieuKetQua> getPkqByUser (User user)
-    {
+    public List<PhieuKetQua> getPkqByUser(User user) {
         List<PhieuKetQua> listPKQ = new ArrayList<>();
         for (PhieuKetQua pkq : getAllPhieuKetQua()) {
-            if(pkq.getPhieuDangKy().getUser() == user)
-            {
+            if (pkq.getPhieuDangKy().getUser() == user) {
                 listPKQ.add(pkq);
             }
         }
@@ -124,10 +120,10 @@ public class PhieuKetQuaService {
     }
 
     // Hàm lấy danh sách pkq theo user và trạng thái
-    public List<PhieuKetQua> GetAllPKQByUserAndTrangThai(User user){
+    public List<PhieuKetQua> GetAllPKQByUserAndTrangThai(User user) {
         List<PhieuKetQua> listPKQ = new ArrayList<>();
-        for(PhieuKetQua pqk : getAllPhieuKetQua())
-            if(pqk.getPhieuDangKy().getUser() == user)
+        for (PhieuKetQua pqk : getAllPhieuKetQua())
+            if (pqk.getPhieuDangKy().getUser() == user)
                 listPKQ.add(pqk);
         return listPKQ;
     }
@@ -145,7 +141,7 @@ public class PhieuKetQuaService {
 
                     // Kiểu dữ liệu khi lấy từ file vào là string cần chuyển thành kiểu dữ liệu phù hợp
                     String pdkIdString = dataFormatter.formatCellValue(row.getCell(0)); // Chuỗi kết quả
-                    if(!pdkIdString.isEmpty()) {
+                    if (!pdkIdString.isEmpty()) {
                         Long pdkId = Long.parseLong(pdkIdString); // Chuyển chuỗi sang kiểu Long
                         PhieuDangKy pdk = phieuDangKyRepository.findById(pdkId).orElseThrow(() -> new EntityNotFoundException("PhieuDangKy not found with id: " + pdkId));
 
@@ -168,7 +164,7 @@ public class PhieuKetQuaService {
                             }
                             listFail.add(failRow);
                         }
-                    }else
+                    } else
                         return listFail;
                 }
             }
@@ -177,8 +173,14 @@ public class PhieuKetQuaService {
     }
 // import file excel    *********************************************************
 
+
+    /*------------------------------- Xuat danh sach ket qua thi sinh --------------------------------------------*/
     public List<PhieuKetQua> getPhieuKetQuaTheoTruongVaCuocThi(Long truongId, Long cuocThiId) {
         return phieuKetQuaRepository.findAllByTruongIdAndCuocThiId(truongId, cuocThiId);
+    }
+
+    public List<PhieuKetQua> getPhieuKetQuaByCuocThiAndTruong(CuocThi cuocThi, Long truongId) {
+        return phieuKetQuaRepository.findByCuocThiAndTruong(cuocThi, truongId);
     }
 
 }

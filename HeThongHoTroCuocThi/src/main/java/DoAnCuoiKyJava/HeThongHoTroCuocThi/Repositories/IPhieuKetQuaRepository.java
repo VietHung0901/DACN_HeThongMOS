@@ -1,5 +1,6 @@
 package DoAnCuoiKyJava.HeThongHoTroCuocThi.Repositories;
 
+import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.CuocThi;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.PhieuDangKy;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.PhieuKetQua;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.User;
@@ -23,4 +24,11 @@ public interface IPhieuKetQuaRepository extends JpaRepository<PhieuKetQua, Long>
             "WHERE pkq.phieuDangKy.truongId = :truongId " +
             "AND pkq.phieuDangKy.cuocThi.id = :cuocThiId")
     List<PhieuKetQua> findAllByTruongIdAndCuocThiId(@Param("truongId") Long truongId, @Param("cuocThiId") Long cuocThiId);
+
+
+    /*------------------------------- Xuat danh sach ket qua thi sinh --------------------------------------------*/
+    @Query("SELECT p FROM PhieuKetQua p WHERE p.phieuDangKy.cuocThi = :cuocThi AND p.phieuDangKy.user.truong.id = :truongId")
+    List<PhieuKetQua> findByCuocThiAndTruong(@Param("cuocThi") CuocThi cuocThi, @Param("truongId") Long truongId);
+
+
 }
