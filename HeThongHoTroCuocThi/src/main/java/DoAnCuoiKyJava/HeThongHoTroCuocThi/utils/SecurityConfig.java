@@ -60,7 +60,7 @@ public class SecurityConfig {
 
                         //Chỉ những người có vai trò "ADMIN", "USER", "OIDC_USER" mới được phép truy cập
                         .requestMatchers("/api/**")
-                        .hasAnyAuthority("ADMIN", "USER", "OIDC_USER","MANAGER")
+                        .hasAnyAuthority("ADMIN", "USER", "OIDC_USER","MANAGER", "ADMIN_SCHOOL")
 
                         //Tất cả các yêu cầu khác sẽ yêu cầu người dùng xác thực
                         .anyRequest().authenticated()

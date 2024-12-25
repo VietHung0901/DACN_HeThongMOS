@@ -319,6 +319,4 @@ public class AdminCuocThiController {
         model.addAttribute("cuocThiId", id); // Truyền id của cuộc thi để dùng trong các liên kết phân trang
         return "Admin/CuocThi/quyDinh"; // Đường dẫn đến trang quy định
     }
-
-
 }

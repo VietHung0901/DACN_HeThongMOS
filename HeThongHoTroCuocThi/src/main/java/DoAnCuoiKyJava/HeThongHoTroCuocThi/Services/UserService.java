@@ -291,6 +291,8 @@ public class UserService implements UserDetailsService {
                 if (row != null) {
                     User user = parseUserFromRow(row, dataFormatter);
                     if (user != null && !isDuplicate(user)) {
+                        user.setEnabled(true);
+                        user.setTrangThai(1);
                         userRepository.save(user);
                         setDefaultRoleForSchoolRegistration(user.getCccd());
                         successfulUsers.add(user);

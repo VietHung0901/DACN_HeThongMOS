@@ -138,8 +138,6 @@
     </style>
 </head>
 <body>
-
-
 <th:block sec:authorize="hasAnyAuthority('ADMIN','MANAGER')" th:replace="~{layout::headerAdmin}"></th:block>
 <th:block sec:authorize="!isAuthenticated() or hasAuthority('USER')" th:replace="~{layout::header}"></th:block>
 <div style="padding-bottom: 300px;">

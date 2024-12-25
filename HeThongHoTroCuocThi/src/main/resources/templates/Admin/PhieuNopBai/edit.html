@@ -129,7 +129,7 @@
 
             <!-- Nút Lưu và Quay lại -->
             <div class="d-flex justify-content-between mt-4">
-                <a th:href="@{/Admin/PhieuNopBais/ChuaCham}" class="btn btn-secondary">
+                <a th:href="@{/Admin/PhieuNopBais/ChuaCham/{id}(id=${phieuNopBai.getCuocThiId()})}" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i> Trở về
                 </a>
                 <button type="submit" class="btn btn-primary">

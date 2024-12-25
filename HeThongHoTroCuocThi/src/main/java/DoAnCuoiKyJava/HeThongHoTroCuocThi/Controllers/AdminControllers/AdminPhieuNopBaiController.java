@@ -26,16 +26,20 @@ public class AdminPhieuNopBaiController {
 
     private final PhieuNopBaiService phieuNopBaiService;
 
-    @GetMapping("/ChuaCham")
-    public String showAllPhieuNopBaiChuaCham(@NotNull Model model) {
-        model.addAttribute("phieuNopBai", phieuNopBaiService.findAllByTrangThai(0));
+    @GetMapping("/ChuaCham/{id}")
+    public String showAllPhieuNopBaiChuaCham(@PathVariable Long id,
+                                             @NotNull Model model) {
+        model.addAttribute("phieuNopBai", phieuNopBaiService.findAllByTrangThai(0, id));
+        model.addAttribute("cuocThiId", id);
         return "Admin/PhieuNopBai/list";
     }
 
-    @GetMapping("/DaCham")
-    public String showAllPhieuNopBaiDaCham(@NotNull Model model) {
-        model.addAttribute("phieuNopBai", phieuNopBaiService.findAllByTrangThai(1));
-        return "/Admin/PhieuNopBai/list";
+    @GetMapping("/DaCham/{id}")
+    public String showAllPhieuNopBaiDaCham(@PathVariable Long id,
+                                           @NotNull Model model) {
+        model.addAttribute("phieuNopBai", phieuNopBaiService.findAllByTrangThai(1, id));
+        model.addAttribute("cuocThiId", id);
+        return "Admin/PhieuNopBai/list";
     }
 
     @GetMapping("/edit/{id}")
@@ -49,19 +53,8 @@ public class AdminPhieuNopBaiController {
     public String editPhieuNopBai(@NotNull Model model,
                                   @Valid @ModelAttribute("PhieuNopBai") PhieuNopBai phieuNopBai) {
         phieuNopBaiService.edit(phieuNopBai);
-        return "redirect:/Admin/PhieuNopBais/ChuaCham";
+        return "redirect:/Admin/PhieuNopBais/ChuaCham/" + phieuNopBai.getCuocThiId();
     }
-
-//
-//    @GetMapping("/psd/trangthai/{trangthai}/{id}")
-//    public String DuyetPhieuSuaDiem(@PathVariable Long id,
-//                                    @PathVariable int trangthai) {
-//        phieuSuaDiemService.xuLyKetQuaSuaDiem(id, trangthai);
-//        if(trangthai == 1)
-//            return "redirect:/Manager/PhieuSuaDiems/ThanhCong";
-//        else
-//            return "redirect:/Manager/PhieuSuaDiems/ThatBai";
-//    }
 
     @GetMapping("/preview/{id}")
     public ResponseEntity<Resource> previewFile(@PathVariable Long id) {

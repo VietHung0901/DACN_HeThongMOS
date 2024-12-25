@@ -15,7 +15,7 @@ public class WebConfig implements WebMvcConfigurer {
 
         // Ánh xạ URL "/uploads/exercise/**" tới thư mục lưu file
         registry.addResourceHandler("/uploads/exercise/**")
-                .addResourceLocations("file:/var/www/project/uploads/exercise");
+                .addResourceLocations("file:/var/www/project/uploads/exercise/");
 
         // Ánh xạ URL "/uploads/**" tới thư mục lưu file
         registry.addResourceHandler("/uploads/Result/**")

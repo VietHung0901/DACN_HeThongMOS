@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface IPhieuNopBaiRepository extends JpaRepository<PhieuNopBai, Long> {
     // Bạn có thể thêm các phương thức truy vấn tùy chỉnh nếu cần
-    List<PhieuNopBai> findPhieuNopBaiByTrangThai(int trangThai);
+    List<PhieuNopBai> findPhieuNopBaiByTrangThaiAndCuocThiId(int trangThai, Long cuocThiId);
 
     PhieuNopBai findPhieuNopBaiByCuocThiIdAndNoiDungAndUser(Long cuocThiId, NoiDung noiDung, User user);
 }

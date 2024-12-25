@@ -29,8 +29,8 @@ public class PhieuNopBaiService {
         return phieuNopBaiRepository.findAll();
     }
 
-    public List<PhieuNopBai> findAllByTrangThai(int trangthai) {
-        return phieuNopBaiRepository.findPhieuNopBaiByTrangThai(trangthai);
+    public List<PhieuNopBai> findAllByTrangThai(int trangthai, Long cuocThiId) {
+        return phieuNopBaiRepository.findPhieuNopBaiByTrangThaiAndCuocThiId(trangthai, cuocThiId);
     }
 
     public Optional<PhieuNopBai> findById(Long id) {

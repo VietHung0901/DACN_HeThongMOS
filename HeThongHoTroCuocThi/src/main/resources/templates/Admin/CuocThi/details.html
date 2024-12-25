@@ -145,7 +145,7 @@
     <div class="button-container mb-4">
         <a th:href="@{/Admin/CuocThis}" class="btn btn-primary">Trở về</a>
         <a th:href="@{/Admin/CuocThis/quy-dinh/{id}(id=${cuocThi.id})}" class="btn btn-secondary">Quy định</a>
-        <a th:href="@{/Admin/PhieuNopBais/ChuaCham}" class="btn btn-secondary">Nội dung</a>
+        <a th:href="@{/Admin/PhieuNopBais/ChuaCham/{id}(id=${cuocThi.id})}" class="btn btn-secondary">Nội dung</a>
         <a class="btn btn-primary btn-dangky" th:href="@{/Admin/PhieuDangKys/cuocThi/id/{id}(id=${cuocThi.id})}">Danh sách phiếu đăng ký</a>
     </div>
 

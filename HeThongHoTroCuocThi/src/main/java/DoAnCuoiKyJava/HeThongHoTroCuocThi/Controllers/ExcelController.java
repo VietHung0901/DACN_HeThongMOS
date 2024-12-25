@@ -84,7 +84,7 @@ public class ExcelController {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             workbook.write(outputStream);
             HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename= DanSachPhieuKetQua" + "_" + cuocThi.getTenCuocThi() + "_" + cuocThi.getId() +".xlsx");
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename= DanhSachPhieuKetQua" + "_" + cuocThi.getTenCuocThi() + "_" + cuocThi.getId() +".xlsx");
             return new ResponseEntity<>(outputStream.toByteArray(), headers, HttpStatus.OK);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -143,7 +143,7 @@ public class ExcelController {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             workbook.write(outputStream);
             HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename= DanSachPhieuDangKy" + "_" + cuocThi.getTenCuocThi() + "_" + cuocThi.getId() +".xlsx");
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename= DanhSachPhieuDangKy" + "_" + cuocThi.getTenCuocThi() + "_" + cuocThi.getId() +".xlsx");
             return new ResponseEntity<>(outputStream.toByteArray(), headers, HttpStatus.OK);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -194,7 +194,7 @@ public class ExcelController {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             workbook.write(outputStream);
             HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename= DanSachPhieuDangKy" + "_" + cuocThi.getTenCuocThi() + "_" + cuocThi.getId() +".xlsx");
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename= MauNhapPhieuKetQua" + "_" + cuocThi.getTenCuocThi() + "_" + cuocThi.getId() +".xlsx");
             return new ResponseEntity<>(outputStream.toByteArray(), headers, HttpStatus.OK);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -223,7 +223,7 @@ public class ExcelController {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             workbook.write(outputStream);
             HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename= DanSachPhieuDangKy" + "_" + cuocThi.getTenCuocThi() + "_" + cuocThi.getId() +".xlsx");
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename= MauNhapPhieuDangKy" + "_" + cuocThi.getTenCuocThi() + "_" + cuocThi.getId() +".xlsx");
             return new ResponseEntity<>(outputStream.toByteArray(), headers, HttpStatus.OK);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -297,13 +297,11 @@ public class ExcelController {
         return "redirect:/api/excel/import/form/pdk/cuocThiId/" + cuocThiId;
     }
 
-
     @GetMapping("/export/diem/cuocThi/{cuocThiId}/truong/{truongId}")
-    public ResponseEntity<byte[]> exportDiemTheoTruong(
-            @PathVariable Long cuocThiId,
-            @PathVariable Long truongId) {
+    public ResponseEntity<byte[]> exportDiemTheoTruong(@PathVariable Long cuocThiId,
+                                                       @PathVariable Long truongId) {
         Workbook workbook = new XSSFWorkbook();
-        Sheet sheet = workbook.createSheet("Danh sách thí sinh");
+        Sheet sheet = workbook.createSheet("Data");
 
         // Tạo tiêu đề
         Row headerRow = sheet.createRow(0);
@@ -313,32 +311,46 @@ public class ExcelController {
         headerRow.createCell(3).setCellValue("Họ và tên");
         headerRow.createCell(4).setCellValue("Email");
         headerRow.createCell(5).setCellValue("SĐT");
-        headerRow.createCell(6).setCellValue("Điểm");
+        headerRow.createCell(6).setCellValue("Trường");
+        headerRow.createCell(7).setCellValue("Phút");
+        headerRow.createCell(8).setCellValue("Giây");
+        headerRow.createCell(9).setCellValue("Điểm");
 
+
+        CuocThi cuocThi = cuocThiService.getCuocThiById(cuocThiId).orElseThrow(() -> new EntityNotFoundException("CuocThi not found with id: " + cuocThiId));
         // Lấy dữ liệu
-        List<PhieuKetQua> danhSach = phieuKetQuaService.getPhieuKetQuaTheoTruongVaCuocThi(truongId, cuocThiId);
+        List<PhieuKetQua> dataList;
+        if(truongId > 0)
+            dataList = phieuKetQuaService.getPhieuKetQuaTheoTruongVaCuocThi(cuocThi, truongId);
+        else
+            dataList = phieuKetQuaService.getAllPhieuKetQuastheoCuocThi(cuocThi);
 
         int rowNum = 1;
-        for (PhieuKetQua ketQua : danhSach) {
+        for (PhieuKetQua data : dataList) {
             Row row = sheet.createRow(rowNum++);
-            row.createCell(0).setCellValue(ketQua.getId());
-            row.createCell(1).setCellValue(ketQua.getPhieuDangKy().getCuocThi().getTenCuocThi());
-            row.createCell(2).setCellValue(ketQua.getPhieuDangKy().getUser().getCccd());
-            row.createCell(3).setCellValue(ketQua.getPhieuDangKy().getUser().getHoten());
-            row.createCell(4).setCellValue(ketQua.getPhieuDangKy().getEmail());
-            row.createCell(5).setCellValue(ketQua.getPhieuDangKy().getSdt());
-            row.createCell(6).setCellValue(ketQua.getDiem());
+            row.createCell(0).setCellValue(data.getId());
+            row.createCell(1).setCellValue(data.getPhieuDangKy().getCuocThi().getTenCuocThi());
+            row.createCell(2).setCellValue(data.getPhieuDangKy().getUser().getCccd());
+            row.createCell(3).setCellValue(data.getPhieuDangKy().getUser().getHoten());
+            row.createCell(4).setCellValue(data.getPhieuDangKy().getEmail());
+            row.createCell(5).setCellValue(data.getPhieuDangKy().getSdt());
+
+            Truong truong = truongService.findTruongById(data.getPhieuDangKy().getTruongId());
+            row.createCell(6).setCellValue(truong.getTenTruong());
+
+            row.createCell(7).setCellValue(data.getPhut());
+            row.createCell(8).setCellValue(data.getGiay());
+            row.createCell(9).setCellValue(data.getDiem());
         }
 
         // Xuất file Excel
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             workbook.write(outputStream);
             HttpHeaders headers = new HttpHeaders();
-            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=danhSachThiSinh.xlsx");
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename= DanhSachPhieuKetQua" + "_" + cuocThi.getTenCuocThi() + "_" + cuocThi.getId() +".xlsx");
             return new ResponseEntity<>(outputStream.toByteArray(), headers, HttpStatus.OK);
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
 }

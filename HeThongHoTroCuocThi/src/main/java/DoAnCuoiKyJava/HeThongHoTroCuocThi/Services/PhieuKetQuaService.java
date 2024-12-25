@@ -22,7 +22,7 @@ public class PhieuKetQuaService {
     private final IPhieuDangKyRepository phieuDangKyRepository;
 
     //lấy các phiếu kết quả có trạng thái là 1 (Hiện)
-        public List<PhieuKetQua> getAllPhieuKetQua() {
+    public List<PhieuKetQua> getAllPhieuKetQua() {
         return phieuKetQuaRepository.findByTrangThai(1);
     }
     
@@ -175,10 +175,15 @@ public class PhieuKetQuaService {
         }
         return listFail;
     }
-// import file excel    *********************************************************
 
-    public List<PhieuKetQua> getPhieuKetQuaTheoTruongVaCuocThi(Long truongId, Long cuocThiId) {
-        return phieuKetQuaRepository.findAllByTruongIdAndCuocThiId(truongId, cuocThiId);
+    // export file excel    *********************************************************
+    public List<PhieuKetQua> getPhieuKetQuaTheoTruongVaCuocThi(CuocThi cuocThi, Long truongId) {
+        List<PhieuKetQua> listPKQ = new ArrayList<>();
+        for (PhieuKetQua pkq : getAllPhieuKetQua()) {
+            if (pkq.getPhieuDangKy().getCuocThi() == cuocThi && pkq.getPhieuDangKy().getTruongId() == truongId) {
+                listPKQ.add(pkq);
+            }
+        }
+        return listPKQ;
     }
-
 }
