@@ -175,9 +175,13 @@
             </div>
         </div>
 
+        <!-- Lấy cuocThiId từ model -->
+        <input type="hidden" id="context-data" th:value="${cuocThiId}">
+
+
         <!-- Form tìm kiếm -->
         <div class="mb-4">
-            <input type="text" class="form-control" placeholder="Tìm kiếm phiếu đăng ký..." id="search-input">
+            <input type="text" class="form-control" placeholder="Tìm kiếm theo tên" id="search-input">
         </div>
 
         <!-- Bảng phiếu đăng ký -->
@@ -197,7 +201,7 @@
                     <th>Thao tác</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="table-body">
                 <tr th:each="phieuDangKy : ${phieuDangKys}">
                     <td th:text="${phieuDangKy.id}"></td>
                     <td th:text="${phieuDangKy.cuocThi.getTenCuocThi()}"></td>
@@ -239,6 +243,102 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    document.getElementById("search-input").addEventListener("input", function () {
+        const query = this.value.trim(); // Lấy giá trị nhập vào từ ô tìm kiếm
+        const cuocThiId = document.getElementById("context-data").value;
+
+        // Gửi yêu cầu fetch
+        fetch('/Admin/PhieuDangKys/search/pdk/'+ cuocThiId +'/'+query)
+            .then(response => response.json())
+            .then(data => {
+                let trHTML = "";
+
+                // Kiểm tra nếu danh sách data rỗng
+                if (!data || data.length === 0) {
+                    trHTML = "<tr><td colspan='10'>Không tìm thấy thông tin!</td></tr>";
+                    document.getElementById("table-body").innerHTML = trHTML;
+                    return;
+                }
+
+                // Duyệt qua danh sách kết quả và tạo hàng mới
+                data.forEach(item => {
+                    trHTML += `
+                    <tr>
+                        <td>${item.pdkId}</td>
+                        <td>${item.tenCuocThi}</td>
+                        <td>${item.cccd}</td>
+                        <td>${item.hoten}</td>
+                        <td>${item.ngaySinh}</td>
+                        <td>${item.Email}</td>
+                        <td>${item.sdt}</td>
+                        <td>${item.tenTruong}</td>
+                        <td>${item.diem ?? ""}</td>
+                        <td>
+                            <a class="btn btn-edit btn-sm" href="/Admin/PhieuDangKys/edit/${item.pdkId}">
+                                <i class="fas fa-edit"></i> Sửa thông tin
+                            </a>
+                            ${item.diem === null
+                        ? `<a class="btn btn-warning btn-sm" href="/Admin/PhieuKetQuas/add/pkq/pdkId/${item.pdkId}">
+                                     <i class="fas fa-pen"></i> Nhập điểm
+                                   </a>`
+                        : `<a class="btn btn-grade btn-sm" href="/Admin/PhieuKetQuas/edit/pkq/pdkId/${item.pdkId}">
+                                     <i class="fas fa-check-circle"></i> Sửa điểm
+                                   </a>`}
+                        </td>
+                    </tr>`;
+                });
+
+                // Cập nhật bảng với dữ liệu mới
+                document.getElementById("table-body").innerHTML = trHTML;
+            })
+            .catch(error => {
+                // console.error("Error:", error);
+                // document.getElementById("table-body").innerHTML = "<tr><td colspan='10'>Đã xảy ra lỗi khi tìm kiếm.</td></tr>";
+                // Gửi yêu cầu fetch
+                fetch('/Admin/PhieuDangKys/search/pdk/'+ cuocThiId)
+                    .then(response => response.json())
+                    .then(data => {
+                        let trHTML = "";
+
+                        // Duyệt qua danh sách kết quả và tạo hàng mới
+                        data.forEach(item => {
+                            trHTML += `
+                    <tr>
+                        <td>${item.pdkId}</td>
+                        <td>${item.tenCuocThi}</td>
+                        <td>${item.cccd}</td>
+                        <td>${item.hoten}</td>
+                        <td>${item.ngaySinh}</td>
+                        <td>${item.Email}</td>
+                        <td>${item.sdt}</td>
+                        <td>${item.tenTruong}</td>
+                        <td>${item.diem ?? ""}</td>
+                        <td>
+                            <a class="btn btn-edit btn-sm" href="/Admin/PhieuDangKys/edit/${item.pdkId}">
+                                <i class="fas fa-edit"></i> Sửa thông tin
+                            </a>
+                            ${item.diem === null
+                                ? `<a class="btn btn-warning btn-sm" href="/Admin/PhieuKetQuas/add/pkq/pdkId/${item.pdkId}">
+                                     <i class="fas fa-pen"></i> Nhập điểm
+                                   </a>`
+                                : `<a class="btn btn-grade btn-sm" href="/Admin/PhieuKetQuas/edit/pkq/pdkId/${item.pdkId}">
+                                     <i class="fas fa-check-circle"></i> Sửa điểm
+                                   </a>`}
+                        </td>
+                    </tr>`;
+                        });
+
+                        // Cập nhật bảng với dữ liệu mới
+                        document.getElementById("table-body").innerHTML = trHTML;
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                        document.getElementById("table-body").innerHTML = "<tr><td colspan='10'>Đã xảy ra lỗi khi tìm kiếm.</td></tr>";
+                    });
+            });
+    });
+</script>
 </body>
 </html>
 

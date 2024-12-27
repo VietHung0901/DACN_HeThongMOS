@@ -146,4 +146,18 @@ public class PhieuDangKyService {
         return listFail;
     }
 
+    public List<PhieuDangKy> getPdkByHoTen (String hoten, Long cuocThiId)
+    {
+        List<PhieuDangKy> listPDK = new ArrayList<>();
+        if(!hoten.isEmpty())
+        {
+            for (PhieuDangKy pdk : getAllPhieuDangKystheoCuocThi(cuocThiId)) {
+                if (pdk.getUser().getHoten().toLowerCase().contains(hoten.toLowerCase())) {
+                    listPDK.add(pdk);
+                }
+            }
+            return listPDK;
+        }
+        return getAllPhieuDangKystheoCuocThi(cuocThiId);
+    }
 }

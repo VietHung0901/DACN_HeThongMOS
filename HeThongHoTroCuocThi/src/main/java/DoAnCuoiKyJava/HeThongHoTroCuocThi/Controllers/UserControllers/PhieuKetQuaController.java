@@ -37,43 +37,30 @@ public class PhieuKetQuaController {
         return "User/PhieuKetQua/search";
     }
 
-    //API lấy thông tin phiếu kết quả
-//    @GetMapping("/search/{pdkId}")
-//    public ResponseEntity<PhieuKetQuaGetVm> getPhieuKetQuaByPdkIdAndUserId(@PathVariable Long pdkId) {
-//        PhieuDangKy phieuDangKy = phieuDangKyService.getPhieuDangKyById(pdkId).orElseThrow(() -> new EntityNotFoundException(""));
-//        return ResponseEntity.ok(phieuKetQuaService.findByPhieuDangKyAndTrangThai(phieuDangKy)
-//                .map(PhieuKetQuaGetVm::from)
-//                .orElse(null));
-//    }
+    @GetMapping("/search/pkq/{cccd}")
+    public ResponseEntity<List<PhieuKetQuaGetVm>> searchPKQ(@PathVariable String cccd) {
+        // Tìm User bằng CCCD
+        User user = userService.getUserByCCCD(cccd)
+                .orElseThrow(() -> new EntityNotFoundException("Not Found user with cccd: " + cccd));
 
-    @GetMapping("/search/pkq")
-    public ResponseEntity<List<PhieuKetQuaGetVm>> searchPKQ(Principal principal)
-    {
-        User user = userService.findByUsername(principal.getName());
-        return ResponseEntity.ok(phieuKetQuaService.GetAllPKQByUserAndTrangThai(user)
+        // Lấy danh sách phiếu kết quả
+        List<PhieuKetQuaGetVm> phieuKetQuaGetVms = phieuKetQuaService.GetAllPKQByUserAndTrangThai(user)
                 .stream()
-                .map(PhieuKetQuaGetVm::from)
-                .toList());
+                .map(phieuKetQua -> PhieuKetQuaGetVm.from(phieuKetQua, truongService)) // Truyền truongService
+                .toList();
+
+        // Trả về ResponseEntity
+        return ResponseEntity.ok(phieuKetQuaGetVms);
     }
 
-    // Phương thức xử lý trang danh sách phiếu kết quả
-/*    @GetMapping("/danh-sach-phieu-ket-qua")
-    public String getDanhSachPhieuKetQua(@RequestParam(required = false) Long truong, Model model) {
-        // Lấy danh sách trường
-        List<Truong> truongs = truongService.getAllTruongsHien();
-        model.addAttribute("truongs", truongs);
 
-        // Lấy danh sách phiếu kết quả theo trường (nếu có)
-        List<PhieuKetQua> phieuKetQuas;
-        if (truong != null) {
-            phieuKetQuas = phieuKetQuaService.getPhieuKetQuaByTruong(truong);
-            model.addAttribute("selectedTruong", truong);
-        } else {
-            phieuKetQuas = phieuKetQuaService.getAllPhieuKetQua();
-            model.addAttribute("selectedTruong", null);
-        }
+//    public ResponseEntity<List<PhieuKetQuaGetVm>> searchPKQ(@PathVariable String cccd)
+//    {
+//        User user = userService.getUserByCCCD(cccd).orElseThrow(() -> new EntityNotFoundException("Not Found user with cccd: " + cccd));
+//        return ResponseEntity.ok(phieuKetQuaService.GetAllPKQByUserAndTrangThai(user)
+//                .stream()
+//                .map(PhieuKetQuaGetVm::from)
+//                .toList());
+//    }
 
-        model.addAttribute("phieuKetQuas", phieuKetQuas);
-        return "danh-sach-phieu-ket-qua";
-    }*/
 }

@@ -1,24 +1,28 @@
 package DoAnCuoiKyJava.HeThongHoTroCuocThi.Controllers.AdminControllers;
 
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.PhieuDangKy;
+import DoAnCuoiKyJava.HeThongHoTroCuocThi.Entities.User;
 import DoAnCuoiKyJava.HeThongHoTroCuocThi.Services.*;
+import DoAnCuoiKyJava.HeThongHoTroCuocThi.Viewmodels.PhieuDangkyGetVm;
+import DoAnCuoiKyJava.HeThongHoTroCuocThi.Viewmodels.PhieuKetQuaGetVm;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/Admin/PhieuDangKys")
 public class AdminPhieuDangKyController {
     private final PhieuDangKyService phieuDangKyService;
-    private final CuocThiService cuocThiService;
-    private final UserService userService;
     private final TruongService truongService;
     private final LoaiTruongService loaiTruongService;
     private final PhieuKetQuaService phieuKetQuaService;
@@ -67,5 +71,38 @@ public class AdminPhieuDangKyController {
         model.addAttribute("loaiTruongService", loaiTruongService);
         model.addAttribute("truongService", truongService);
         return "Admin/PhieuDangKy/details";
+    }
+
+    @GetMapping("/search/pdk/{cuocThiId}/{hoten}")
+    public ResponseEntity<List<PhieuDangkyGetVm>> searchPDK(
+            @PathVariable String hoten,
+            @PathVariable Long cuocThiId)
+    {
+        return ResponseEntity.ok(
+                phieuDangKyService.getPdkByHoTen(hoten, cuocThiId)
+                        .stream()
+                        .map(phieuDangKy -> PhieuDangkyGetVm.from(
+                                phieuDangKy,
+                                truongService,
+                                phieuKetQuaService
+                        ))
+                        .toList()
+        );
+    }
+
+    @GetMapping("/search/pdk/{cuocThiId}")
+    public ResponseEntity<List<PhieuDangkyGetVm>> searchPDK(
+            @PathVariable Long cuocThiId)
+    {
+        return ResponseEntity.ok(
+                phieuDangKyService.getAllPhieuDangKystheoCuocThi(cuocThiId)
+                        .stream()
+                        .map(phieuDangKy -> PhieuDangkyGetVm.from(
+                                phieuDangKy,
+                                truongService,
+                                phieuKetQuaService
+                        ))
+                        .toList()
+        );
     }
 }
